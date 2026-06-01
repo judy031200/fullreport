@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f4; color: #222; padding: 24px; }
+
+  .summary-cards {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    background: #fff; border: 1.5px solid #e0e0e0; border-radius: 4px;
+    margin-bottom: 20px; overflow: hidden;
+  }
+  .card { padding: 14px 20px; border-right: 1.5px solid #e0e0e0; }
+  .card:last-child { border-right: none; }
+  .card-label { font-size: 12px; color: #f97316; font-weight: 700; margin-bottom: 4px; }
+  .card-value { font-size: 20px; font-weight: 800; color: #222; }
+
+  .charts-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+  }
+  .chart-box {
+    background: #fff; border: 1.5px solid #e0e0e0; border-radius: 4px; padding: 20px 20px 16px;
+  }
+  .chart-box h3 { font-size: 16px; font-weight: 700; color: #f97316; margin-bottom: 16px; }
+
+  .table-box {
+    background: #fff; border: 1.5px solid #e0e0e0; border-radius: 4px; padding: 20px;
+  }
+  .table-box h3 { font-size: 16px; font-weight: 700; color: #f97316; margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    background: #fff7ed; color: #f97316; padding: 10px 14px; text-align: right;
+    font-weight: 700; border-bottom: 2px solid #f97316; cursor: pointer; user-select: none; white-space: nowrap;
+  }
+  thead th:first-child { text-align: left; }
+  thead th:hover { background: #ffedd5; }
+  thead th.sorted { background: #f97316; color: #fff; }
+  tbody tr:nth-child(even) { background: #fafafa; }
+  tbody tr:hover { background: #fff7ed; }
+  tbody td { padding: 9px 14px; border-bottom: 1px solid #f0f0f0; text-align: right; color: #333; }
+  tbody td:first-child { text-align: left; font-weight: 600; color: #111; }
+  .zero { color: #ccc !important; font-weight: 400 !important; }
+  .rank { display:inline-block; width:22px; height:22px; border-radius:50%; font-size:11px; font-weight:800; text-align:center; line-height:22px; margin-right:6px; }
+  .rank-1{background:#f59e0b;color:#fff;} .rank-2{background:#9ca3af;color:#fff;} .rank-3{background:#b45309;color:#fff;} .rank-n{background:#e5e7eb;color:#9ca3af;}
+  .acc-badge {
+    display:inline-block; background:#f97316; color:#fff;
+    border-radius:12px; padding:2px 10px; font-size:12px; font-weight:800;
+  }
+  .acc-badge-zero { background:#e5e7eb; color:#9ca3af; }
+  tfoot td { padding: 10px 14px; font-weight: 800; color: #f97316; background: #fff7ed; border-top: 2px solid #f97316; text-align: right; }
+  tfoot td:first-child { text-align: left; }
+  small.hint { color:#aaa; font-weight:400; font-size:11px; margin-left:8px; }
+</style>
+</head>
+<body>
+
+<div class="summary-cards">
+  <div class="card"><div class="card-label">Total Accounts</div><div class="card-value" id="s-ac"></div></div>
+  <div class="card"><div class="card-label">Total Trading Value</div><div class="card-value" id="s-tv"></div></div>
+  <div class="card"><div class="card-label">Total Trading Fee</div><div class="card-value" id="s-tf"></div></div>
+  <div class="card"><div class="card-label">Total NAV</div><div class="card-value" id="s-nav"></div></div>
+  <div class="card"><div class="card-label">Total AUM</div><div class="card-value" id="s-ol"></div></div>
+</div>
+
+<div class="charts-grid">
+  <div class="chart-box"><h3>Top Trading Value</h3><canvas id="c-tv" height="210"></canvas></div>
+  <div class="chart-box"><h3>Top Trading Fee</h3><canvas id="c-tf" height="210"></canvas></div>
+  <div class="chart-box"><h3>NAV</h3><canvas id="c-nav" height="210"></canvas></div>
+  <div class="chart-box"><h3>AUM</h3><canvas id="c-ol" height="210"></canvas></div>
+</div>
+
+<div class="table-box">
+  <h3>Bảng Chi Tiết <small class="hint">(Click tiêu đề để sắp xếp)</small></h3>
+  <table>
+    <thead>
+      <tr>
+        <th onclick="sortBy('ae')" id="th-ae">AE</th>
+        <th onclick="sortBy('ac')" id="th-ac">Active Account</th>
+        <th onclick="sortBy('tv')" id="th-tv" class="sorted">Trading Value ↓</th>
+        <th onclick="sortBy('tf')" id="th-tf">Trading Fee</th>
+        <th onclick="sortBy('nav')" id="th-nav">NAV</th>
+        <th onclick="sortBy('ol')" id="th-ol">AUM</th>
+      </tr>
+    </thead>
+    <tbody id="tb"></tbody>
+    <tfoot id="tfoot"></tfoot>
+  </table>
+</div>
+
+<script>
+Chart.register(ChartDataLabels);
+
+// ac = số hàng trong bảng gốc (mỗi hàng = 1 tài khoản)
+const raw = [
+  { ae:"Phạm Ánh Tuyết",       ac:4, tv:3409095000, tf:5575895,  nav:2288065372, ol:2288065372 },
+  { ae:"Trần Duy Thiện",        ac:2, tv:89000000,   tf:133500,   nav:1500940000, ol:1590125418 },
+  { ae:"Võ Tuấn Anh Nhân",     ac:2, tv:47201000,   tf:70804,    nav:22487109,   ol:22487109   },
+  { ae:"Nguyễn Phụng Yến",     ac:1, tv:48564000,   tf:121410,   nav:1314588,    ol:1314588    },
+  { ae:"Nguyễn Thúy Huyền",    ac:1, tv:25550000,   tf:63875,    nav:25000000,   ol:30619325   },
+  { ae:"Phan Văn Trắng",        ac:2, tv:6575100,    tf:9863,     nav:5862239,    ol:5862239    },
+  { ae:"Đặng Văn Cường",        ac:2, tv:0, tf:0, nav:2000044,   ol:2000044      },
+  { ae:"Nguyễn Nhật Tân",      ac:2, tv:0, tf:0, nav:8000238,   ol:8000238      },
+  { ae:"Phạm Quốc Khánh",      ac:1, tv:0, tf:0, nav:0, ol:0 },
+  { ae:"Bùi Ngọc Trung",       ac:2, tv:0, tf:0, nav:0, ol:0 },
+  { ae:"Nguyễn Thị Minh Châu", ac:1, tv:0, tf:0, nav:0, ol:0 },
+  { ae:"Nguyễn Thị Oanh Kiều", ac:1, tv:0, tf:0, nav:0, ol:0 },
+  { ae:"Trần Minh Phúc",        ac:1, tv:0, tf:0, nav:0, ol:0 },
+  { ae:"Đỗ Thanh Sơn",          ac:1, tv:0, tf:0, nav:0, ol:0 },
+];
+
+const ORANGE = '#f97316';
+function fmtShort(n){ if(!n) return '—'; if(n>=1e9) return (n/1e9).toFixed(2)+'B'; if(n>=1e6) return (n/1e6).toFixed(2)+'M'; if(n>=1e3) return (n/1e3).toFixed(1)+'K'; return n.toLocaleString(); }
+function fmtFull(n){ return n ? n.toLocaleString('vi-VN') : '—'; }
+const sum = k => raw.reduce((s,r) => s+r[k], 0);
+
+document.getElementById('s-ac').textContent  = sum('ac');
+document.getElementById('s-tv').textContent  = fmtFull(sum('tv'));
+document.getElementById('s-tf').textContent  = fmtFull(sum('tf'));
+document.getElementById('s-nav').textContent = fmtFull(sum('nav'));
+document.getElementById('s-ol').textContent  = fmtFull(sum('ol'));
+
+document.getElementById('tfoot').innerHTML = `<tr>
+  <td>TỔNG</td>
+  <td>${sum('ac')}</td>
+  <td>${fmtFull(sum('tv'))}</td>
+  <td>${fmtFull(sum('tf'))}</td>
+  <td>${fmtFull(sum('nav'))}</td>
+  <td>${fmtFull(sum('ol'))}</td>
+</tr>`;
+
+function sortedDesc(key){ return [...raw].filter(r=>r[key]>0).sort((a,b)=>b[key]-a[key]); }
+
+const dlAbove = {
+  anchor:'end', align:'top', color:'#222', font:{ size:11, weight:'700' },
+  formatter: v => v.toLocaleString('vi-VN'), clamp: true
+};
+
+function makeVBar(id, items, key){
+  const data = items.map(r=>r[key]);
+  const max  = Math.max(...data);
+  new Chart(document.getElementById(id), {
+    type:'bar',
+    data:{
+      labels: items.map(r=>r.ae),
+      datasets:[{ data, backgroundColor: ORANGE, borderRadius: 3, barPercentage: 0.55 }]
+    },
+    options:{
+      layout:{ padding:{ top: 28 } },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{ callbacks:{ label: c => c.raw.toLocaleString('vi-VN') } },
+        datalabels: dlAbove
+      },
+      scales:{
+        x:{ ticks:{ color:'#555', font:{size:11} }, grid:{ display:false }, border:{display:false} },
+        y:{ ticks:{ color:'#aaa', font:{size:10}, callback: v=>fmtShort(v) }, grid:{ color:'#f0f0f0' }, border:{display:false}, suggestedMax: max*1.25 }
+      }
+    }
+  });
+}
+
+makeVBar('c-tv',  sortedDesc('tv'),  'tv');
+makeVBar('c-tf',  sortedDesc('tf'),  'tf');
+makeVBar('c-nav', sortedDesc('nav'), 'nav');
+makeVBar('c-ol',  sortedDesc('ol'),  'ol');
+
+// --- Table ---
+let currentSort='tv', asc=false;
+const lblMap={ ae:'AE', ac:'Active Account', tv:'Trading Value', tf:'Trading Fee', nav:'NAV', ol:'AUM' };
+
+function renderTable(){
+  const sorted=[...raw].sort((a,b)=>{
+    const va=a[currentSort], vb=b[currentSort];
+    if(typeof va==='string') return asc?va.localeCompare(vb,'vi'):vb.localeCompare(va,'vi');
+    return asc?va-vb:vb-va;
+  });
+  const tb=document.getElementById('tb'); tb.innerHTML='';
+  sorted.forEach((r,i)=>{
+    const rc=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';
+    const z=r.tv===0&&r.nav===0;
+    const badgeCls = r.ac > 0 ? 'acc-badge' : 'acc-badge acc-badge-zero';
+    tb.innerHTML+=`<tr>
+      <td><span class="rank ${rc}">${i+1}</span>LM2 ${r.ae}</td>
+      <td><span class="${badgeCls}">${r.ac} tài khoản</span></td>
+      <td class="${z?'zero':''}">${fmtFull(r.tv)}</td>
+      <td class="${z?'zero':''}">${fmtFull(r.tf)}</td>
+      <td class="${z?'zero':''}">${fmtFull(r.nav)}</td>
+      <td class="${z?'zero':''}">${fmtFull(r.ol)}</td>
+    </tr>`;
+  });
+}
+
+function sortBy(key){
+  if(currentSort===key){ asc=!asc; } else { currentSort=key; asc=false; }
+  renderTable();
+  ['ae','ac','tv','tf','nav','ol'].forEach(k=>{
+    const th=document.getElementById('th-'+k);
+    th.classList.remove('sorted');
+    th.textContent=lblMap[k];
+  });
+  const th=document.getElementById('th-'+currentSort);
+  th.classList.add('sorted');
+  th.textContent=lblMap[currentSort]+' '+(asc?'↑':'↓');
+}
+
+renderTable();
+</script>
+</body>
+</html>
