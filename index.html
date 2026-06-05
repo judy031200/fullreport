@@ -3,213 +3,225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Báo Cáo & Cổ Phiếu – Simplize</title>
+<title>Báo Cáo & Cổ Phiếu</title>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; background: #f5f6f8; color: #1a1a1a; font-size: 14px; }
-.page { max-width: 1300px; margin: 0 auto; padding: 20px 16px; }
-.page-title { font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
-.page-subtitle { font-size: 12px; color: #888; margin-bottom: 16px; }
-
-/* ── Tabs ── */
-.tabs { display: flex; border-bottom: 2px solid #e8e8e8; margin-bottom: 16px; overflow-x: auto; }
-.tab-btn { padding: 10px 20px; font-size: 14px; font-weight: 500; color: #888; background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color .15s, border-color .15s; }
-.tab-btn:hover { color: #1677ff; }
-.tab-btn.active { color: #1677ff; border-bottom-color: #1677ff; }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-
-/* ── Toolbar / search box ── */
-.toolbar { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
-.filter-group { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-.filter-group label { font-size: 12px; color: #888; white-space: nowrap; }
-.custom-select { position: relative; }
-.custom-select select { appearance: none; -webkit-appearance: none; background: #f5f6f8; border: 1px solid #e8e8e8; border-radius: 6px; padding: 6px 28px 6px 10px; font-size: 13px; color: #1a1a1a; cursor: pointer; outline: none; min-width: 110px; }
-.custom-select select:focus { border-color: #1677ff; }
-.custom-select::after { content: ""; pointer-events: none; position: absolute; right: 9px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid #aaa; }
-.btn-primary { background: #1677ff; color: #fff; border: none; border-radius: 6px; padding: 7px 16px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-.btn-primary:active { background: #0958d9; }
-.btn-outline { background: #fff; color: #1677ff; border: 1px solid #1677ff; border-radius: 6px; padding: 7px 14px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-.btn-outline:hover { background: #e6f1ff; }
-.toolbar-spacer { flex: 1; min-width: 0; }
-.search-wrap { position: relative; width: 100%; }
-.search-wrap input { width: 100%; border: 1px solid #e8e8e8; border-radius: 6px; padding: 6px 10px 6px 30px; font-size: 13px; background: #f5f6f8; color: #1a1a1a; outline: none; }
-.search-wrap input:focus { border-color: #1677ff; background: #fff; }
-.search-wrap svg { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: #bbb; pointer-events: none; }
-.result-count { font-size: 12px; color: #8c8c8c; margin-bottom: 8px; padding: 0 2px; }
-
-/* ── Table ── */
-.table-wrap { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; overflow: hidden; }
-table { width: 100%; border-collapse: collapse; }
-thead th { background: #fafafa; font-size: 11px; font-weight: 500; color: #999; padding: 10px 14px; text-align: left; border-bottom: 1px solid #f0f0f0; white-space: nowrap; cursor: pointer; user-select: none; text-transform: uppercase; letter-spacing: .03em; }
-thead th:hover { color: #1677ff; }
-thead th.sort-asc::after  { content: " ↑"; color: #1677ff; }
-thead th.sort-desc::after { content: " ↓"; color: #1677ff; }
-tbody td { padding: 12px 14px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
-tbody tr:last-child td { border-bottom: none; }
-tbody tr:hover { background: #fafbfc; }
-.date-cell { font-size: 12px; color: #888; white-space: nowrap; width: 90px; }
-.title-cell { font-size: 13px; color: #1a1a1a; line-height: 1.5; }
-.source-col { width: 80px; font-size: 12px; color: #666; }
-.rec-col { width: 100px; }
-.price-col { width: 105px; text-align: right; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
-.dl-col { width: 50px; text-align: center; }
-.ticker-col { width: 110px; }
-.ticker-cell { display: flex; align-items: center; gap: 7px; }
-.ticker-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
-.tag-macro { font-size: 11px; color: #92400e; background: #fef3c7; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
-.tag-strategy { font-size: 11px; color: #5b21b6; background: #ede9fe; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
-.rec { font-size: 12px; font-weight: 600; }
-.rec-buy { color: #16a34a; }
-.rec-positive { color: #0369a1; }
-.rec-neutral { color: #9ca3af; }
-.rec-other { color: #92400e; }
-.price-empty { color: #d1d5db !important; }
-.btn-dl { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; color: #9ca3af; text-decoration: none; }
-.btn-dl:hover { border-color: #1677ff; color: #1677ff; background: #e6f1ff; }
-.state-row td { text-align: center; padding: 48px 0; color: #bbb; font-size: 14px; }
-.badge-new { display: inline-block; font-size: 10px; font-weight: 600; background: #fee2e2; color: #dc2626; padding: 1px 5px; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
-
-/* ── Tab 2: Tra cứu ── */
-.ticker-search-box { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 16px; display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
-.ticker-input-wrap { position: relative; flex: 1; min-width: 160px; max-width: 280px; }
-.ticker-input-wrap input { width: 100%; border: 1px solid #e8e8e8; border-radius: 6px; padding: 8px 10px 8px 36px; font-size: 15px; font-weight: 700; text-transform: uppercase; background: #f5f6f8; color: #1677ff; outline: none; letter-spacing: .05em; }
-.ticker-input-wrap input:focus { border-color: #1677ff; background: #fff; }
-.ticker-input-wrap input::placeholder { font-weight: 400; color: #bbb; text-transform: none; letter-spacing: 0; }
-.ticker-input-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #bbb; pointer-events: none; }
-.ticker-hint { font-size: 12px; color: #aaa; }
-.history-wrap { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-.history-label { font-size: 11px; color: #bbb; white-space: nowrap; }
-.history-chip { font-size: 12px; font-weight: 600; color: #1677ff; background: #e6f1ff; border: 1px solid #c7deff; border-radius: 4px; padding: 2px 8px; cursor: pointer; }
-.history-chip:hover { background: #bfdbfe; }
-.history-chip .chip-x { margin-left: 4px; color: #93c5fd; font-size: 10px; cursor: pointer; }
-.history-chip .chip-x:hover { color: #dc2626; }
-.stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
-.stat-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 12px 14px; }
-.stat-label { font-size: 11px; color: #999; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .03em; }
-.stat-value { font-size: 22px; font-weight: 700; color: #1a1a1a; font-variant-numeric: tabular-nums; }
-.stat-sub { font-size: 11px; color: #aaa; margin-top: 2px; }
-.consensus-bar { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 14px 18px; margin-bottom: 14px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.consensus-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
-.cpill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-.cpill-buy { background: #dcfce7; color: #15803d; }
-.cpill-pos { background: #dbeafe; color: #1d4ed8; }
-.cpill-neu { background: #f3f4f6; color: #6b7280; }
-.cpill-oth { background: #fef3c7; color: #92400e; }
-.ticker-filter-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
-.ticker-filter-row select { appearance: none; -webkit-appearance: none; background: #f5f6f8; border: 1px solid #e8e8e8; border-radius: 6px; padding: 5px 24px 5px 10px; font-size: 12px; color: #555; cursor: pointer; outline: none; }
-
-/* ── Tab 3: Pullback ── */
-.pb-toolbar { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
-.pb-label { font-size: 12px; color: #888; white-space: nowrap; }
-.pb-input { border: 1px solid #e8e8e8; border-radius: 6px; padding: 6px 10px; font-size: 13px; background: #f5f6f8; color: #1a1a1a; outline: none; width: 90px; }
-.pb-input:focus { border-color: #1677ff; }
-.pb-date { border: 1px solid #e8e8e8; border-radius: 6px; padding: 6px 10px; font-size: 13px; background: #f5f6f8; color: #1a1a1a; outline: none; }
-.rating-badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px; min-width: 32px; text-align: center; }
-.r-aplus  { background: #dcfce7; color: #15803d; }
-.r-a      { background: #d1fae5; color: #065f46; }
-.r-aminus { background: #ecfdf5; color: #047857; }
-.r-bplus  { background: #dbeafe; color: #1e40af; }
-.r-b      { background: #e0f2fe; color: #0369a1; }
-.r-bminus { background: #f0f9ff; color: #0284c7; }
-.r-cplus  { background: #fef9c3; color: #854d0e; }
-.r-c      { background: #fef3c7; color: #92400e; }
-.r-cminus { background: #fff7ed; color: #9a3412; }
-.price-up   { color: #16a34a; font-weight: 600; }
-.price-down { color: #dc2626; font-weight: 600; }
-.price-flat { color: #888; }
-.signal-buy  { font-size: 11px; font-weight: 600; background: #dcfce7; color: #15803d; padding: 2px 7px; border-radius: 4px; }
-.signal-wait { font-size: 11px; font-weight: 600; background: #fef9c3; color: #854d0e; padding: 2px 7px; border-radius: 4px; }
-.signal-none { font-size: 11px; color: #ccc; }
-.pb-count { font-size: 12px; color: #aaa; margin-left: auto; }
-
-/* ── Mobile cards ── */
-.card-list { display: none; }
-.report-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 14px 14px 12px; margin-bottom: 10px; }
-.card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-.card-ticker-wrap { display: flex; align-items: center; gap: 7px; }
-.card-ticker { font-size: 14px; font-weight: 700; color: #1a1a1a; }
-.card-source-sm { font-size: 11px; color: #999; }
-.card-title { font-size: 13px; color: #333; line-height: 1.5; margin-bottom: 10px; }
-.card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.card-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.card-date { font-size: 11px; color: #aaa; }
-.card-price { font-size: 12px; font-weight: 600; color: #1a1a1a; font-variant-numeric: tabular-nums; }
-.card-dl { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: #1677ff; text-decoration: none; padding: 5px 10px; border: 1px solid #c7deff; border-radius: 6px; background: #f0f7ff; white-space: nowrap; }
-
-
-.signal-dip-day  { font-size: 11px; font-weight: 600; background: #fee2e2; color: #dc2626; padding: 2px 7px; border-radius: 4px; }
-.signal-dip-mid  { font-size: 11px; font-weight: 600; background: #fef3c7; color: #92400e; padding: 2px 7px; border-radius: 4px; }
-.signal-dip-sm   { font-size: 11px; font-weight: 600; background: #dbeafe; color: #1d4ed8; padding: 2px 7px; border-radius: 4px; }
-.signal-dip-big  { font-size: 11px; font-weight: 600; background: #f3e8ff; color: #7c3aed; padding: 2px 7px; border-radius: 4px; }
-
-
-.signal-small-buy { font-size:11px;font-weight:600;background:#dcfce7;color:#15803d;padding:2px 7px;border-radius:4px; }
-.signal-big-buy   { font-size:11px;font-weight:600;background:#bbf7d0;color:#065f46;padding:2px 7px;border-radius:4px; }
-.signal-small-sell{ font-size:11px;font-weight:600;background:#fee2e2;color:#dc2626;padding:2px 7px;border-radius:4px; }
-.signal-big-sell  { font-size:11px;font-weight:600;background:#fecaca;color:#991b1b;padding:2px 7px;border-radius:4px; }
-
-/* Pullback mobile card */
-.pb-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
-.pb-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.pb-card-ticker { font-size: 18px; font-weight: 800; color: #1a1a1a; }
-.pb-card-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.pb-meta-item { font-size: 12px; }
-.pb-meta-label { color: #aaa; font-size: 11px; }
-.pb-meta-value { font-weight: 600; margin-top: 1px; }
-
-@media (max-width: 640px) {
-  .page { padding: 12px; }
-  .page-title { font-size: 16px; }
-  .tab-btn { padding: 8px 12px; font-size: 13px; }
-  .toolbar, .pb-toolbar { padding: 10px; gap: 8px; }
-  .filter-group { width: calc(50% - 4px); }
-  .filter-group label { display: none; }
-  .custom-select select { width: 100%; min-width: 0; }
-  .btn-primary, .btn-outline { width: 100%; text-align: center; }
-  .toolbar-spacer { display: none; }
-  .search-wrap-outer { width: 100%; }
-  .table-wrap { display: none; }
-  .card-list { display: block; }
-  .ticker-input-wrap { max-width: 100%; }
-  .consensus-pills { margin-left: 0; }
-  .stats-bar { grid-template-columns: repeat(2, 1fr); }
-  .pb-input { width: 70px; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f5f6f8;color:#1a1a1a;font-size:14px}
+.page{max-width:1300px;margin:0 auto;padding:20px 16px}
+.page-title{font-size:18px;font-weight:600;color:#1a1a1a;margin-bottom:4px}
+.page-subtitle{font-size:12px;color:#888;margin-bottom:16px}
+/* Tabs */
+.tabs{display:flex;border-bottom:2px solid #e8e8e8;margin-bottom:16px;overflow-x:auto}
+.tab-btn{padding:10px 20px;font-size:14px;font-weight:500;color:#888;background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .15s,border-color .15s}
+.tab-btn:hover{color:#1677ff}
+.tab-btn.active{color:#1677ff;border-bottom-color:#1677ff}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+/* Toolbar */
+.toolbar{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.filter-group{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.filter-group label{font-size:12px;color:#888;white-space:nowrap}
+.custom-select{position:relative}
+.custom-select select{appearance:none;-webkit-appearance:none;background:#f5f6f8;border:1px solid #e8e8e8;border-radius:6px;padding:6px 28px 6px 10px;font-size:13px;color:#1a1a1a;cursor:pointer;outline:none;min-width:110px}
+.custom-select select:focus{border-color:#1677ff}
+.custom-select::after{content:"";pointer-events:none;position:absolute;right:9px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #aaa}
+.btn-primary{background:#1677ff;color:#fff;border:none;border-radius:6px;padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.btn-primary:active{background:#0958d9}
+.btn-outline{background:#fff;color:#1677ff;border:1px solid #1677ff;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
+.btn-outline:hover{background:#e6f1ff}
+.toolbar-spacer{flex:1;min-width:0}
+.search-wrap{position:relative;width:100%}
+.search-wrap input{width:100%;border:1px solid #e8e8e8;border-radius:6px;padding:6px 10px 6px 30px;font-size:13px;background:#f5f6f8;color:#1a1a1a;outline:none}
+.search-wrap input:focus{border-color:#1677ff;background:#fff}
+.search-wrap svg{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#bbb;pointer-events:none}
+.result-count{font-size:12px;color:#8c8c8c;margin-bottom:8px;padding:0 2px}
+/* Table */
+.table-wrap{background:#fff;border:1px solid #e8e8e8;border-radius:10px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead th{background:#fafafa;font-size:11px;font-weight:500;color:#999;padding:10px 14px;text-align:left;border-bottom:1px solid #f0f0f0;white-space:nowrap;cursor:pointer;user-select:none;text-transform:uppercase;letter-spacing:.03em}
+thead th:hover{color:#1677ff}
+thead th.sort-asc::after{content:" ↑";color:#1677ff}
+thead th.sort-desc::after{content:" ↓";color:#1677ff}
+tbody td{padding:12px 14px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafbfc}
+.date-cell{font-size:12px;color:#888;white-space:nowrap;width:90px}
+.title-cell{font-size:13px;color:#1a1a1a;line-height:1.5}
+.source-col{width:80px;font-size:12px;color:#666}
+.rec-col{width:100px}
+.price-col{width:105px;text-align:right;font-size:13px;font-weight:500;font-variant-numeric:tabular-nums}
+.dl-col{width:50px;text-align:center}
+.ticker-col{width:110px}
+.ticker-cell{display:flex;align-items:center;gap:7px}
+.ticker-label{font-size:13px;font-weight:600;color:#1a1a1a}
+.tag-macro{font-size:11px;color:#92400e;background:#fef3c7;padding:2px 7px;border-radius:4px;font-weight:500}
+.tag-strategy{font-size:11px;color:#5b21b6;background:#ede9fe;padding:2px 7px;border-radius:4px;font-weight:500}
+.rec{font-size:12px;font-weight:600;letter-spacing:.02em}
+.rec-buy{color:#16a34a}
+.rec-positive{color:#0369a1}
+.rec-neutral{color:#9ca3af}
+.rec-other{color:#92400e}
+.price-empty{color:#d1d5db!important}
+.btn-dl{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;color:#9ca3af;text-decoration:none;transition:border-color .15s,color .15s,background .15s}
+.btn-dl:hover{border-color:#1677ff;color:#1677ff;background:#e6f1ff}
+.state-row td{text-align:center;padding:48px 0;color:#bbb;font-size:14px}
+.badge-new{display:inline-block;font-size:10px;font-weight:600;background:#fee2e2;color:#dc2626;padding:1px 5px;border-radius:3px;margin-left:6px;vertical-align:middle}
+/* Ticker search */
+.ticker-search-box{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:16px;display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.ticker-input-wrap{position:relative;flex:1;min-width:160px;max-width:280px}
+.ticker-input-wrap input{width:100%;border:1px solid #e8e8e8;border-radius:6px;padding:8px 10px 8px 36px;font-size:15px;font-weight:700;text-transform:uppercase;background:#f5f6f8;color:#1677ff;outline:none;letter-spacing:.05em}
+.ticker-input-wrap input:focus{border-color:#1677ff;background:#fff}
+.ticker-input-wrap input::placeholder{font-weight:400;color:#bbb;text-transform:none;letter-spacing:0}
+.ticker-input-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#bbb;pointer-events:none}
+.ticker-hint{font-size:12px;color:#aaa}
+.history-wrap{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.history-label{font-size:11px;color:#bbb;white-space:nowrap}
+.history-chip{font-size:12px;font-weight:600;color:#1677ff;background:#e6f1ff;border:1px solid #c7deff;border-radius:4px;padding:2px 8px;cursor:pointer}
+.history-chip:hover{background:#bfdbfe}
+.history-chip .chip-x{margin-left:4px;color:#93c5fd;font-size:10px;cursor:pointer}
+.history-chip .chip-x:hover{color:#dc2626}
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.stat-card{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:12px 14px}
+.stat-label{font-size:11px;color:#999;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em}
+.stat-value{font-size:22px;font-weight:700;color:#1a1a1a;font-variant-numeric:tabular-nums}
+.stat-sub{font-size:11px;color:#aaa;margin-top:2px}
+.consensus-bar{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.consensus-pills{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.cpill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px}
+.cpill-buy{background:#dcfce7;color:#15803d}
+.cpill-pos{background:#dbeafe;color:#1d4ed8}
+.cpill-neu{background:#f3f4f6;color:#6b7280}
+.cpill-oth{background:#fef3c7;color:#92400e}
+.ticker-filter-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.ticker-filter-row select{appearance:none;-webkit-appearance:none;background:#f5f6f8;border:1px solid #e8e8e8;border-radius:6px;padding:5px 24px 5px 10px;font-size:12px;color:#555;cursor:pointer;outline:none}
+/* Signal tab */
+.sig-btn{background:#f5f6f8;border:1px solid #e8e8e8;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:500;color:#666;cursor:pointer;transition:all .15s;white-space:nowrap}
+.sig-btn:hover{border-color:#1677ff;color:#1677ff}
+.sig-btn.active{background:#1677ff;border-color:#1677ff;color:#fff}
+.pb-toolbar{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.pb-label{font-size:12px;color:#888;white-space:nowrap}
+.pb-input{border:1px solid #e8e8e8;border-radius:6px;padding:6px 10px;font-size:13px;background:#f5f6f8;color:#1a1a1a;outline:none;width:90px}
+.pb-date{border:1px solid #e8e8e8;border-radius:6px;padding:6px 10px;font-size:13px;background:#f5f6f8;color:#1a1a1a;outline:none}
+.pb-count{font-size:12px;color:#aaa;margin-left:auto}
+.rating-badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;min-width:32px;text-align:center}
+.r-aplus{background:#dcfce7;color:#15803d}
+.r-a{background:#d1fae5;color:#065f46}
+.r-aminus{background:#ecfdf5;color:#047857}
+.r-bplus{background:#dbeafe;color:#1e40af}
+.r-b{background:#e0f2fe;color:#0369a1}
+.r-bminus{background:#f0f9ff;color:#0284c7}
+.r-cplus{background:#fef9c3;color:#854d0e}
+.r-c{background:#fef3c7;color:#92400e}
+.r-cminus{background:#fff7ed;color:#9a3412}
+.price-up{color:#16a34a;font-weight:600}
+.price-down{color:#dc2626;font-weight:600}
+.price-flat{color:#888}
+.signal-buy{font-size:11px;font-weight:600;background:#dcfce7;color:#15803d;padding:2px 7px;border-radius:4px}
+.signal-wait{font-size:11px;font-weight:600;background:#fef9c3;color:#854d0e;padding:2px 7px;border-radius:4px}
+.signal-none{font-size:11px;color:#ccc}
+.signal-small-buy{font-size:11px;font-weight:600;background:#dcfce7;color:#15803d;padding:2px 7px;border-radius:4px}
+.signal-big-buy{font-size:11px;font-weight:600;background:#bbf7d0;color:#065f46;padding:2px 7px;border-radius:4px}
+.signal-small-sell{font-size:11px;font-weight:600;background:#fee2e2;color:#dc2626;padding:2px 7px;border-radius:4px}
+.signal-big-sell{font-size:11px;font-weight:600;background:#fecaca;color:#991b1b;padding:2px 7px;border-radius:4px}
+.signal-dip-day{font-size:11px;font-weight:600;background:#fee2e2;color:#dc2626;padding:2px 7px;border-radius:4px}
+.signal-dip-mid{font-size:11px;font-weight:600;background:#fef3c7;color:#92400e;padding:2px 7px;border-radius:4px}
+.signal-dip-sm{font-size:11px;font-weight:600;background:#dbeafe;color:#1d4ed8;padding:2px 7px;border-radius:4px}
+.signal-dip-big{font-size:11px;font-weight:600;background:#f3e8ff;color:#7c3aed;padding:2px 7px;border-radius:4px}
+/* Events */
+.ev-toolbar{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.badge-iss{font-size:11px;font-weight:600;background:#dbeafe;color:#1d4ed8;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.badge-div-cash{font-size:11px;font-weight:600;background:#d1fae5;color:#065f46;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.ev-date{font-size:12px;color:#888;white-space:nowrap}
+.ev-ticker{font-size:13px;font-weight:700;color:#1677ff}
+.ev-value{font-size:13px;font-weight:600;color:#16a34a;font-variant-numeric:tabular-nums}
+.ev-ratio{font-size:12px;color:#555}
+/* Calendar */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal-nav-title{font-size:16px;font-weight:600;color:#1a1a1a}
+.cal-nav-btn{background:#fff;border:1px solid #e8e8e8;border-radius:6px;padding:6px 12px;font-size:13px;cursor:pointer;color:#555}
+.cal-nav-btn:hover{border-color:#1677ff;color:#1677ff}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-header{text-align:center;font-size:11px;font-weight:600;color:#aaa;padding:4px 0;text-transform:uppercase}
+.cal-day{min-height:80px;background:#fff;border:1px solid #f0f0f0;border-radius:8px;padding:6px;position:relative}
+.cal-day:hover{border-color:#c7deff;background:#fafcff}
+.cal-day.today{border-color:#1677ff;background:#f0f7ff}
+.cal-day.other-month{background:#fafafa}
+.cal-day.other-month .cal-day-num{color:#ccc}
+.cal-day-num{font-size:12px;font-weight:500;color:#555;margin-bottom:4px}
+.cal-day.today .cal-day-num{color:#1677ff;font-weight:700}
+.cal-event{font-size:10px;font-weight:600;padding:2px 5px;border-radius:3px;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal-event-iss{background:#dbeafe;color:#1d4ed8}
+.cal-event-div{background:#dcfce7;color:#15803d}
+.cal-more{font-size:10px;color:#aaa;cursor:pointer;padding:1px 4px}
+.cal-more:hover{color:#1677ff}
+.cal-popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:1000;display:flex;align-items:center;justify-content:center}
+.cal-popup{background:#fff;border-radius:12px;padding:20px;min-width:320px;max-width:480px;max-height:70vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.18)}
+.cal-popup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal-popup-title{font-size:15px;font-weight:600;color:#1a1a1a}
+.cal-popup-close{background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;line-height:1}
+.cal-popup-item{padding:10px 0;border-bottom:1px solid #f5f5f5}
+.cal-popup-item:last-child{border-bottom:none}
+/* Mobile cards */
+.card-list{display:none}
+.report-card{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:14px 14px 12px;margin-bottom:10px}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.card-ticker{font-size:14px;font-weight:700;color:#1a1a1a}
+.card-source-sm{font-size:11px;color:#999}
+.card-title{font-size:13px;color:#333;line-height:1.5;margin-bottom:10px}
+.card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card-date{font-size:11px;color:#aaa}
+.card-price{font-size:12px;font-weight:600;color:#1a1a1a;font-variant-numeric:tabular-nums}
+.card-dl{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;color:#1677ff;text-decoration:none;padding:5px 10px;border:1px solid #c7deff;border-radius:6px;background:#f0f7ff;white-space:nowrap}
+.pb-card{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:14px;margin-bottom:10px}
+.pb-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pb-card-ticker{font-size:18px;font-weight:800;color:#1a1a1a}
+.pb-card-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pb-meta-item{font-size:12px}
+.pb-meta-label{color:#aaa;font-size:11px}
+.pb-meta-value{font-weight:600;margin-top:1px}
+@media(max-width:640px){
+  .page{padding:12px}
+  .page-title{font-size:16px}
+  .tab-btn{padding:8px 12px;font-size:13px}
+  .toolbar,.pb-toolbar,.ev-toolbar{padding:10px;gap:8px}
+  .filter-group{width:calc(50% - 4px)}
+  .filter-group label{display:none}
+  .custom-select select{width:100%;min-width:0}
+  .btn-primary,.btn-outline{width:100%;text-align:center}
+  .toolbar-spacer{display:none}
+  .search-wrap-outer{width:100%}
+  .table-wrap{display:none}
+  .card-list{display:block}
+  .ticker-input-wrap{max-width:100%}
+  .consensus-pills{margin-left:0}
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .cal-grid{gap:3px}
+  .cal-day{min-height:55px;padding:4px}
 }
-@media (min-width: 641px) and (max-width: 900px) {
-  .source-col, thead th:nth-child(4), tbody td:nth-child(4) { display: none; }
+@media(min-width:641px) and (max-width:900px){
+  .source-col,thead th:nth-child(4),tbody td:nth-child(4){display:none}
 }
 </style>
 </head>
 <body>
 <div class="page">
   <div class="page-title">📊 Báo Cáo & Cổ Phiếu</div>
-  <div class="page-subtitle">Báo cáo phân tích · Tra cứu mã · Pullback · DIP · Buy · Sell</div>
+  <div class="page-subtitle">Báo cáo phân tích · Tra cứu mã · Tín hiệu · Sự kiện</div>
 
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('all')">🗂 Tất cả báo cáo</button>
     <button class="tab-btn" onclick="switchTab('ticker')">🔍 Tra cứu mã</button>
-    <button class="tab-btn" onclick="switchTab('pullback')">📉 Pullback</button>
-    <button class="tab-btn" onclick="switchTab('dip')">🎯 DIP</button>
-    <button class="tab-btn" onclick="switchTab('buy')">🟢 Buy</button>
-    <button class="tab-btn" onclick="switchTab('sell')">🔴 Sell</button>
+    <button class="tab-btn" onclick="switchTab('signal')">⚡ Tín hiệu</button>
+    <button class="tab-btn" onclick="switchTab('events')">📅 Sự kiện</button>
   </div>
 
-  <!-- ═══════ TAB 1 ═══════ -->
+  <!-- TAB 1: All reports -->
   <div class="tab-panel active" id="panel-all">
     <div class="toolbar">
-      <div class="filter-group">
-        <label>Loại</label>
-        <div class="custom-select"><select id="type-filter"><option value="">Tất cả</option><option value="stock">Cổ phiếu</option><option value="macro">Vĩ mô</option><option value="strategy">Chiến lược</option></select></div>
-      </div>
-      <div class="filter-group">
-        <label>Khuyến nghị</label>
-        <div class="custom-select"><select id="rec-filter"><option value="">Tất cả KN</option><option value="MUA">Mua</option><option value="KHẢ QUAN">Khả quan</option><option value="TRUNG LẬP">Trung lập</option><option value="KHÁC">Khác</option></select></div>
-      </div>
-      <div class="filter-group">
-        <label>Nguồn</label>
-        <div class="custom-select"><select id="source-filter"><option value="">Tất cả nguồn</option></select></div>
-      </div>
+      <div class="filter-group"><label>Loại</label><div class="custom-select"><select id="type-filter"><option value="">Tất cả</option><option value="stock">Cổ phiếu</option><option value="macro">Vĩ mô</option><option value="strategy">Chiến lược</option></select></div></div>
+      <div class="filter-group"><label>Khuyến nghị</label><div class="custom-select"><select id="rec-filter"><option value="">Tất cả KN</option><option value="MUA">Mua</option><option value="KHẢ QUAN">Khả quan</option><option value="TRUNG LẬP">Trung lập</option><option value="KHÁC">Khác</option></select></div></div>
+      <div class="filter-group"><label>Nguồn</label><div class="custom-select"><select id="source-filter"><option value="">Tất cả nguồn</option></select></div></div>
       <button class="btn-primary" onclick="applyFilters()">Áp dụng</button>
       <div class="toolbar-spacer"></div>
       <div class="search-wrap-outer" style="min-width:180px;max-width:240px;flex:1;">
@@ -221,808 +233,485 @@ tbody tr:hover { background: #fafbfc; }
     </div>
     <div class="result-count" id="result-count"></div>
     <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th class="date-cell sort-desc" onclick="toggleSort()">Ngày</th>
-          <th>Tiêu đề</th>
-          <th class="ticker-col">Mã</th>
-          <th class="source-col">Nguồn</th>
-          <th class="rec-col">Khuyến nghị</th>
-          <th class="price-col" style="text-align:right">Giá MT</th>
-          <th class="dl-col">Tải</th>
-        </tr></thead>
-        <tbody id="tbody"><tr class="state-row"><td colspan="7">Đang tải dữ liệu...</td></tr></tbody>
-      </table>
+      <table><thead><tr>
+        <th class="date-cell sort-desc" onclick="toggleSort()">Ngày</th>
+        <th>Tiêu đề</th><th class="ticker-col">Mã</th><th class="source-col">Nguồn</th>
+        <th class="rec-col">Khuyến nghị</th><th class="price-col" style="text-align:right">Giá MT</th><th class="dl-col">Tải</th>
+      </tr></thead>
+      <tbody id="tbody"><tr class="state-row"><td colspan="7">Đang tải...</td></tr></tbody></table>
     </div>
-    <div class="card-list" id="card-list"><div style="text-align:center;padding:40px 0;color:#bbb;">Đang tải...</div></div>
+    <div class="card-list" id="card-list"></div>
   </div>
 
-  <!-- ═══════ TAB 2: Tra cứu ═══════ -->
+  <!-- TAB 2: Ticker search -->
   <div class="tab-panel" id="panel-ticker">
     <div class="ticker-search-box">
       <div class="ticker-input-wrap">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" id="ticker-input" placeholder="Nhập mã (VD: ACB)" maxlength="10"
-          onkeydown="if(event.key==='Enter')searchTicker()" oninput="this.value=this.value.toUpperCase()">
+        <input type="text" id="ticker-input" placeholder="Nhập mã (VD: ACB)" maxlength="10" onkeydown="if(event.key==='Enter')searchTicker()" oninput="this.value=this.value.toUpperCase()">
       </div>
       <button class="btn-primary" onclick="searchTicker()">Tìm báo cáo</button>
       <span class="ticker-hint" id="ticker-hint">Nhập mã và nhấn Tìm</span>
       <div class="toolbar-spacer"></div>
-      <div class="history-wrap" id="history-wrap" style="display:none;">
-        <span class="history-label">Gần đây:</span>
-        <div id="history-chips"></div>
-      </div>
+      <div class="history-wrap" id="history-wrap" style="display:none;"><span class="history-label">Gần đây:</span><div id="history-chips"></div></div>
     </div>
-
     <div id="ticker-consensus" style="display:none;">
       <div class="consensus-bar" id="consensus-bar"></div>
       <div class="stats-bar" id="stats-bar"></div>
       <div class="ticker-filter-row">
-        <div class="custom-select">
-          <select id="ticker-src-filter" onchange="filterTickerTable()">
-            <option value="">Tất cả CTCK</option>
-          </select>
-        </div>
-        <div class="custom-select">
-          <select id="ticker-rec-filter" onchange="filterTickerTable()">
-            <option value="">Tất cả KN</option>
-            <option value="MUA">Mua</option>
-            <option value="KHẢ QUAN">Khả quan</option>
-            <option value="TRUNG LẬP">Trung lập</option>
-          </select>
-        </div>
+        <div class="custom-select"><select id="ticker-src-filter" onchange="filterTickerTable()"><option value="">Tất cả CTCK</option></select></div>
+        <div class="custom-select"><select id="ticker-rec-filter" onchange="filterTickerTable()"><option value="">Tất cả KN</option><option value="MUA">Mua</option><option value="KHẢ QUAN">Khả quan</option><option value="TRUNG LẬP">Trung lập</option></select></div>
         <span class="result-count" id="ticker-result-count" style="margin:0;"></span>
       </div>
     </div>
-
     <div class="table-wrap" id="ticker-table-wrap" style="display:none;">
-      <table>
-        <thead><tr>
-          <th class="date-cell sort-desc" onclick="toggleTickerSort()">Ngày</th>
-          <th>Tiêu đề</th>
-          <th class="source-col">CTCK</th>
-          <th class="rec-col">Khuyến nghị</th>
-          <th class="price-col" style="text-align:right">Giá MT</th>
-          <th class="dl-col">Tải</th>
-        </tr></thead>
-        <tbody id="ticker-tbody"></tbody>
-      </table>
+      <table><thead><tr>
+        <th class="date-cell sort-desc" onclick="toggleTickerSort()">Ngày</th>
+        <th>Tiêu đề</th><th class="source-col">CTCK</th><th class="rec-col">Khuyến nghị</th>
+        <th class="price-col" style="text-align:right">Giá MT</th><th class="dl-col">Tải</th>
+      </tr></thead>
+      <tbody id="ticker-tbody"></tbody></table>
     </div>
     <div class="card-list" id="ticker-card-list"></div>
   </div>
 
-
-  <!-- ═══════ TAB 4: DIP ═══════ -->
-  <div class="tab-panel" id="panel-dip">
+  <!-- TAB 3: Tín hiệu -->
+  <div class="tab-panel" id="panel-signal">
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+      <button id="sig-btn-buy"      class="sig-btn active" onclick="switchSignal('buy')">🟢 Buy</button>
+      <button id="sig-btn-sell"     class="sig-btn"        onclick="switchSignal('sell')">🔴 Sell</button>
+      <button id="sig-btn-pullback" class="sig-btn"        onclick="switchSignal('pullback')">📉 Pullback</button>
+      <button id="sig-btn-dip"      class="sig-btn"        onclick="switchSignal('dip')">🎯 DIP</button>
+    </div>
     <div class="pb-toolbar">
-      <span class="pb-label">Vốn hóa tối thiểu (tỷ):</span>
-      <input type="number" class="pb-input" id="dip-vonhoa" value="3000" min="0" step="500">
-      <span class="pb-label">KLGD TB tối thiểu (tỷ):</span>
-      <input type="number" class="pb-input" id="dip-tbgtdd" value="5" min="0" step="1">
+      <span class="pb-label">Vốn hóa (tỷ):</span>
+      <input type="number" class="pb-input" id="sig-vonhoa" value="3000" min="0" step="500">
+      <span class="pb-label">KLGD TB (tỷ):</span>
+      <input type="number" class="pb-input" id="sig-tbgtdd" value="5" min="0" step="1">
+      <span class="pb-label" id="sig-label-roe" style="display:none;">ROE tối thiểu:</span>
+      <input type="number" class="pb-input" id="sig-roe" value="0.1" min="0" step="0.05" style="width:70px;display:none;">
       <span class="pb-label">Ngày:</span>
-      <input type="date" class="pb-date" id="dip-date">
+      <input type="date" class="pb-date" id="sig-date">
       <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
-        <input type="checkbox" id="dip-alltime" onchange="toggleDipDate(this)" style="cursor:pointer;"> All time
+        <input type="checkbox" id="sig-alltime" onchange="toggleSigDate(this)" style="cursor:pointer;"> All time
       </label>
-      <input type="hidden" id="dip-count" value="500">
-      <button class="btn-primary" onclick="loadDip()">Lọc</button>
-      <span class="pb-count" id="dip-count-label"></span>
+      <button class="btn-primary" onclick="loadSignal()">Lọc</button>
+      <span class="pb-count" id="sig-count-label"></span>
     </div>
-    <div class="table-wrap" id="dip-table-wrap">
-      <table>
-        <thead><tr>
-          <th style="width:90px;">Ngày</th>
-          <th style="width:80px;">Mã</th>
-          <th style="width:60px;">Rating</th>
-          <th style="width:90px;text-align:right;">Giá</th>
-          <th style="width:80px;text-align:right;">% ngày</th>
-          <th style="width:110px;">Tín hiệu DIP</th>
-          <th style="width:110px;text-align:right;">Giá DIP</th>
-          <th style="width:100px;text-align:right;">Khối lượng</th>
-          <th style="width:80px;text-align:right;">% KL</th>
-          <th style="width:80px;text-align:right;">PC</th>
-          <th style="width:80px;text-align:right;">PF</th>
-        </tr></thead>
-        <tbody id="dip-tbody"><tr class="state-row"><td colspan="11">Nhấn "Lọc" để tải danh sách DIP</td></tr></tbody>
-      </table>
+    <div id="sig-panel-buy">
+      <div class="table-wrap"><table><thead><tr>
+        <th style="width:90px;">Ngày</th><th style="width:80px;">Mã</th><th style="width:60px;">Rating</th>
+        <th style="width:90px;text-align:right;">Giá TH</th><th style="width:90px;text-align:right;">Giá HT</th>
+        <th style="width:80px;text-align:right;">% ngày</th><th style="width:110px;">Tín hiệu</th>
+        <th style="width:105px;text-align:right;">Đề xuất 1</th><th style="width:105px;text-align:right;">Đề xuất 2</th>
+        <th style="width:110px;text-align:right;">Khối lượng</th><th style="width:80px;text-align:right;">% KL</th>
+      </tr></thead><tbody id="sig-buy-tbody"><tr class="state-row"><td colspan="11">Chọn loại tín hiệu và nhấn Lọc</td></tr></tbody></table></div>
+      <div class="card-list" id="sig-buy-cards"></div>
     </div>
-    <div class="card-list" id="dip-card-list"></div>
+    <div id="sig-panel-sell" style="display:none;">
+      <div class="table-wrap"><table><thead><tr>
+        <th style="width:90px;">Ngày</th><th style="width:80px;">Mã</th><th style="width:60px;">Rating</th>
+        <th style="width:90px;text-align:right;">Giá TH</th><th style="width:90px;text-align:right;">Giá HT</th>
+        <th style="width:80px;text-align:right;">% ngày</th><th style="width:110px;">Tín hiệu</th>
+        <th style="width:105px;text-align:right;">Đề xuất 1</th><th style="width:105px;text-align:right;">Đề xuất 2</th>
+        <th style="width:110px;text-align:right;">Khối lượng</th><th style="width:80px;text-align:right;">% KL</th>
+      </tr></thead><tbody id="sig-sell-tbody"><tr class="state-row"><td colspan="11">Chọn loại tín hiệu và nhấn Lọc</td></tr></tbody></table></div>
+      <div class="card-list" id="sig-sell-cards"></div>
+    </div>
+    <div id="sig-panel-pullback" style="display:none;">
+      <div class="table-wrap"><table><thead><tr>
+        <th style="width:90px;">Ngày</th><th style="width:80px;">Mã</th><th style="width:60px;">Rating</th>
+        <th style="width:90px;text-align:right;">Giá</th><th style="width:80px;text-align:right;">% ngày</th>
+        <th style="width:100px;">Tín hiệu</th><th style="width:105px;text-align:right;">Đề xuất 1</th>
+        <th style="width:105px;text-align:right;">Đề xuất 2</th><th style="width:110px;text-align:right;">Khối lượng</th>
+        <th style="width:80px;text-align:right;">% KL</th><th style="width:90px;text-align:right;">Pullback 10</th>
+      </tr></thead><tbody id="sig-pb-tbody"><tr class="state-row"><td colspan="11">Chọn loại tín hiệu và nhấn Lọc</td></tr></tbody></table></div>
+      <div class="card-list" id="sig-pb-cards"></div>
+    </div>
+    <div id="sig-panel-dip" style="display:none;">
+      <div class="table-wrap"><table><thead><tr>
+        <th style="width:90px;">Ngày</th><th style="width:80px;">Mã</th><th style="width:60px;">Rating</th>
+        <th style="width:90px;text-align:right;">Giá</th><th style="width:80px;text-align:right;">% ngày</th>
+        <th style="width:110px;">Tín hiệu DIP</th><th style="width:110px;text-align:right;">Giá DIP</th>
+        <th style="width:110px;text-align:right;">Khối lượng</th><th style="width:80px;text-align:right;">% KL</th>
+        <th style="width:80px;text-align:right;">PC</th><th style="width:80px;text-align:right;">PF</th>
+      </tr></thead><tbody id="sig-dip-tbody"><tr class="state-row"><td colspan="11">Chọn loại tín hiệu và nhấn Lọc</td></tr></tbody></table></div>
+      <div class="card-list" id="sig-dip-cards"></div>
+    </div>
   </div>
 
-  <!-- ═══════ TAB 3: Pullback ═══════ -->
-  <div class="tab-panel" id="panel-pullback">
-    <div class="pb-toolbar">
-      <span class="pb-label">Vốn hóa tối thiểu (tỷ):</span>
-      <input type="number" class="pb-input" id="pb-vonhoa" value="3000" min="0" step="500">
-      <span class="pb-label">KLGD TB tối thiểu (tỷ):</span>
-      <input type="number" class="pb-input" id="pb-tbgtdd" value="5" min="0" step="1">
-      <span class="pb-label">Ngày:</span>
-      <input type="date" class="pb-date" id="pb-date">
-      <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
-        <input type="checkbox" id="pb-alltime" onchange="togglePbDate(this)" style="cursor:pointer;"> All time
-      </label>
-      <input type="hidden" id="pb-count" value="500">
-      <button class="btn-primary" onclick="loadPullback()">Lọc</button>
-      <span class="pb-count" id="pb-count-label"></span>
+  <!-- TAB 4: Sự kiện -->
+  <div class="tab-panel" id="panel-events">
+    <div class="ev-toolbar">
+      <span class="pb-label">Từ ngày:</span><input type="date" class="pb-date" id="ev-from">
+      <span class="pb-label">Đến ngày:</span><input type="date" class="pb-date" id="ev-to">
+      <div class="custom-select"><select id="ev-type"><option value="ISS,DIV">Tất cả</option><option value="DIV">Cổ tức</option><option value="ISS">Phát hành thêm</option></select></div>
+      <div class="search-wrap" style="max-width:180px;flex:1;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="ev-search" placeholder="Tìm mã..." oninput="filterEvents()">
+      </div>
+      <button class="btn-primary" onclick="loadEvents()">Tải</button>
+      <div style="display:flex;gap:4px;">
+        <button id="ev-view-table" class="btn-primary" onclick="setEvView('table')" style="padding:7px 10px;">☰</button>
+        <button id="ev-view-cal"   class="btn-outline" onclick="setEvView('cal')"   style="padding:7px 10px;">📅</button>
+      </div>
+      <span class="pb-count" id="ev-count-label"></span>
     </div>
-
-    <div class="table-wrap" id="pb-table-wrap">
-      <table>
-        <thead><tr>
-          <th style="width:90px;">Ngày</th>
-          <th style="width:80px;">Mã</th>
-          <th style="width:60px;">Rating</th>
-          <th style="width:90px;text-align:right;">Giá</th>
-          <th style="width:80px;text-align:right;">% ngày</th>
-          <th style="width:100px;">Tín hiệu</th>
-          <th style="width:100px;text-align:right;">Giá đề xuất 1</th>
-          <th style="width:100px;text-align:right;">Giá đề xuất 2</th>
-          <th style="width:100px;text-align:right;">Khối lượng</th>
-          <th style="width:80px;text-align:right;">% KL</th>
-          <th style="width:90px;text-align:right;">Pullback 10</th>
-        </tr></thead>
-        <tbody id="pb-tbody"><tr class="state-row"><td colspan="11">Nhấn "Lọc" để tải danh sách pullback</td></tr></tbody>
-      </table>
+    <div class="table-wrap" id="ev-table-wrap">
+      <table><thead><tr>
+        <th style="width:70px;">Mã</th>
+        <th style="width:120px;" id="ev-th-type" onclick="sortEvents('eventCode')">Loại</th>
+        <th style="cursor:default;">Nội dung</th>
+        <th style="width:105px;" id="ev-th-pub" class="sort-desc" onclick="sortEvents('publicDate')">Ngày TB</th>
+        <th style="width:105px;" id="ev-th-gdkhq" onclick="sortEvents('displayDate1')">Ngày GDKHQ</th>
+        <th style="width:110px;" id="ev-th-pay" onclick="sortEvents('payoutDate')">Ngày thực hiện</th>
+        <th style="width:110px;text-align:right;cursor:default;">Giá trị/CP</th>
+      </tr></thead>
+      <tbody id="ev-tbody"><tr class="state-row"><td colspan="7">Nhấn "Tải" để xem sự kiện</td></tr></tbody></table>
     </div>
-    <div class="card-list" id="pb-card-list"></div>
+    <div class="card-list" id="ev-card-list"></div>
+    <div id="ev-calendar" style="display:none;"></div>
   </div>
-  <!-- ═══════ TAB 5: BUY ═══════ -->
-  <div class="tab-panel" id="panel-buy">
-    <div class="pb-toolbar">
-      <span class="pb-label">Vốn hóa tối thiểu (tỷ):</span>
-      <input type="number" class="pb-input" id="buy-vonhoa" value="3000" min="0" step="500">
-      <span class="pb-label">KLGD TB tối thiểu (tỷ):</span>
-      <input type="number" class="pb-input" id="buy-tbgtdd" value="5" min="0" step="1">
-      <span class="pb-label">Ngày:</span>
-      <input type="date" class="pb-date" id="buy-date">
-      <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
-        <input type="checkbox" id="buy-alltime" onchange="toggleBuyDate(this)" style="cursor:pointer;"> All time
-      </label>
-      <input type="hidden" id="buy-count" value="500">
-      <button class="btn-primary" onclick="loadBuy()">Lọc</button>
-      <span class="pb-count" id="buy-count-label"></span>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th style="width:90px;">Ngày</th>
-          <th style="width:80px;">Mã</th>
-          <th style="width:60px;">Rating</th>
-          <th style="width:90px;text-align:right;">Giá TH</th>
-          <th style="width:90px;text-align:right;">Giá hiện tại</th>
-          <th style="width:80px;text-align:right;">% ngày</th>
-          <th style="width:110px;">Tín hiệu</th>
-          <th style="width:105px;text-align:right;">Đề xuất 1</th>
-          <th style="width:105px;text-align:right;">Đề xuất 2</th>
-          <th style="width:110px;text-align:right;">Khối lượng</th>
-          <th style="width:80px;text-align:right;">% KL</th>
-        </tr></thead>
-        <tbody id="buy-tbody"><tr class="state-row"><td colspan="11">Nhấn "Lọc" để tải tín hiệu BUY</td></tr></tbody>
-      </table>
-    </div>
-    <div class="card-list" id="buy-card-list"></div>
-  </div>
-
-  <!-- ═══════ TAB 6: SELL ═══════ -->
-  <div class="tab-panel" id="panel-sell">
-    <div class="pb-toolbar">
-      <span class="pb-label">Vốn hóa tối thiểu (tỷ):</span>
-      <input type="number" class="pb-input" id="sell-vonhoa" value="4000" min="0" step="500">
-      <span class="pb-label">KLGD TB tối thiểu (tỷ):</span>
-      <input type="number" class="pb-input" id="sell-tbgtdd" value="6" min="0" step="1">
-      <span class="pb-label">ROE tối thiểu:</span>
-      <input type="number" class="pb-input" id="sell-roe" value="0.1" min="0" step="0.05" style="width:70px;">
-      <span class="pb-label">Ngày:</span>
-      <input type="date" class="pb-date" id="sell-date">
-      <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
-        <input type="checkbox" id="sell-alltime" onchange="toggleSellDate(this)" style="cursor:pointer;"> All time
-      </label>
-      <input type="hidden" id="sell-count" value="500">
-      <button class="btn-primary" onclick="loadSell()">Lọc</button>
-      <span class="pb-count" id="sell-count-label"></span>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th style="width:90px;">Ngày</th>
-          <th style="width:80px;">Mã</th>
-          <th style="width:60px;">Rating</th>
-          <th style="width:90px;text-align:right;">Giá TH</th>
-          <th style="width:90px;text-align:right;">Giá hiện tại</th>
-          <th style="width:80px;text-align:right;">% ngày</th>
-          <th style="width:110px;">Tín hiệu</th>
-          <th style="width:105px;text-align:right;">Đề xuất 1</th>
-          <th style="width:105px;text-align:right;">Đề xuất 2</th>
-          <th style="width:110px;text-align:right;">Khối lượng</th>
-          <th style="width:80px;text-align:right;">% KL</th>
-        </tr></thead>
-        <tbody id="sell-tbody"><tr class="state-row"><td colspan="11">Nhấn "Lọc" để tải tín hiệu SELL</td></tr></tbody>
-      </table>
-    </div>
-    <div class="card-list" id="sell-card-list"></div>
-  </div>
-
 </div>
 
 <script>
 const API_ALL    = "https://script.google.com/macros/s/AKfycbzfF-Nj2i8zKA4kkP1GHijfv1ZQp1KhBxE6OVCL1tWX3KaEbQhrnEdJnOFsjyGdAreE8w/exec";
 const API_TICKER = "https://api2.simplize.vn/api/company/analysis-report/list";
 const API_PB     = "https://dcs.finbox.vn/data/filter";
+const EVENTS_API = "https://script.google.com/macros/s/AKfycbwBYNgqQg26-xO5d-kt_rJ4IeNbgyXIuV6BhI_D90dS5kh_Vq5U4AsQJ7G_tnTrS4hHWQ/exec?sheet=Sheet2";
 const BEARER     = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob2FpYWsyMDA0QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJ1aWQiOjE5MTcyMCwic2lkIjoiZWQ3MDEzNDItMDgyNC00ZjA0LWFjOTMtZGM4MDFhYTVhZTMyIiwicGUiOmZhbHNlLCJleHAiOjE3Nzk1ODY2NTd9.c4h5NAX82cPupz5YJ3sVbvYu-ety6lwZzbLZX6iTO5ybk41N-C-Se5_BoZethWdmXytBG1YpBzq_3SXSv1kkRA";
 const USER_ID    = "68f76bc6b6950c601846148c";
-
-let all=[], filtered=[], sortDir="desc";
-let tickerRaw=[], tickerFiltered=[], tickerSortDir="desc";
-let searchHistory = [];
-try { searchHistory = JSON.parse(localStorage.getItem("spl_history")||"[]"); } catch(e){}
 const NOW = Date.now(), WEEK_MS = 7*86400000;
 
-// Set default date for pullback = today
+// Init dates
 (function(){
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth()+1).padStart(2,"0");
-  const day = String(d.getDate()).padStart(2,"0");
-  document.getElementById("pb-date").value = `${y}-${m}-${day}`;
-  document.getElementById("dip-date").value = `${y}-${m}-${day}`;
-  document.getElementById("buy-date").value = `${y}-${m}-${day}`;
-  document.getElementById("sell-date").value = `${y}-${m}-${day}`;
+  var d=new Date(), y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0");
+  var today = y+"-"+m+"-"+day;
+  document.getElementById("sig-date").value = today;
+  var evTo=new Date(), evFrom=new Date(); evFrom.setDate(evFrom.getDate()-30);
+  function fi(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+  document.getElementById("ev-from").value=fi(evFrom);
+  document.getElementById("ev-to").value=fi(evTo);
 })();
 
-/* ── Tabs ── */
-function switchTab(name) {
-  ["all","ticker","pullback","dip","buy","sell"].forEach((n,i)=>{
-    document.querySelectorAll(".tab-btn")[i].classList.toggle("active",n===name);
-    document.getElementById("panel-"+n).classList.toggle("active",n===name);
+/* ── Shared helpers ── */
+function switchTab(n){
+  ["all","ticker","signal","events"].forEach(function(t,i){
+    document.querySelectorAll(".tab-btn")[i].classList.toggle("active",t===n);
+    document.getElementById("panel-"+t).classList.toggle("active",t===n);
   });
 }
+function tickerType(t){var s=String(t||"");if(s==="BAO_CAO_VI_MO")return"macro";if(s==="BAO_CAO_CHIEN_LUOC")return"strategy";if(s.startsWith("BAO_CAO"))return"other";return"stock";}
+function parseDate(r){var raw=r.issueDate||r.issueDateTimeA||r.reportDate||"";var m=String(raw).match(/(\d{4})-(\d{2})-(\d{2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);return new Date(0);}
+function formatDate(r){var d=parseDate(r);if(!d||d.getTime()===0)return"—";return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear();}
+function isNew(r){return(NOW-parseDate(r).getTime())<=WEEK_MS;}
+function recNorm(v){if(!v)return"";var u=v.toUpperCase();if(u==="BUY"||u==="MUA")return"MUA";if(["KHẢ QUAN","OUTPERFORM","OVERWEIGHT"].includes(u))return"KHẢ QUAN";if(["TRUNG LẬP","NEUTRAL","HOLD"].includes(u))return"TRUNG LẬP";return v;}
+function recClass(v){var n=recNorm(v);if(n==="MUA")return"rec rec-buy";if(n==="KHẢ QUAN")return"rec rec-positive";if(n==="TRUNG LẬP")return"rec rec-neutral";return"rec rec-other";}
+function priceOf(r){return r.targetPrice||r.target_price||r.priceTarget||"";}
+function linkOf(r){return r.attachedLink||r.reportUrl||r.url||r.pdfUrl||"#";}
+function sourceOf(r){return r.source||r.firm||r.analyst||"";}
+function titleOf(r){return r.title||r.reportTitle||r.name||"";}
+function fmtPrice(p){return p?Number(p).toLocaleString("vi-VN"):"";}
+function sortByDate(data,dir){return[...data].sort(function(a,b){return dir==="desc"?parseDate(b)-parseDate(a):parseDate(a)-parseDate(b);});}
+function dlBtn(link){return"<a class='btn-dl' href='"+link+"' target='_blank'><svg width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/><polyline points='7 10 12 15 17 10'/><line x1='12' y1='15' x2='12' y2='3'/></svg></a>";}
+function tickerCellHtml(r){var t=tickerType(r.ticker);if(t==="macro")return"<span class='tag-macro'>Vĩ mô</span>";if(t==="strategy")return"<span class='tag-strategy'>Chiến lược</span>";if(t==="other")return"<span class='tag-macro'>"+r.ticker+"</span>";return"<div class='ticker-cell'><span class='ticker-label'>"+r.ticker+"</span></div>";}
 
-/* ── Helpers ── */
-function tickerType(t){ const s=String(t||""); if(s==="BAO_CAO_VI_MO")return"macro"; if(s==="BAO_CAO_CHIEN_LUOC")return"strategy"; if(s.startsWith("BAO_CAO"))return"other"; return"stock"; }
-function parseDate(r){ const raw=r.issueDate||r.issueDateTimeA||r.reportDate||""; const m=String(raw).match(/(\d{4})-(\d{2})-(\d{2})/); if(m)return new Date(+m[1],+m[2]-1,+m[3]); const m2=String(raw).match(/(\d{2})\/(\d{2})\/(\d{4})/); if(m2)return new Date(+m2[3],+m2[2]-1,+m2[1]); return new Date(0); }
-function formatDate(r){ const d=parseDate(r); if(!d||d.getTime()===0)return"—"; return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear(); }
-function isNew(r){ return(NOW-parseDate(r).getTime())<=WEEK_MS; }
-function recNorm(v){ if(!v)return""; const u=v.toUpperCase(); if(u==="BUY"||u==="MUA")return"MUA"; if(["KHẢ QUAN","OUTPERFORM","OVERWEIGHT","KHA QUAN"].includes(u))return"KHẢ QUAN"; if(["TRUNG LẬP","NEUTRAL","HOLD","TRUNG LAP"].includes(u))return"TRUNG LẬP"; return v; }
-function recClass(v){ const n=recNorm(v); if(n==="MUA")return"rec rec-buy"; if(n==="KHẢ QUAN")return"rec rec-positive"; if(n==="TRUNG LẬP")return"rec rec-neutral"; return"rec rec-other"; }
-function priceOf(r){ return r.targetPrice||r.target_price||r.priceTarget||""; }
-function linkOf(r){ return r.attachedLink||r.reportUrl||r.url||r.pdfUrl||"#"; }
-function sourceOf(r){ return r.source||r.firm||r.analyst||""; }
-function titleOf(r){ return r.title||r.reportTitle||r.name||""; }
-function fmtPrice(p){ return p?Number(p).toLocaleString("vi-VN"):""; }
-function sortByDate(data,dir){ return[...data].sort((a,b)=>dir==="desc"?parseDate(b)-parseDate(a):parseDate(a)-parseDate(b)); }
-function dlBtn(link){ return`<a class="btn-dl" href="${link}" target="_blank"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>`; }
-function tickerCellHtml(r){ const t=tickerType(r.ticker); if(t==="macro")return`<span class="tag-macro">Vĩ mô</span>`; if(t==="strategy")return`<span class="tag-strategy">Chiến lược</span>`; if(t==="other")return`<span class="tag-macro">${r.ticker}</span>`; return`<div class="ticker-cell"><span class="ticker-label">${r.ticker}</span></div>`; }
+/* ── Finbox helpers ── */
+function ratingClass(r){var m={"A+":"r-aplus","A":"r-a","A-":"r-aminus","B+":"r-bplus","B":"r-b","B-":"r-bminus","C+":"r-cplus","C":"r-c","C-":"r-cminus"};return m[r]||"r-c";}
+function pctCell(v,isRatio){if(v===undefined||v===null||v==="")return"<span style='color:#ccc'>–</span>";var n=Number(v);if(isRatio)n=n*100;var cls=n>0.05?"price-up":n<-0.05?"price-down":"price-flat";return"<span class='"+cls+"'>"+(n>0?"+":"")+n.toFixed(2)+"%</span>";}
+function priceCell(v){if(!v&&v!==0)return"<span style='color:#ccc'>–</span>";return Number(v).toLocaleString("vi-VN");}
+function signalCell(s,w){if(s&&s!=="NONE"&&s!=="")return"<span class='signal-buy'>"+s+"</span>";if(w&&w!=="NONE"&&w!=="")return"<span class='signal-wait'>"+w+"</span>";return"<span class='signal-none'>–</span>";}
+function buySellSignalCell(s){if(!s||s===null)return"<span class='signal-none'>–</span>";var u=String(s).toUpperCase();if(u==="BIG BUY")return"<span class='signal-big-buy'>"+s+"</span>";if(u==="SMALL BUY")return"<span class='signal-small-buy'>"+s+"</span>";if(u==="BIG SELL")return"<span class='signal-big-sell'>"+s+"</span>";if(u==="SMALL SELL")return"<span class='signal-small-sell'>"+s+"</span>";return"<span class='signal-wait'>"+s+"</span>";}
+function dipSignalCell(s){if(!s||s===null)return"<span class='signal-none'>–</span>";var u=String(s).toUpperCase();if(u.includes("ĐÁY NGẮN"))return"<span class='signal-dip-day'>"+s+"</span>";if(u.includes("ĐÁY TRUNG"))return"<span class='signal-dip-mid'>"+s+"</span>";if(u.includes("SMALL DIP"))return"<span class='signal-dip-sm'>"+s+"</span>";if(u.includes("BIG DIP"))return"<span class='signal-dip-big'>"+s+"</span>";return"<span class='signal-wait'>"+s+"</span>";}
+function fmtRowDate(d){if(!d)return"–";var s=String(d);if(s.length===8)return s.slice(6)+"/"+s.slice(4,6)+"/"+s.slice(0,4);return s;}
 
-/* ═══════ TAB 1 ═══════ */
+/* ══════════ TAB 1 ══════════ */
+var all=[],filtered=[],sortDir="desc";
 function renderTable(data){
-  const tb=document.getElementById("tbody");
-  if(!data.length){tb.innerHTML=`<tr class="state-row"><td colspan="7">Không tìm thấy báo cáo</td></tr>`;return;}
-  tb.innerHTML=data.map(r=>`<tr>
-    <td class="date-cell">${formatDate(r)}</td>
-    <td class="title-cell">${r.title||""}${isNew(r)?'<span class="badge-new">MỚI</span>':""}</td>
-    <td>${tickerCellHtml(r)}</td>
-    <td class="source-col">${r.source||""}</td>
-    <td><span class="${recClass(r.recommend)}">${recNorm(r.recommend)||"–"}</span></td>
-    <td class="price-col">${r.targetPrice?fmtPrice(r.targetPrice):'<span class="price-empty">–</span>'}</td>
-    <td class="dl-col">${dlBtn(r.attachedLink)}</td>
-  </tr>`).join("");
+  var tb=document.getElementById("tbody");
+  if(!data.length){tb.innerHTML="<tr class='state-row'><td colspan='7'>Không tìm thấy</td></tr>";return;}
+  tb.innerHTML=data.map(function(r){return"<tr><td class='date-cell'>"+formatDate(r)+(isNew(r)?"<span class='badge-new'>MỚI</span>":"")+"</td><td class='title-cell'>"+r.title+"</td><td>"+tickerCellHtml(r)+"</td><td class='source-col'>"+r.source+"</td><td><span class='"+recClass(r.recommend)+"'>"+recNorm(r.recommend||"")+"</span></td><td class='price-col'>"+(r.targetPrice?fmtPrice(r.targetPrice):"<span class='price-empty'>–</span>")+"</td><td class='dl-col'>"+dlBtn(r.attachedLink)+"</td></tr>";}).join("");
 }
 function renderCards1(data){
-  const list=document.getElementById("card-list");
-  if(!data.length){list.innerHTML=`<div style="text-align:center;padding:40px 0;color:#bbb;">Không tìm thấy</div>`;return;}
-  list.innerHTML=data.map(r=>{
-    const t=tickerType(r.ticker);
-    const tb=t==="stock"?`<div class="card-ticker-wrap"><div><div class="card-ticker">${r.ticker}</div><div class="card-source-sm">${r.source||""}</div></div></div>`:`<div class="card-ticker-wrap"><span class="${t==="strategy"?"tag-strategy":"tag-macro"}">${t==="macro"?"Vĩ mô":"Chiến lược"}</span><div class="card-source-sm" style="margin-left:6px;">${r.source||""}</div></div>`;
-    return`<div class="report-card"><div class="card-top">${tb}<div>${r.recommend?`<span class="${recClass(r.recommend)}">${recNorm(r.recommend)}</span>`:""}</div></div><div class="card-title">${r.title||""}${isNew(r)?'<span class="badge-new">MỚI</span>':""}</div><div class="card-footer"><div class="card-meta"><span class="card-date">${formatDate(r)}</span>${r.targetPrice?`<span class="card-price">${fmtPrice(r.targetPrice)} ₫</span>`:""}</div><a class="card-dl" href="${r.attachedLink||"#"}" target="_blank">⬇ Tải</a></div></div>`;
-  }).join("");
+  var list=document.getElementById("card-list");
+  if(!data.length){list.innerHTML="<div style='text-align:center;padding:40px 0;color:#bbb;'>Không tìm thấy</div>";return;}
+  list.innerHTML=data.map(function(r){var t=tickerType(r.ticker);var tb=t==="stock"?"<div><div class='card-ticker'>"+r.ticker+"</div><div class='card-source-sm'>"+r.source+"</div></div>":"<span class='"+(t==="strategy"?"tag-strategy":"tag-macro")+"'>"+(t==="macro"?"Vĩ mô":"Chiến lược")+"</span>";return"<div class='report-card'><div class='card-top'><div class='ticker-cell'>"+tb+"</div><div>"+(r.recommend?"<span class='"+recClass(r.recommend)+"'>"+recNorm(r.recommend)+"</span>":"")+"</div></div><div class='card-title'>"+r.title+(isNew(r)?"<span class='badge-new'>MỚI</span>":"")+"</div><div class='card-footer'><div class='card-meta'><span class='card-date'>"+formatDate(r)+"</span>"+(r.targetPrice?"<span class='card-price'>"+fmtPrice(r.targetPrice)+" ₫</span>":"")+"</div><a class='card-dl' href='"+(r.attachedLink||"#")+"' target='_blank'>⬇ Tải</a></div></div>";}).join("");
 }
-function render1(data){ document.getElementById("result-count").textContent=`Hiển thị ${data.length} báo cáo`; renderTable(data); renderCards1(data); }
-function toggleSort(){ sortDir=sortDir==="desc"?"asc":"desc"; document.querySelector("#panel-all thead th.date-cell").className="date-cell sort-"+sortDir; applyFilters(); }
+function render1(data){document.getElementById("result-count").textContent="Hiển thị "+data.length+" báo cáo";renderTable(data);renderCards1(data);}
+function toggleSort(){sortDir=sortDir==="desc"?"asc":"desc";document.querySelector("#panel-all thead th.date-cell").className="date-cell sort-"+sortDir;applyFilters();}
 function applyFilters(){
-  const kw=document.getElementById("search").value.toLowerCase().trim();
-  const typ=document.getElementById("type-filter").value;
-  const rec=document.getElementById("rec-filter").value;
-  const src=document.getElementById("source-filter").value;
-  filtered=all.filter(r=>{
-    const mk=!kw||String(r.ticker||"").toLowerCase().includes(kw)||String(r.title||"").toLowerCase().includes(kw);
-    const mt=!typ||tickerType(r.ticker)===typ;
-    const mr=!rec||(rec==="KHÁC"?!["MUA","KHẢ QUAN","TRUNG LẬP"].includes(r.recommend):r.recommend===rec);
-    const ms=!src||r.source===src;
-    return mk&&mt&&mr&&ms;
+  var kw=document.getElementById("search").value.toLowerCase().trim();
+  var typ=document.getElementById("type-filter").value;
+  var rec=document.getElementById("rec-filter").value;
+  var src=document.getElementById("source-filter").value;
+  filtered=all.filter(function(r){
+    return(!kw||String(r.ticker||"").toLowerCase().includes(kw)||String(r.title||"").toLowerCase().includes(kw))&&
+           (!typ||tickerType(r.ticker)===typ)&&
+           (!rec||(rec==="KHÁC"?!["MUA","KHẢ QUAN","TRUNG LẬP"].includes(r.recommend):r.recommend===rec))&&
+           (!src||r.source===src);
   });
   render1(sortByDate(filtered,sortDir));
 }
 document.getElementById("search").addEventListener("input",applyFilters);
-function populateSources(data){ const sel=document.getElementById("source-filter"); [...new Set(data.map(r=>r.source).filter(Boolean))].sort().forEach(s=>{const o=document.createElement("option");o.value=s;o.textContent=s;sel.appendChild(o);}); }
-fetch(API_ALL).then(r=>r.json()).then(data=>{ all=data; populateSources(all); filtered=all; render1(sortByDate(filtered,sortDir)); }).catch(()=>{ document.getElementById("tbody").innerHTML=`<tr class="state-row"><td colspan="7">Không thể tải dữ liệu.</td></tr>`; });
+function populateSources(data){var sel=document.getElementById("source-filter");[...new Set(data.map(function(r){return r.source;}).filter(Boolean))].sort().forEach(function(s){var o=document.createElement("option");o.value=s;o.textContent=s;sel.appendChild(o);});}
+fetch(API_ALL).then(function(r){return r.json();}).then(function(data){all=data;populateSources(all);filtered=all;render1(sortByDate(filtered,sortDir));}).catch(function(){document.getElementById("tbody").innerHTML="<tr class='state-row'><td colspan='7'>Không thể tải dữ liệu.</td></tr>";});
 
-/* ═══════ TAB 2 ═══════ */
-function saveHistory(t){ searchHistory=[t,...searchHistory.filter(h=>h!==t)].slice(0,6); try{localStorage.setItem("spl_history",JSON.stringify(searchHistory));}catch(e){} renderHistory(); }
-function renderHistory(){ const w=document.getElementById("history-wrap"),c=document.getElementById("history-chips"); if(!searchHistory.length){w.style.display="none";return;} w.style.display="flex"; c.innerHTML=searchHistory.map(h=>`<span class="history-chip" onclick="jumpTicker('${h}')">${h}<span class="chip-x" onclick="removeHistory(event,'${h}')">✕</span></span>`).join(""); }
-function removeHistory(e,t){ e.stopPropagation(); searchHistory=searchHistory.filter(h=>h!==t); try{localStorage.setItem("spl_history",JSON.stringify(searchHistory));}catch(e){} renderHistory(); }
-function jumpTicker(t){ document.getElementById("ticker-input").value=t; searchTicker(); }
+/* ══════════ TAB 2 ══════════ */
+var tickerRaw=[],tickerFiltered=[],tickerSortDir="desc";
+var searchHistory=[];try{searchHistory=JSON.parse(localStorage.getItem("spl_history")||"[]");}catch(e){}
+function saveHistory(t){searchHistory=[t,...searchHistory.filter(function(h){return h!==t;})].slice(0,6);try{localStorage.setItem("spl_history",JSON.stringify(searchHistory));}catch(e){}renderHistory();}
+function renderHistory(){var w=document.getElementById("history-wrap"),c=document.getElementById("history-chips");if(!searchHistory.length){w.style.display="none";return;}w.style.display="flex";c.innerHTML=searchHistory.map(function(h){return"<span class='history-chip' onclick='jumpTicker(\""+h+"\")'>"+h+"<span class='chip-x' onclick='removeHistory(event,\""+h+"\")'>✕</span></span>";}).join("");}
+function removeHistory(e,t){e.stopPropagation();searchHistory=searchHistory.filter(function(h){return h!==t;});try{localStorage.setItem("spl_history",JSON.stringify(searchHistory));}catch(e){}renderHistory();}
+function jumpTicker(t){document.getElementById("ticker-input").value=t;searchTicker();}
 renderHistory();
-
-async function fetchTickerData(ticker){
-  const url=`${API_TICKER}?ticker=${encodeURIComponent(ticker)}&isWl=false&page=0&size=99`;
-  const r=await fetch(url,{headers:{"accept":"application/json","authorization":"Bearer "+BEARER,"origin":"https://simplize.vn","referer":"https://simplize.vn/"}});
-  const json=await r.json();
-  if(Array.isArray(json))return json;
-  if(json.data?.content)return json.data.content;
-  if(json.data?.reports)return json.data.reports;
-  if(json.content)return json.content;
-  if(json.data&&Array.isArray(json.data))return json.data;
-  return[];
-}
-
+async function fetchTickerData(ticker){var url=API_TICKER+"?ticker="+encodeURIComponent(ticker)+"&isWl=false&page=0&size=99";var r=await fetch(url,{headers:{"accept":"application/json","authorization":"Bearer "+BEARER,"origin":"https://simplize.vn","referer":"https://simplize.vn/"}});var json=await r.json();if(Array.isArray(json))return json;if(json.data&&json.data.content)return json.data.content;if(json.content)return json.content;return[];}
 async function searchTicker(){
-  const ticker=document.getElementById("ticker-input").value.trim().toUpperCase();
-  if(!ticker){document.getElementById("ticker-hint").textContent="Vui lòng nhập mã cổ phiếu";return;}
+  var ticker=document.getElementById("ticker-input").value.trim().toUpperCase();
+  if(!ticker){document.getElementById("ticker-hint").textContent="Vui lòng nhập mã";return;}
   document.getElementById("ticker-hint").textContent="Đang tải...";
   document.getElementById("ticker-consensus").style.display="none";
   document.getElementById("ticker-table-wrap").style.display="none";
   document.getElementById("ticker-card-list").innerHTML="";
-  document.getElementById("ticker-tbody").innerHTML=`<tr class="state-row"><td colspan="6">Đang tải ${ticker}...</td></tr>`;
+  document.getElementById("ticker-tbody").innerHTML="<tr class='state-row'><td colspan='6'>Đang tải "+ticker+"...</td></tr>";
   document.getElementById("ticker-table-wrap").style.display="block";
   try{
-    const rows=await fetchTickerData(ticker);
-    tickerRaw=rows; tickerFiltered=rows;
-    saveHistory(ticker);
-    buildTickerUI(ticker,rows);
-    document.getElementById("ticker-hint").textContent=rows.length?`${rows.length} báo cáo`:"Không tìm thấy";
-    const sel=document.getElementById("ticker-src-filter");
-    sel.innerHTML='<option value="">Tất cả CTCK</option>';
-    [...new Set(rows.map(r=>sourceOf(r)).filter(Boolean))].sort().forEach(s=>{const o=document.createElement("option");o.value=s;o.textContent=s;sel.appendChild(o);});
-  }catch(err){
-    document.getElementById("ticker-tbody").innerHTML=`<tr class="state-row"><td colspan="6">Lỗi: ${err.message}</td></tr>`;
-    document.getElementById("ticker-hint").textContent="Có lỗi xảy ra";
-  }
+    var rows=await fetchTickerData(ticker);
+    tickerRaw=rows;tickerFiltered=rows;saveHistory(ticker);buildTickerUI(ticker,rows);
+    document.getElementById("ticker-hint").textContent=rows.length?rows.length+" báo cáo":"Không tìm thấy";
+    var sel=document.getElementById("ticker-src-filter");sel.innerHTML="<option value=''>Tất cả CTCK</option>";
+    [...new Set(rows.map(function(r){return sourceOf(r);}).filter(Boolean))].sort().forEach(function(s){var o=document.createElement("option");o.value=s;o.textContent=s;sel.appendChild(o);});
+  }catch(err){document.getElementById("ticker-tbody").innerHTML="<tr class='state-row'><td colspan='6'>Lỗi: "+err.message+"</td></tr>";document.getElementById("ticker-hint").textContent="Có lỗi";}
 }
-
 function buildTickerUI(ticker,rows){
-  const buyCount=rows.filter(r=>recNorm(r.recommend||"")==="MUA").length;
-  const posCount=rows.filter(r=>recNorm(r.recommend||"")==="KHẢ QUAN").length;
-  const neuCount=rows.filter(r=>recNorm(r.recommend||"")==="TRUNG LẬP").length;
-  const prices=rows.map(r=>+priceOf(r)).filter(p=>p>0);
-  const avgP=prices.length?Math.round(prices.reduce((a,b)=>a+b,0)/prices.length):0;
-  const maxP=prices.length?Math.max(...prices):0;
-  const minP=prices.length?Math.min(...prices):0;
-  const total=rows.length;
-  const pct=total?Math.round((buyCount+posCount)/total*100):0;
-
-  document.getElementById("consensus-bar").innerHTML=`
-    <div><div style="font-size:22px;font-weight:800;color:#1677ff;">${ticker}</div>
-    <div style="font-size:13px;color:#888;">${total} báo cáo phân tích</div></div>
-    <div class="consensus-pills">
-      ${buyCount?`<span class="cpill cpill-buy">▲ MUA <strong>${buyCount}</strong></span>`:""}
-      ${posCount?`<span class="cpill cpill-pos">↑ KHẢ QUAN <strong>${posCount}</strong></span>`:""}
-      ${neuCount?`<span class="cpill cpill-neu">— TRUNG LẬP <strong>${neuCount}</strong></span>`:""}
-      ${(total-buyCount-posCount-neuCount)>0?`<span class="cpill cpill-oth">KHÁC <strong>${total-buyCount-posCount-neuCount}</strong></span>`:""}
-    </div>`;
-
-  document.getElementById("stats-bar").innerHTML=`
-    <div class="stat-card"><div class="stat-label">Tổng báo cáo</div><div class="stat-value">${total}</div><div class="stat-sub">${[...new Set(rows.map(r=>sourceOf(r)).filter(Boolean))].length} CTCK</div></div>
-    <div class="stat-card"><div class="stat-label">Đồng thuận tích cực</div><div class="stat-value" style="color:#16a34a;">${pct}%</div><div class="stat-sub">${buyCount+posCount}/${total} CTCK</div></div>
-    <div class="stat-card"><div class="stat-label">Giá MT trung bình</div><div class="stat-value" style="color:#0369a1;font-size:18px;">${avgP?fmtPrice(avgP):"–"}</div><div class="stat-sub">₫</div></div>
-    <div class="stat-card"><div class="stat-label">Cao nhất / Thấp nhất</div><div class="stat-value" style="font-size:15px;">${maxP?fmtPrice(maxP):"–"} <span style="color:#ddd;">/</span> ${minP?fmtPrice(minP):"–"}</div><div class="stat-sub">Giá mục tiêu ₫</div></div>
-    <div class="stat-card"><div class="stat-label">Báo cáo mới (7 ngày)</div><div class="stat-value" style="color:#dc2626;">${rows.filter(r=>isNew(r)).length}</div><div class="stat-sub">Tuần này</div></div>`;
-
+  var buyCount=rows.filter(function(r){return recNorm(r.recommend||"")==="MUA";}).length;
+  var posCount=rows.filter(function(r){return recNorm(r.recommend||"")==="KHẢ QUAN";}).length;
+  var neuCount=rows.filter(function(r){return recNorm(r.recommend||"")==="TRUNG LẬP";}).length;
+  var prices=rows.map(function(r){return+priceOf(r);}).filter(function(p){return p>0;});
+  var avgP=prices.length?Math.round(prices.reduce(function(a,b){return a+b;},0)/prices.length):0;
+  var maxP=prices.length?Math.max.apply(null,prices):0;
+  var minP=prices.length?Math.min.apply(null,prices):0;
+  var total=rows.length;var pct=total?Math.round((buyCount+posCount)/total*100):0;
+  document.getElementById("consensus-bar").innerHTML="<div><div style='font-size:22px;font-weight:800;color:#1677ff;'>"+ticker+"</div><div style='font-size:13px;color:#888;'>"+total+" báo cáo</div></div><div class='consensus-pills'>"+(buyCount?"<span class='cpill cpill-buy'>▲ MUA <strong>"+buyCount+"</strong></span>":"")+(posCount?"<span class='cpill cpill-pos'>↑ KHẢ QUAN <strong>"+posCount+"</strong></span>":"")+(neuCount?"<span class='cpill cpill-neu'>— TRUNG LẬP <strong>"+neuCount+"</strong></span>":"")+"</div>";
+  document.getElementById("stats-bar").innerHTML="<div class='stat-card'><div class='stat-label'>Tổng báo cáo</div><div class='stat-value'>"+total+"</div><div class='stat-sub'>"+[...new Set(rows.map(function(r){return sourceOf(r);}).filter(Boolean))].length+" CTCK</div></div><div class='stat-card'><div class='stat-label'>Đồng thuận tích cực</div><div class='stat-value' style='color:#16a34a;'>"+pct+"%</div><div class='stat-sub'>"+(buyCount+posCount)+"/"+total+" CTCK</div></div><div class='stat-card'><div class='stat-label'>Giá MT trung bình</div><div class='stat-value' style='color:#0369a1;font-size:18px;'>"+(avgP?fmtPrice(avgP):"–")+"</div><div class='stat-sub'>₫</div></div><div class='stat-card'><div class='stat-label'>Cao nhất / Thấp nhất</div><div class='stat-value' style='font-size:15px;'>"+(maxP?fmtPrice(maxP):"–")+" <span style='color:#ddd;'>/</span> "+(minP?fmtPrice(minP):"–")+"</div><div class='stat-sub'>₫</div></div><div class='stat-card'><div class='stat-label'>Mới 7 ngày</div><div class='stat-value' style='color:#dc2626;'>"+rows.filter(function(r){return isNew(r);}).length+"</div></div>";
   document.getElementById("ticker-consensus").style.display="block";
   renderTickerTable(sortByDate(rows,tickerSortDir));
 }
-
 function renderTickerTable(data){
-  document.getElementById("ticker-result-count").textContent=`${data.length} báo cáo`;
-  const tb=document.getElementById("ticker-tbody");
-  if(!data.length){tb.innerHTML=`<tr class="state-row"><td colspan="6">Không có kết quả</td></tr>`;return;}
-  tb.innerHTML=data.map(r=>`<tr>
-    <td class="date-cell">${formatDate(r)}${isNew(r)?'<span class="badge-new">MỚI</span>':""}</td>
-    <td class="title-cell">${titleOf(r)}</td>
-    <td class="source-col">${sourceOf(r)}</td>
-    <td><span class="${recClass(r.recommend)}">${recNorm(r.recommend||"")||"–"}</span></td>
-    <td class="price-col">${priceOf(r)?fmtPrice(priceOf(r)):'<span class="price-empty">–</span>'}</td>
-    <td class="dl-col">${dlBtn(linkOf(r))}</td>
-  </tr>`).join("");
-  const isMobile=window.innerWidth<=640;
-  const cl=document.getElementById("ticker-card-list");
-  const tic=document.getElementById("ticker-input").value.trim().toUpperCase();
-  if(isMobile&&data.length){
-    cl.innerHTML=data.map(r=>`<div class="report-card"><div class="card-top"><div class="card-ticker-wrap"><div><div class="card-ticker">${tic}</div><div class="card-source-sm">${sourceOf(r)}</div></div></div><div>${recNorm(r.recommend||"")?`<span class="${recClass(r.recommend)}">${recNorm(r.recommend)}</span>`:""}</div></div><div class="card-title">${titleOf(r)}${isNew(r)?'<span class="badge-new">MỚI</span>':""}</div><div class="card-footer"><div class="card-meta"><span class="card-date">${formatDate(r)}</span>${priceOf(r)?`<span class="card-price">${fmtPrice(priceOf(r))} ₫</span>`:""}</div><a class="card-dl" href="${linkOf(r)}" target="_blank">⬇ Tải</a></div></div>`).join("");
-  }
+  document.getElementById("ticker-result-count").textContent=data.length+" báo cáo";
+  var tb=document.getElementById("ticker-tbody");
+  if(!data.length){tb.innerHTML="<tr class='state-row'><td colspan='6'>Không có kết quả</td></tr>";return;}
+  tb.innerHTML=data.map(function(r){return"<tr><td class='date-cell'>"+formatDate(r)+(isNew(r)?"<span class='badge-new'>MỚI</span>":"")+"</td><td class='title-cell'>"+titleOf(r)+"</td><td class='source-col'>"+sourceOf(r)+"</td><td><span class='"+recClass(r.recommend)+"'>"+recNorm(r.recommend||"")+"</span></td><td class='price-col'>"+(priceOf(r)?fmtPrice(priceOf(r)):"<span class='price-empty'>–</span>")+"</td><td class='dl-col'>"+dlBtn(linkOf(r))+"</td></tr>";}).join("");
+  if(window.innerWidth<=640){document.getElementById("ticker-card-list").innerHTML=data.map(function(r){return"<div class='report-card'><div class='card-top'><div><div class='card-ticker'>"+document.getElementById("ticker-input").value.trim().toUpperCase()+"</div><div class='card-source-sm'>"+sourceOf(r)+"</div></div><div>"+(recNorm(r.recommend||"")?"<span class='"+recClass(r.recommend)+"'>"+recNorm(r.recommend)+"</span>":"")+"</div></div><div class='card-title'>"+titleOf(r)+(isNew(r)?"<span class='badge-new'>MỚI</span>":"")+"</div><div class='card-footer'><div class='card-meta'><span class='card-date'>"+formatDate(r)+"</span>"+(priceOf(r)?"<span class='card-price'>"+fmtPrice(priceOf(r))+" ₫</span>":"")+"</div><a class='card-dl' href='"+linkOf(r)+"' target='_blank'>⬇ Tải</a></div></div>";}).join("");}
 }
+function filterTickerTable(){var src=document.getElementById("ticker-src-filter").value;var rec=document.getElementById("ticker-rec-filter").value;tickerFiltered=tickerRaw.filter(function(r){return(!src||sourceOf(r)===src)&&(!rec||recNorm(r.recommend||"")===rec);});renderTickerTable(sortByDate(tickerFiltered,tickerSortDir));}
+function toggleTickerSort(){tickerSortDir=tickerSortDir==="desc"?"asc":"desc";var th=document.querySelector("#panel-ticker thead th.date-cell");if(th)th.className="date-cell sort-"+tickerSortDir;renderTickerTable(sortByDate(tickerFiltered,tickerSortDir));}
 
-function filterTickerTable(){
-  const src=document.getElementById("ticker-src-filter").value;
-  const rec=document.getElementById("ticker-rec-filter").value;
-  tickerFiltered=tickerRaw.filter(r=>(!src||sourceOf(r)===src)&&(!rec||recNorm(r.recommend||"")===rec));
-  renderTickerTable(sortByDate(tickerFiltered,tickerSortDir));
+/* ══════════ TAB 3: Tín hiệu ══════════ */
+var curSignal="buy";
+function switchSignal(type){
+  curSignal=type;
+  ["buy","sell","pullback","dip"].forEach(function(t){
+    document.getElementById("sig-btn-"+t).className="sig-btn"+(t===type?" active":"");
+    document.getElementById("sig-panel-"+t).style.display=t===type?"block":"none";
+  });
+  var isS=type==="sell";
+  document.getElementById("sig-label-roe").style.display=isS?"":"none";
+  document.getElementById("sig-roe").style.display=isS?"":"none";
+  document.getElementById("sig-vonhoa").value=isS?"4000":"3000";
+  document.getElementById("sig-tbgtdd").value=isS?"6":"5";
 }
-function toggleTickerSort(){ tickerSortDir=tickerSortDir==="desc"?"asc":"desc"; const th=document.querySelector("#panel-ticker thead th.date-cell"); if(th)th.className="date-cell sort-"+tickerSortDir; renderTickerTable(sortByDate(tickerFiltered,tickerSortDir)); }
-
-/* ═══════ TAB 3: Pullback ═══════ */
-function ratingClass(r){
-  const m={"A+":"r-aplus","A":"r-a","A-":"r-aminus","B+":"r-bplus","B":"r-b","B-":"r-bminus","C+":"r-cplus","C":"r-c","C-":"r-cminus"};
-  return m[r]||"r-c";
-}
-function pctCell(v,isRatio){ if(v===undefined||v===null||v==="")return'<span style="color:#ccc;">–</span>'; let n=Number(v); if(isRatio)n=n*100; const cls=n>0.05?"price-up":n<-0.05?"price-down":"price-flat"; const sign=n>0?"+":""; return`<span class="${cls}">${sign}${n.toFixed(2)}%</span>`; }
-function priceCell(v){ if(!v&&v!==0)return'<span style="color:#ccc;">–</span>'; return Number(v).toLocaleString("vi-VN"); }
-function signalCell(s,w){
-  if(s&&s!=="NONE"&&s!=="")return`<span class="signal-buy">${s}</span>`;
-  if(w&&w!=="NONE"&&w!=="")return`<span class="signal-wait">${w}</span>`;
-  return'<span class="signal-none">–</span>';
-}
-
-async function loadPullback(){
-  const vonhoa = document.getElementById("pb-vonhoa").value||"3000";
-  const tbgtdd = document.getElementById("pb-tbgtdd").value||"5";
-  const dateRaw = document.getElementById("pb-date").value;
-  const count   = document.getElementById("pb-count").value||"10";
-  const alltime = document.getElementById("pb-alltime").checked;
-  const dateStr = alltime ? "" : dateRaw.replace(/-/g,"");
-
-  document.getElementById("pb-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Đang tải...</td></tr>`;
-  document.getElementById("pb-count-label").textContent="";
-  document.getElementById("pb-card-list").innerHTML="";
-
-  const body = {
-    "date": dateStr,
-    "values":[
-      {"header":"pullback_20","values":["PULLBACK"],"isValuesAll":false,"valuesString":""},
-      {"header":"rating","values":["A+","A","A-","B+","B","B-","C+","C","C-"],"isValuesAll":false,"valuesString":""}
-    ],
-    "conditions":[
-      {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
-      {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}}
-    ],
-    "sort":[{"pricePercent":"desc"}],
-    "offset":0,
-    "count":Number(count),
-    "returns":["ticker","date","rating","volumeFlat","volumePercent","signal","gia_thuc_hien","wait_signal","wait_price","priceFlat","pricePercent","pullback_10","pc","pf","propose_price_1","propose_price_2"]
-  };
-
-  try {
-    const res = await fetch(API_PB, {
-      method:"POST",
-      headers:{
-        "accept":"*/*",
-        "content-type":"application/json",
-        "origin":"https://www.finbox.vn",
-        "referer":"https://www.finbox.vn/",
-        "user-id": USER_ID,
-        "user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"
-      },
-      body: JSON.stringify(body)
-    });
-    const json = await res.json();
-    // Finbox trả về { total, symbols: [...] }
-    let rows = [];
-    if(Array.isArray(json)) rows=json;
-    else if(json.symbols&&Array.isArray(json.symbols)) rows=json.symbols;
-    else if(json.data&&Array.isArray(json.data)) rows=json.data;
-    else if(json.result&&Array.isArray(json.result)) rows=json.result;
-    else if(json.items&&Array.isArray(json.items)) rows=json.items;
-    rows.sort((a,b)=>String(b.date||0).localeCompare(String(a.date||0)));
-    renderPullback(rows, json.total);
-  } catch(err) {
-    document.getElementById("pb-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Lỗi khi tải: ${err.message}</td></tr>`;
-  }
-}
-
-function renderPullback(rows, total){
-  const t = total || rows.length;
-  document.getElementById("pb-count-label").textContent=`${rows.length} / ${t} cổ phiếu`;
-  const isMobile=window.innerWidth<=640;
-
-  if(!rows.length){
-    document.getElementById("pb-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Không có dữ liệu</td></tr>`;
-    return;
-  }
-
-  // Desktop table
-  document.getElementById("pb-tbody").innerHTML=rows.map(r=>`<tr>
-    <td class="date-cell">${fmtRowDate(r.date)}</td>
-    <td><strong style="font-size:14px;color:#1677ff;">${r.ticker||""}</strong></td>
-    <td><span class="rating-badge ${ratingClass(r.rating)}">${r.rating||"–"}</span></td>
-    <td style="text-align:right;">${priceCell(r.priceFlat||r.gia_thuc_hien)}</td>
-    <td style="text-align:right;">${pctCell(r.pricePercent)}</td>
-    <td>${signalCell(r.signal,r.wait_signal)}</td>
-    <td style="text-align:right;">${priceCell(r.propose_price_1)}</td>
-    <td style="text-align:right;">${priceCell(r.propose_price_2)}</td>
-    <td style="text-align:right;font-size:12px;color:#666;">${r.volumeFlat?Number(r.volumeFlat).toLocaleString("vi-VN"):"–"}</td>
-    <td style="text-align:right;">${pctCell(r.volumePercent,true)}</td>
-    <td style="text-align:right;">${priceCell(r.pullback_10)}</td>
-  </tr>`).join("");
-
-  // Mobile cards
-  if(isMobile){
-    document.getElementById("pb-card-list").innerHTML=rows.map(r=>`<div class="pb-card">
-      <div class="pb-card-top">
-        <span class="pb-card-ticker">${r.ticker||""}</span>
-        <span class="rating-badge ${ratingClass(r.rating)}">${r.rating||"–"}</span>
-      </div>
-      <div style="margin-bottom:8px;">${signalCell(r.signal,r.wait_signal)}</div>
-      <div class="pb-card-meta">
-        <div class="pb-meta-item" style="grid-column:span 2;"><div class="pb-meta-label">Ngày</div><div class="pb-meta-value" style="color:#888;">${fmtRowDate(r.date)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">Giá hiện tại</div><div class="pb-meta-value">${priceCell(r.priceFlat||r.gia_thuc_hien)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">% ngày</div><div class="pb-meta-value">${pctCell(r.pricePercent)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">Đề xuất 1</div><div class="pb-meta-value">${priceCell(r.propose_price_1)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">Đề xuất 2</div><div class="pb-meta-value">${priceCell(r.propose_price_2)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">KL (tỷ)</div><div class="pb-meta-value">${r.volumeFlat?Number(r.volumeFlat).toLocaleString("vi-VN"):"–"}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">Pullback 10</div><div class="pb-meta-value">${priceCell(r.pullback_10)}</div></div>
-      </div>
-    </div>`).join("");
-  }
-}
-
-/* ═══════ TAB 4: DIP ═══════ */
-function dipSignalCell(s){
-  if(!s||s==="null"||s===null)return'<span class="signal-none">–</span>';
-  const u=String(s).toUpperCase();
-  if(u.includes("ĐÁY NGẮN")||u.includes("DAY NGAN"))return`<span class="signal-dip-day">${s}</span>`;
-  if(u.includes("ĐÁY TRUNG")||u.includes("DAY TRUNG"))return`<span class="signal-dip-mid">${s}</span>`;
-  if(u.includes("SMALL DIP"))return`<span class="signal-dip-sm">${s}</span>`;
-  if(u.includes("BIG DIP"))return`<span class="signal-dip-big">${s}</span>`;
-  return`<span class="signal-wait">${s}</span>`;
-}
-
-async function loadDip(){
-  const vonhoa = document.getElementById("dip-vonhoa").value||"3000";
-  const tbgtdd = document.getElementById("dip-tbgtdd").value||"5";
-  const dateRaw = document.getElementById("dip-date").value;
-  const count   = document.getElementById("dip-count").value||"10";
-  const alltime = document.getElementById("dip-alltime").checked;
-  const dateStr = alltime ? "" : dateRaw.replace(/-/g,"");
-
-  document.getElementById("dip-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Đang tải...</td></tr>`;
-  document.getElementById("dip-count-label").textContent="";
-  document.getElementById("dip-card-list").innerHTML="";
-
-  const body = {
-    "date": dateStr,
-    "values":[
-      {"header":"dip_signal","values":["ĐÁY NGẮN","ĐÁY TRUNG","SMALL DIP","BIG DIP"],"isValuesAll":false,"valuesString":""},
-      {"header":"rating","values":["A+","A","A-","B+","B","B-","C+","C","C-"],"isValuesAll":false,"valuesString":""}
-    ],
-    "conditions":[
-      {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
-      {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}}
-    ],
-    "sort":[{"discount_20":"asc"}],
-    "offset":0,
-    "count":Number(count),
-    "returns":["ticker","date","rating","volumeFlat","volumePercent","dip_signal","dip_price","priceFlat","pricePercent","pc","pf"]
-  };
-
-  try {
-    const res = await fetch(API_PB, {
-      method:"POST",
-      headers:{
-        "accept":"*/*",
-        "content-type":"application/json",
-        "origin":"https://www.finbox.vn",
-        "referer":"https://www.finbox.vn/",
-        "user-id": USER_ID,
-        "user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"
-      },
-      body: JSON.stringify(body)
-    });
-    const json = await res.json();
-    let rows = [];
-    if(Array.isArray(json)) rows=json;
-    else if(json.symbols&&Array.isArray(json.symbols)) rows=json.symbols;
-    else if(json.data&&Array.isArray(json.data)) rows=json.data;
-    rows.sort((a,b)=>String(b.date||0).localeCompare(String(a.date||0)));
-    renderDip(rows, json.total);
-  } catch(err) {
-    document.getElementById("dip-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Lỗi: ${err.message}</td></tr>`;
-  }
-}
-
-function renderDip(rows, total){
-  const t = total || rows.length;
-  document.getElementById("dip-count-label").textContent=`${rows.length} / ${t} cổ phiếu`;
-
-  if(!rows.length){
-    document.getElementById("dip-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Không có dữ liệu</td></tr>`;
-    return;
-  }
-
-  document.getElementById("dip-tbody").innerHTML=rows.map(r=>`<tr>
-    <td class="date-cell">${fmtRowDate(r.date)}</td>
-    <td><strong style="font-size:14px;color:#1677ff;">${r.ticker||""}</strong></td>
-    <td><span class="rating-badge ${ratingClass(r.rating)}">${r.rating||"–"}</span></td>
-    <td style="text-align:right;">${priceCell(r.priceFlat)}</td>
-    <td style="text-align:right;">${pctCell(r.pricePercent)}</td>
-    <td>${dipSignalCell(r.dip_signal)}</td>
-    <td style="text-align:right;font-weight:600;color:#dc2626;">${priceCell(r.dip_price)}</td>
-    <td style="text-align:right;font-size:12px;color:#666;">${r.volumeFlat?Number(r.volumeFlat).toLocaleString("vi-VN"):"–"}</td>
-    <td style="text-align:right;">${pctCell(r.volumePercent,true)}</td>
-    <td style="text-align:right;font-size:12px;">${priceCell(r.pc)}</td>
-    <td style="text-align:right;font-size:12px;">${priceCell(r.pf)}</td>
-  </tr>`).join("");
-
-  const isMobile=window.innerWidth<=640;
-  if(isMobile&&rows.length){
-    document.getElementById("dip-card-list").innerHTML=rows.map(r=>`<div class="pb-card">
-      <div class="pb-card-top">
-        <span class="pb-card-ticker">${r.ticker||""}</span>
-        <span class="rating-badge ${ratingClass(r.rating)}">${r.rating||"–"}</span>
-      </div>
-      <div style="margin-bottom:8px;">${dipSignalCell(r.dip_signal)}</div>
-      <div class="pb-card-meta">
-        <div class="pb-meta-item" style="grid-column:span 2;"><div class="pb-meta-label">Ngày</div><div class="pb-meta-value" style="color:#888;">${fmtRowDate(r.date)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">Giá hiện tại</div><div class="pb-meta-value">${priceCell(r.priceFlat)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">% ngày</div><div class="pb-meta-value">${pctCell(r.pricePercent)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">Giá DIP</div><div class="pb-meta-value" style="color:#dc2626;">${priceCell(r.dip_price)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">% KL</div><div class="pb-meta-value">${pctCell(r.volumePercent,true)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">PC</div><div class="pb-meta-value">${priceCell(r.pc)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">PF</div><div class="pb-meta-value">${priceCell(r.pf)}</div></div>
-      </div>
-    </div>`).join("");
-  }
-}
-
-function fmtRowDate(d){
-  if(!d) return "–";
-  const s = String(d);
-  // format: 20260603 → 03/06/2026
-  if(s.length===8) return s.slice(6)+"/"+s.slice(4,6)+"/"+s.slice(0,4);
-  // already formatted
-  return s;
-}
-function togglePbDate(cb){
-  const inp = document.getElementById("pb-date");
-  inp.disabled = cb.checked;
-  inp.style.opacity = cb.checked ? "0.35" : "1";
-}
-function toggleDipDate(cb){
-  const inp = document.getElementById("dip-date");
-  inp.disabled = cb.checked;
-  inp.style.opacity = cb.checked ? "0.35" : "1";
-}
-
-/* ═══════ BUY / SELL helpers ═══════ */
-function buySellSignalCell(s){
-  if(!s||s==="null"||s===null) return '<span class="signal-none">–</span>';
-  const u = String(s).toUpperCase();
-  if(u==="BIG BUY")   return `<span class="signal-big-buy">${s}</span>`;
-  if(u==="SMALL BUY") return `<span class="signal-small-buy">${s}</span>`;
-  if(u==="BIG SELL")  return `<span class="signal-big-sell">${s}</span>`;
-  if(u==="SMALL SELL")return `<span class="signal-small-sell">${s}</span>`;
-  return `<span class="signal-wait">${s}</span>`;
-}
-
-function renderBuySellTable(rows, tbodyId, cardListId){
-  const tbody = document.getElementById(tbodyId);
-  if(!rows.length){
-    tbody.innerHTML=`<tr class="state-row"><td colspan="11">Không có dữ liệu</td></tr>`;
-    document.getElementById(cardListId).innerHTML="";
-    return;
-  }
-  tbody.innerHTML = rows.map(r=>`<tr>
-    <td class="date-cell">${fmtRowDate(r.date)}</td>
-    <td><strong style="font-size:14px;color:#1677ff;">${r.ticker||""}</strong></td>
-    <td><span class="rating-badge ${ratingClass(r.rating)}">${r.rating||"–"}</span></td>
-    <td style="text-align:right;">${priceCell(r.gia_thuc_hien)}</td>
-    <td style="text-align:right;">${priceCell(r.priceFlat)}</td>
-    <td style="text-align:right;">${pctCell(r.pricePercent)}</td>
-    <td>${buySellSignalCell(r.signal)}</td>
-    <td style="text-align:right;">${priceCell(r.propose_price_1)}</td>
-    <td style="text-align:right;">${priceCell(r.propose_price_2)}</td>
-    <td style="text-align:right;font-size:12px;color:#666;">${r.volumeFlat?Number(r.volumeFlat).toLocaleString("vi-VN"):"–"}</td>
-    <td style="text-align:right;">${pctCell(r.volumePercent,true)}</td>
-  </tr>`).join("");
-
-  // Mobile cards
-  if(window.innerWidth<=640){
-    document.getElementById(cardListId).innerHTML = rows.map(r=>`<div class="pb-card">
-      <div class="pb-card-top">
-        <span class="pb-card-ticker">${r.ticker||""}</span>
-        <span class="rating-badge ${ratingClass(r.rating)}">${r.rating||"–"}</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        ${buySellSignalCell(r.signal)}
-        <span style="font-size:11px;color:#aaa;">${fmtRowDate(r.date)}</span>
-      </div>
-      <div class="pb-card-meta">
-        <div class="pb-meta-item"><div class="pb-meta-label">Giá TH</div><div class="pb-meta-value">${priceCell(r.gia_thuc_hien)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">Giá HT</div><div class="pb-meta-value">${priceCell(r.priceFlat)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">% ngày</div><div class="pb-meta-value">${pctCell(r.pricePercent)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">% KL</div><div class="pb-meta-value">${pctCell(r.volumePercent,true)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">Đề xuất 1</div><div class="pb-meta-value">${priceCell(r.propose_price_1)}</div></div>
-        <div class="pb-meta-item"><div class="pb-meta-label">Đề xuất 2</div><div class="pb-meta-value">${priceCell(r.propose_price_2)}</div></div>
-      </div>
-    </div>`).join("");
-  }
-}
-
-async function loadBuy(){
-  const vonhoa  = document.getElementById("buy-vonhoa").value||"3000";
-  const tbgtdd  = document.getElementById("buy-tbgtdd").value||"5";
-  const dateRaw = document.getElementById("buy-date").value;
-  const alltime = document.getElementById("buy-alltime").checked;
-  const dateStr = alltime?"":dateRaw.replace(/-/g,"");
-  const count   = document.getElementById("buy-count").value||"10";
-
-  document.getElementById("buy-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Đang tải...</td></tr>`;
-  document.getElementById("buy-count-label").textContent="";
-  document.getElementById("buy-card-list").innerHTML="";
-
-  const body = {
-    "date": dateStr,
-    "values":[
-      {"header":"signal","values":["SMALL BUY","BIG BUY"],"isValuesAll":false,"valuesString":""},
-      {"header":"rating","values":["A+","A","A-","B+","B","B-","C+","C","C-"],"isValuesAll":false,"valuesString":""}
-    ],
-    "conditions":[
-      {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
-      {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}}
-    ],
-    "sort":[{"point":"desc"}],
-    "offset":0, "count":Number(count),
-    "returns":["ticker","date","rating","volumeFlat","volumePercent","signal","gia_thuc_hien","priceFlat","pricePercent","pc","pf","propose_price_1","propose_price_2"]
+function toggleSigDate(cb){var i=document.getElementById("sig-date");i.disabled=cb.checked;i.style.opacity=cb.checked?"0.35":"1";}
+async function loadSignal(){
+  var vonhoa=document.getElementById("sig-vonhoa").value||"3000";
+  var tbgtdd=document.getElementById("sig-tbgtdd").value||"5";
+  var roe=document.getElementById("sig-roe").value||"0.1";
+  var dateRaw=document.getElementById("sig-date").value;
+  var alltime=document.getElementById("sig-alltime").checked;
+  var dateStr=alltime?"":dateRaw.replace(/-/g,"");
+  var type=curSignal;
+  var tbodyId={buy:"sig-buy-tbody",sell:"sig-sell-tbody",pullback:"sig-pb-tbody",dip:"sig-dip-tbody"}[type];
+  var cardsId={buy:"sig-buy-cards",sell:"sig-sell-cards",pullback:"sig-pb-cards",dip:"sig-dip-cards"}[type];
+  document.getElementById(tbodyId).innerHTML="<tr class='state-row'><td colspan='11'>Đang tải...</td></tr>";
+  document.getElementById("sig-count-label").textContent="";
+  document.getElementById(cardsId).innerHTML="";
+  var bodies={
+    buy:{date:dateStr,values:[{header:"signal",values:["SMALL BUY","BIG BUY"],isValuesAll:false,valuesString:""},{header:"rating",values:["A+","A","A-","B+","B","B-","C+","C","C-"],isValuesAll:false,valuesString:""}],conditions:[{header:"vonhoa",id:7,value:{singleValue:vonhoa}},{header:"tbgtdd",id:7,value:{singleValue:tbgtdd}}],sort:[{point:"desc"}],offset:0,count:500,returns:["ticker","date","rating","signal","gia_thuc_hien","priceFlat","pricePercent","volumeFlat","volumePercent","propose_price_1","propose_price_2"]},
+    sell:{date:dateStr,values:[{header:"signal",values:["SMALL SELL","BIG SELL"],isValuesAll:false,valuesString:""},{header:"rating",values:["A+","A","A-","B+","B","B-"],isValuesAll:false,valuesString:""}],conditions:[{header:"vonhoa",id:7,value:{singleValue:vonhoa}},{header:"tbgtdd",id:7,value:{singleValue:tbgtdd}},{header:"roe",id:7,value:{singleValue:roe}}],sort:[{point:"asc"}],offset:0,count:500,returns:["ticker","date","rating","signal","gia_thuc_hien","priceFlat","pricePercent","volumeFlat","volumePercent","propose_price_1","propose_price_2"]},
+    pullback:{date:dateStr,values:[{header:"pullback_20",values:["PULLBACK"],isValuesAll:false,valuesString:""},{header:"rating",values:["A+","A","A-","B+","B","B-","C+","C","C-"],isValuesAll:false,valuesString:""}],conditions:[{header:"vonhoa",id:7,value:{singleValue:vonhoa}},{header:"tbgtdd",id:7,value:{singleValue:tbgtdd}}],sort:[{point:"desc"}],offset:0,count:500,returns:["ticker","date","rating","signal","priceFlat","pricePercent","volumeFlat","volumePercent","propose_price_1","propose_price_2","pullback_10"]},
+    dip:{date:dateStr,values:[{header:"dip_signal",values:["ĐÁY NGẮN","ĐÁY TRUNG","SMALL DIP","BIG DIP"],isValuesAll:false,valuesString:""},{header:"rating",values:["A+","A","A-","B+","B","B-","C+","C","C-"],isValuesAll:false,valuesString:""}],conditions:[{header:"vonhoa",id:7,value:{singleValue:vonhoa}},{header:"tbgtdd",id:7,value:{singleValue:tbgtdd}}],sort:[{discount_20:"asc"}],offset:0,count:500,returns:["ticker","date","rating","dip_signal","dip_price","priceFlat","pricePercent","volumeFlat","volumePercent","pc","pf"]}
   };
   try{
-    const res = await fetch(API_PB,{method:"POST",headers:{"accept":"*/*","content-type":"application/json","origin":"https://www.finbox.vn","referer":"https://www.finbox.vn/","user-id":USER_ID,"user-agent":"Mozilla/5.0"},body:JSON.stringify(body)});
-    const json = await res.json();
-    let rows=[];
+    var res=await fetch(API_PB,{method:"POST",headers:{"accept":"*/*","content-type":"application/json","origin":"https://www.finbox.vn","referer":"https://www.finbox.vn/","user-id":USER_ID,"user-agent":"Mozilla/5.0"},body:JSON.stringify(bodies[type])});
+    var json=await res.json();
+    var rows=[];
     if(Array.isArray(json))rows=json;
     else if(json.symbols&&Array.isArray(json.symbols))rows=json.symbols;
     else if(json.data&&Array.isArray(json.data))rows=json.data;
-    rows.sort((a,b)=>String(b.date||0).localeCompare(String(a.date||0)));
-    document.getElementById("buy-count-label").textContent=`${rows.length} / ${json.total||rows.length} cổ phiếu`;
-    renderBuySellTable(rows,"buy-tbody","buy-card-list");
-  }catch(err){
-    document.getElementById("buy-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Lỗi: ${err.message}</td></tr>`;
-  }
+    rows.sort(function(a,b){return String(b.date||0).localeCompare(String(a.date||0));});
+    document.getElementById("sig-count-label").textContent=rows.length+" / "+(json.total||rows.length)+" cổ phiếu";
+    renderSignal(type,rows,tbodyId,cardsId);
+  }catch(err){document.getElementById(tbodyId).innerHTML="<tr class='state-row'><td colspan='11'>Lỗi: "+err.message+"</td></tr>";}
+}
+function renderSignal(type,rows,tbodyId,cardsId){
+  var tbody=document.getElementById(tbodyId);
+  if(!rows.length){tbody.innerHTML="<tr class='state-row'><td colspan='11'>Không có dữ liệu</td></tr>";document.getElementById(cardsId).innerHTML="";return;}
+  var tableRows="",cards="",isMobile=window.innerWidth<=640;
+  rows.forEach(function(r){
+    var ticker=String(r.ticker||""),date=fmtRowDate(r.date),rating=r.rating||"–";
+    var price=priceCell(r.priceFlat||r.gia_thuc_hien),priceTH=priceCell(r.gia_thuc_hien);
+    var pct=pctCell(r.pricePercent),vol=r.volumeFlat?Number(r.volumeFlat).toLocaleString("vi-VN"):"–",volPct=pctCell(r.volumePercent,true);
+    var rBadge="<span class='rating-badge "+ratingClass(rating)+"'>"+rating+"</span>";
+    var tickerCell="<strong style='font-size:13px;color:#1677ff;'>"+ticker+"</strong>";
+    if(type==="buy"||type==="sell"){
+      var sig=buySellSignalCell(r.signal),p1=priceCell(r.propose_price_1),p2=priceCell(r.propose_price_2);
+      tableRows+="<tr><td class='date-cell'>"+date+"</td><td>"+tickerCell+"</td><td>"+rBadge+"</td><td style='text-align:right;'>"+priceTH+"</td><td style='text-align:right;'>"+price+"</td><td style='text-align:right;'>"+pct+"</td><td>"+sig+"</td><td style='text-align:right;'>"+p1+"</td><td style='text-align:right;'>"+p2+"</td><td style='text-align:right;font-size:12px;color:#666;'>"+vol+"</td><td style='text-align:right;'>"+volPct+"</td></tr>";
+      if(isMobile)cards+="<div class='pb-card'><div class='pb-card-top'><span class='pb-card-ticker'>"+ticker+"</span>"+rBadge+"</div><div style='display:flex;gap:8px;align-items:center;margin-bottom:8px;'>"+sig+"<span style='font-size:11px;color:#aaa;'>"+date+"</span></div><div class='pb-card-meta'><div class='pb-meta-item'><div class='pb-meta-label'>Giá TH</div><div class='pb-meta-value'>"+priceTH+"</div></div><div class='pb-meta-item'><div class='pb-meta-label'>Giá HT</div><div class='pb-meta-value'>"+price+"</div></div><div class='pb-meta-item'><div class='pb-meta-label'>% ngày</div><div class='pb-meta-value'>"+pct+"</div></div><div class='pb-meta-item'><div class='pb-meta-label'>Đề xuất 1</div><div class='pb-meta-value'>"+p1+"</div></div><div class='pb-meta-item'><div class='pb-meta-label'>Đề xuất 2</div><div class='pb-meta-value'>"+p2+"</div></div></div></div>";
+    }else if(type==="pullback"){
+      var sig=signalCell(r.signal,r.wait_signal),p1=priceCell(r.propose_price_1),p2=priceCell(r.propose_price_2),pb10=priceCell(r.pullback_10);
+      tableRows+="<tr><td class='date-cell'>"+date+"</td><td>"+tickerCell+"</td><td>"+rBadge+"</td><td style='text-align:right;'>"+price+"</td><td style='text-align:right;'>"+pct+"</td><td>"+sig+"</td><td style='text-align:right;'>"+p1+"</td><td style='text-align:right;'>"+p2+"</td><td style='text-align:right;font-size:12px;color:#666;'>"+vol+"</td><td style='text-align:right;'>"+volPct+"</td><td style='text-align:right;'>"+pb10+"</td></tr>";
+      if(isMobile)cards+="<div class='pb-card'><div class='pb-card-top'><span class='pb-card-ticker'>"+ticker+"</span>"+rBadge+"</div><div style='display:flex;gap:8px;align-items:center;margin-bottom:8px;'>"+sig+"<span style='font-size:11px;color:#aaa;'>"+date+"</span></div><div class='pb-card-meta'><div class='pb-meta-item'><div class='pb-meta-label'>Giá</div><div class='pb-meta-value'>"+price+"</div></div><div class='pb-meta-item'><div class='pb-meta-label'>% ngày</div><div class='pb-meta-value'>"+pct+"</div></div><div class='pb-meta-item'><div class='pb-meta-label'>Đề xuất 1</div><div class='pb-meta-value'>"+p1+"</div></div><div class='pb-meta-item'><div class='pb-meta-label'>Đề xuất 2</div><div class='pb-meta-value'>"+p2+"</div></div></div></div>";
+    }else{
+      var sig=dipSignalCell(r.dip_signal),dipP="<span style='font-weight:600;color:#dc2626;'>"+priceCell(r.dip_price)+"</span>";
+      tableRows+="<tr><td class='date-cell'>"+date+"</td><td>"+tickerCell+"</td><td>"+rBadge+"</td><td style='text-align:right;'>"+price+"</td><td style='text-align:right;'>"+pct+"</td><td>"+sig+"</td><td style='text-align:right;'>"+dipP+"</td><td style='text-align:right;font-size:12px;color:#666;'>"+vol+"</td><td style='text-align:right;'>"+volPct+"</td><td style='text-align:right;font-size:12px;'>"+priceCell(r.pc)+"</td><td style='text-align:right;font-size:12px;'>"+priceCell(r.pf)+"</td></tr>";
+      if(isMobile)cards+="<div class='pb-card'><div class='pb-card-top'><span class='pb-card-ticker'>"+ticker+"</span>"+rBadge+"</div><div style='display:flex;gap:8px;align-items:center;margin-bottom:8px;'>"+sig+"<span style='font-size:11px;color:#aaa;'>"+date+"</span></div><div class='pb-card-meta'><div class='pb-meta-item'><div class='pb-meta-label'>Giá HT</div><div class='pb-meta-value'>"+price+"</div></div><div class='pb-meta-item'><div class='pb-meta-label'>% ngày</div><div class='pb-meta-value'>"+pct+"</div></div><div class='pb-meta-item'><div class='pb-meta-label'>Giá DIP</div><div class='pb-meta-value' style='color:#dc2626;'>"+priceCell(r.dip_price)+"</div></div></div></div>";
+    }
+  });
+  tbody.innerHTML=tableRows;
+  document.getElementById(cardsId).innerHTML=isMobile?cards:"";
 }
 
-async function loadSell(){
-  const vonhoa  = document.getElementById("sell-vonhoa").value||"4000";
-  const tbgtdd  = document.getElementById("sell-tbgtdd").value||"6";
-  const roe     = document.getElementById("sell-roe").value||"0.1";
-  const dateRaw = document.getElementById("sell-date").value;
-  const alltime = document.getElementById("sell-alltime").checked;
-  const dateStr = alltime?"":dateRaw.replace(/-/g,"");
-  const count   = document.getElementById("sell-count").value||"10";
-
-  document.getElementById("sell-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Đang tải...</td></tr>`;
-  document.getElementById("sell-count-label").textContent="";
-  document.getElementById("sell-card-list").innerHTML="";
-
-  const body = {
-    "date": dateStr,
-    "values":[
-      {"header":"signal","values":["SMALL SELL","BIG SELL"],"isValuesAll":false,"valuesString":""},
-      {"header":"rating","values":["A+","A","A-","B+","B","B-"],"isValuesAll":false,"valuesString":""}
-    ],
-    "conditions":[
-      {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
-      {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}},
-      {"header":"roe","id":7,"value":{"singleValue":roe}}
-    ],
-    "sort":[{"point":"asc"}],
-    "offset":0, "count":Number(count),
-    "returns":["ticker","date","rating","volumeFlat","volumePercent","signal","gia_thuc_hien","priceFlat","pricePercent","pc","pf","propose_price_1","propose_price_2"]
-  };
+/* ══════════ TAB 4: Sự kiện ══════════ */
+var evAllRows=[],evSortField="publicDate",evSortDir="desc",evView="table";
+function fmtEvDate(s){
+  if(!s)return"–";var str=String(s).trim();
+  if(!str||str==="–"||str==="null")return"–";
+  var jsDate=new Date(str);
+  if(!isNaN(jsDate.getTime())){
+    var parts=jsDate.toLocaleDateString("vi-VN",{timeZone:"Asia/Ho_Chi_Minh",day:"2-digit",month:"2-digit",year:"numeric"}).split("/");
+    if(parts.length===3&&parseInt(parts[2])>=1990)return parts[0]+"/"+parts[1]+"/"+parts[2];
+  }
+  var m=str.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if(m&&parseInt(m[1])>=1990)return m[3]+"/"+m[2]+"/"+m[1];
+  return"–";
+}
+function evTypeBadge(code){
+  if(String(code).toUpperCase()==="ISS")return"<span class='badge-iss'>Phát hành thêm</span>";
+  if(String(code).toUpperCase()==="DIV")return"<span class='badge-div-cash'>Cổ tức</span>";
+  return"<span>"+code+"</span>";
+}
+function setEvView(v){
+  evView=v;
+  document.getElementById("ev-view-table").className=v==="table"?"btn-primary":"btn-outline";
+  document.getElementById("ev-view-cal").className=v==="cal"?"btn-primary":"btn-outline";
+  document.getElementById("ev-table-wrap").style.display=v==="table"?"block":"none";
+  document.getElementById("ev-card-list").style.display=v==="table"?"":"none";
+  document.getElementById("ev-calendar").style.display=v==="cal"?"block":"none";
+  if(v==="cal"&&evAllRows.length)renderCalendar();
+}
+async function loadEvents(){
+  document.getElementById("ev-tbody").innerHTML="<tr class='state-row'><td colspan='7'>Đang tải...</td></tr>";
+  document.getElementById("ev-count-label").textContent="";
+  document.getElementById("ev-card-list").innerHTML="";
   try{
-    const res = await fetch(API_PB,{method:"POST",headers:{"accept":"*/*","content-type":"application/json","origin":"https://www.finbox.vn","referer":"https://www.finbox.vn/","user-id":USER_ID,"user-agent":"Mozilla/5.0"},body:JSON.stringify(body)});
-    const json = await res.json();
-    let rows=[];
-    if(Array.isArray(json))rows=json;
-    else if(json.symbols&&Array.isArray(json.symbols))rows=json.symbols;
-    else if(json.data&&Array.isArray(json.data))rows=json.data;
-    rows.sort((a,b)=>String(b.date||0).localeCompare(String(a.date||0)));
-    document.getElementById("sell-count-label").textContent=`${rows.length} / ${json.total||rows.length} cổ phiếu`;
-    renderBuySellTable(rows,"sell-tbody","sell-card-list");
-  }catch(err){
-    document.getElementById("sell-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Lỗi: ${err.message}</td></tr>`;
+    var res=await fetch(EVENTS_API);var data=await res.json();
+    var rows=Array.isArray(data)?data:(data.data||data.items||data.content||[]);
+    var type=document.getElementById("ev-type").value;
+    if(type!=="ISS,DIV")rows=rows.filter(function(r){return String(r.eventCode||"").toUpperCase()===type;});
+    var from=document.getElementById("ev-from").value.replace(/-/g,"");
+    var to=document.getElementById("ev-to").value.replace(/-/g,"");
+    rows=rows.filter(function(r){var d=String(r.publicDate||"").replace(/[^0-9]/g,"").slice(0,8);return(!from||d>=from)&&(!to||d<=to);});
+    rows.sort(function(a,b){var da=String(a.publicDate||"").replace(/[^0-9]/g,"").slice(0,8);var db=String(b.publicDate||"").replace(/[^0-9]/g,"").slice(0,8);return db.localeCompare(da);});
+    evAllRows=rows;renderEvents(rows);
+  }catch(err){document.getElementById("ev-tbody").innerHTML="<tr class='state-row'><td colspan='7'>Lỗi: "+err.message+"</td></tr>";}
+}
+function filterEvents(){
+  var kw=document.getElementById("ev-search").value.toLowerCase().trim();
+  var filtered=!kw?evAllRows:evAllRows.filter(function(r){return String(r.ticker||"").toLowerCase().includes(kw)||String(r.eventTitleVi||"").toLowerCase().includes(kw);});
+  renderEvents(filtered);
+}
+function sortEvents(field){
+  if(evSortField===field){evSortDir=evSortDir==="desc"?"asc":"desc";}else{evSortField=field;evSortDir="desc";}
+  ["pub","gdkhq","pay","type"].forEach(function(id){var el=document.getElementById("ev-th-"+id);if(el)el.className="";});
+  var map={publicDate:"pub",displayDate1:"gdkhq",payoutDate:"pay",eventCode:"type"};
+  var active=document.getElementById("ev-th-"+(map[field]||""));
+  if(active)active.className="sort-"+evSortDir;
+  evAllRows.sort(function(a,b){
+    var dateFields=["publicDate","displayDate1","payoutDate"];
+    var da,db;
+    if(dateFields.indexOf(evSortField)>=0){
+      da=String(a[evSortField]||"").replace(/[^0-9]/g,"").slice(0,8);
+      db=String(b[evSortField]||"").replace(/[^0-9]/g,"").slice(0,8);
+      if(parseInt(da.slice(0,4))<1990)da="00000000";
+      if(parseInt(db.slice(0,4))<1990)db="00000000";
+    }else{da=String(a[evSortField]||"").toUpperCase();db=String(b[evSortField]||"").toUpperCase();}
+    return evSortDir==="desc"?db.localeCompare(da):da.localeCompare(db);
+  });
+  renderEvents(evAllRows);
+}
+function renderEvents(rows){
+  document.getElementById("ev-count-label").textContent=rows.length+" sự kiện";
+  var tbody=document.getElementById("ev-tbody"),cardList=document.getElementById("ev-card-list"),isMobile=window.innerWidth<=640;
+  if(!rows.length){tbody.innerHTML="<tr class='state-row'><td colspan='7'>Không có dữ liệu</td></tr>";cardList.innerHTML="";return;}
+  var tableRows="",cards="";
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i];
+    var ticker=String(r.ticker||"–"),code=String(r.eventCode||""),title=String(r.eventTitleVi||r.eventNameVi||r.title||"–");
+    var pubDate=fmtEvDate(r.publicDate||""),gdkhq=fmtEvDate(r.displayDate1||""),payout=fmtEvDate(r.payoutDate||"");
+    var valRaw=r.valuePerShare,valNum=parseFloat(valRaw),isDateStr=String(valRaw||"").indexOf("-")>3||String(valRaw||"").indexOf("GMT")>=0;
+    var valPS=(!isNaN(valNum)&&valNum>0&&valNum<1000000&&!isDateStr)?Number(valNum).toLocaleString("vi-VN")+" ₫":"<span style='color:#ccc;'>–</span>";
+    var badge=evTypeBadge(code);
+    tableRows+="<tr><td><strong style='font-size:13px;color:#1677ff;'>"+ticker+"</strong></td><td>"+badge+"</td><td style='font-size:12px;color:#444;max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'>"+title+"</td><td class='ev-date'>"+pubDate+"</td><td class='ev-date'>"+gdkhq+"</td><td class='ev-date'>"+payout+"</td><td style='text-align:right;font-size:13px;font-weight:600;color:#16a34a;'>"+valPS+"</td></tr>";
+    if(isMobile)cards+="<div class='report-card'><div class='card-top'><span style='font-size:14px;font-weight:700;color:#1677ff;'>"+ticker+"</span><div>"+badge+"</div></div><div class='card-title' style='font-size:12px;'>"+title+"</div><div class='card-footer'><div class='card-meta'><span class='card-date'>"+pubDate+"</span>"+(gdkhq!=="–"?"<span class='card-date'>GDKHQ: "+gdkhq+"</span>":"")+(payout!=="–"?"<span class='card-date'>TH: "+payout+"</span>":"")+"</div><span style='font-size:13px;font-weight:600;color:#16a34a;'>"+valPS+"</span></div></div>";
   }
+  tbody.innerHTML=tableRows;cardList.innerHTML=isMobile?cards:"";
+  if(evView==="cal")renderCalendar();
 }
 
-function toggleBuyDate(cb){ const i=document.getElementById("buy-date"); i.disabled=cb.checked; i.style.opacity=cb.checked?"0.35":"1"; }
-function toggleSellDate(cb){ const i=document.getElementById("sell-date"); i.disabled=cb.checked; i.style.opacity=cb.checked?"0.35":"1"; }
-
+/* ── Calendar ── */
+var calYear,calMonth;
+function renderCalendar(){
+  var now=new Date();if(!calYear)calYear=now.getFullYear();if(!calMonth&&calMonth!==0)calMonth=now.getMonth();
+  var byDate={};
+  evAllRows.forEach(function(r){var d=String(r.publicDate||"").slice(0,10);if(!d||d.length<8)return;if(!byDate[d])byDate[d]=[];byDate[d].push(r);});
+  var firstDay=new Date(calYear,calMonth,1),lastDay=new Date(calYear,calMonth+1,0);
+  var startDow=firstDay.getDay(),startOffset=startDow===0?6:startDow-1;
+  var todayKey=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
+  var mNames=["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"];
+  var h="<div class='cal-nav'><button class='cal-nav-btn' onclick='calPrev()'>‹ Trước</button><span class='cal-nav-title'>"+mNames[calMonth]+" "+calYear+"</span><button class='cal-nav-btn' onclick='calNext()'>Tiếp ›</button></div><div class='cal-grid'>";
+  ["T2","T3","T4","T5","T6","T7","CN"].forEach(function(d){h+="<div class='cal-header'>"+d+"</div>";});
+  for(var i=0;i<startOffset;i++){var pd=new Date(calYear,calMonth,-startOffset+i+1);h+="<div class='cal-day other-month'><div class='cal-day-num'>"+pd.getDate()+"</div></div>";}
+  for(var d=1;d<=lastDay.getDate();d++){
+    var key=calYear+"-"+String(calMonth+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    var isToday=key===todayKey,events=byDate[key]||[];
+    h+="<div class='cal-day"+(isToday?" today":"")+"'><div class='cal-day-num'>"+d+"</div>";
+    events.slice(0,3).forEach(function(r){var cls=r.eventCode==="ISS"?"cal-event-iss":"cal-event-div";h+="<div class='cal-event "+cls+"' onclick='showCalPopup(\""+key+"\")'>"+String(r.ticker||"")+" "+(r.eventCode==="ISS"?"PH":"CT")+"</div>";});
+    if(events.length>3)h+="<div class='cal-more' onclick='showCalPopup(\""+key+"\")'>+"+(events.length-3)+" khác</div>";
+    h+="</div>";
+  }
+  var total=startOffset+lastDay.getDate(),rem=(7-(total%7))%7;
+  for(var i=1;i<=rem;i++)h+="<div class='cal-day other-month'><div class='cal-day-num'>"+i+"</div></div>";
+  h+="</div>";
+  document.getElementById("ev-calendar").innerHTML=h;
+}
+function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
+function showCalPopup(dateKey){
+  var events=evAllRows.filter(function(r){return String(r.publicDate||"").slice(0,10)===dateKey;});
+  if(!events.length)return;
+  var parts=dateKey.split("-"),dateLabel=parts[2]+"/"+parts[1]+"/"+parts[0];
+  var inner="<div class='cal-popup-header'><span class='cal-popup-title'>Sự kiện ngày "+dateLabel+" ("+events.length+")</span><button class='cal-popup-close' onclick='closeCalPopup()'>×</button></div>";
+  events.forEach(function(r){
+    var valRaw=r.valuePerShare,valNum=parseFloat(valRaw),isDateStr=String(valRaw||"").indexOf("-")>3;
+    var valStr=(!isNaN(valNum)&&valNum>0&&valNum<1000000&&!isDateStr)?Number(valNum).toLocaleString("vi-VN")+" ₫":"";
+    var badgeCls=r.eventCode==="ISS"?"badge-iss":"badge-div-cash",badgeTxt=r.eventCode==="ISS"?"Phát hành thêm":"Cổ tức";
+    inner+="<div class='cal-popup-item'><div style='display:flex;align-items:center;gap:8px;'><span style='font-size:14px;font-weight:700;color:#1677ff;'>"+String(r.ticker||"")+"</span><span class='"+badgeCls+"'>"+badgeTxt+"</span>"+(valStr?"<span style='margin-left:auto;font-size:13px;font-weight:600;color:#16a34a;'>"+valStr+"</span>":"")+"</div><div style='font-size:12px;color:#555;margin-top:3px;'>"+String(r.eventTitleVi||"")+"</div><div style='display:flex;gap:10px;margin-top:5px;flex-wrap:wrap;'>"+(fmtEvDate(r.displayDate1||"")!=="–"?"<span style='font-size:11px;color:#888;'>GDKHQ: "+fmtEvDate(r.displayDate1||"")+"</span>":"")+(fmtEvDate(r.payoutDate||"")!=="–"?"<span style='font-size:11px;color:#888;'>Thực hiện: "+fmtEvDate(r.payoutDate||"")+"</span>":"")+"</div></div>";
+  });
+  var overlay=document.createElement("div");overlay.className="cal-popup-overlay";overlay.id="cal-popup-overlay";
+  overlay.onclick=function(e){if(e.target===overlay)closeCalPopup();};
+  var popup=document.createElement("div");popup.className="cal-popup";popup.innerHTML=inner;
+  overlay.appendChild(popup);document.body.appendChild(overlay);
+}
+function closeCalPopup(){var el=document.getElementById("cal-popup-overlay");if(el)el.remove();}
 </script>
 </body>
 </html>
