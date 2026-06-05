@@ -293,6 +293,9 @@ tbody tr:hover { background: #fafbfc; }
       <input type="number" class="pb-input" id="dip-tbgtdd" value="5" min="0" step="1">
       <span class="pb-label">Ngày:</span>
       <input type="date" class="pb-date" id="dip-date">
+      <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
+        <input type="checkbox" id="dip-alltime" onchange="toggleDipDate(this)" style="cursor:pointer;"> All time
+      </label>
       <span class="pb-label">Số lượng:</span>
       <div class="custom-select">
         <select id="dip-count">
@@ -333,6 +336,9 @@ tbody tr:hover { background: #fafbfc; }
       <input type="number" class="pb-input" id="pb-tbgtdd" value="5" min="0" step="1">
       <span class="pb-label">Ngày:</span>
       <input type="date" class="pb-date" id="pb-date">
+      <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
+        <input type="checkbox" id="pb-alltime" onchange="togglePbDate(this)" style="cursor:pointer;"> All time
+      </label>
       <span class="pb-label">Số lượng:</span>
       <div class="custom-select">
         <select id="pb-count">
@@ -577,7 +583,8 @@ async function loadPullback(){
   const tbgtdd = document.getElementById("pb-tbgtdd").value||"5";
   const dateRaw = document.getElementById("pb-date").value;
   const count   = document.getElementById("pb-count").value||"10";
-  const dateStr = dateRaw.replace(/-/g,"");
+  const alltime = document.getElementById("pb-alltime").checked;
+  const dateStr = alltime ? "" : dateRaw.replace(/-/g,"");
 
   document.getElementById("pb-tbody").innerHTML=`<tr class="state-row"><td colspan="10">Đang tải...</td></tr>`;
   document.getElementById("pb-count-label").textContent="";
@@ -686,7 +693,8 @@ async function loadDip(){
   const tbgtdd = document.getElementById("dip-tbgtdd").value||"5";
   const dateRaw = document.getElementById("dip-date").value;
   const count   = document.getElementById("dip-count").value||"10";
-  const dateStr = dateRaw.replace(/-/g,"");
+  const alltime = document.getElementById("dip-alltime").checked;
+  const dateStr = alltime ? "" : dateRaw.replace(/-/g,"");
 
   document.getElementById("dip-tbody").innerHTML=`<tr class="state-row"><td colspan="10">Đang tải...</td></tr>`;
   document.getElementById("dip-count-label").textContent="";
@@ -772,6 +780,17 @@ function renderDip(rows, total){
       </div>
     </div>`).join("");
   }
+}
+
+function togglePbDate(cb){
+  const inp = document.getElementById("pb-date");
+  inp.disabled = cb.checked;
+  inp.style.opacity = cb.checked ? "0.35" : "1";
+}
+function toggleDipDate(cb){
+  const inp = document.getElementById("dip-date");
+  inp.disabled = cb.checked;
+  inp.style.opacity = cb.checked ? "0.35" : "1";
 }
 
 </script>
