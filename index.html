@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Báo Cáo & Cổ Phiếu </title>
+<title>Báo Cáo & Cổ Phiếu – Simplize</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; background: #f5f6f8; color: #1a1a1a; font-size: 14px; }
@@ -143,6 +143,12 @@ tbody tr:hover { background: #fafbfc; }
 .signal-dip-sm   { font-size: 11px; font-weight: 600; background: #dbeafe; color: #1d4ed8; padding: 2px 7px; border-radius: 4px; }
 .signal-dip-big  { font-size: 11px; font-weight: 600; background: #f3e8ff; color: #7c3aed; padding: 2px 7px; border-radius: 4px; }
 
+
+.signal-small-buy { font-size:11px;font-weight:600;background:#dcfce7;color:#15803d;padding:2px 7px;border-radius:4px; }
+.signal-big-buy   { font-size:11px;font-weight:600;background:#bbf7d0;color:#065f46;padding:2px 7px;border-radius:4px; }
+.signal-small-sell{ font-size:11px;font-weight:600;background:#fee2e2;color:#dc2626;padding:2px 7px;border-radius:4px; }
+.signal-big-sell  { font-size:11px;font-weight:600;background:#fecaca;color:#991b1b;padding:2px 7px;border-radius:4px; }
+
 /* Pullback mobile card */
 .pb-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
 .pb-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -178,13 +184,15 @@ tbody tr:hover { background: #fafbfc; }
 <body>
 <div class="page">
   <div class="page-title">📊 Báo Cáo & Cổ Phiếu</div>
-  <div class="page-subtitle">Báo cáo phân tích · Tra cứu mã · Pullback · DIP</div>
+  <div class="page-subtitle">Báo cáo phân tích · Tra cứu mã · Pullback · DIP · Buy · Sell</div>
 
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('all')">🗂 Tất cả báo cáo</button>
     <button class="tab-btn" onclick="switchTab('ticker')">🔍 Tra cứu mã</button>
     <button class="tab-btn" onclick="switchTab('pullback')">📉 Pullback</button>
     <button class="tab-btn" onclick="switchTab('dip')">🎯 DIP</button>
+    <button class="tab-btn" onclick="switchTab('buy')">🟢 Buy</button>
+    <button class="tab-btn" onclick="switchTab('sell')">🔴 Sell</button>
   </div>
 
   <!-- ═══════ TAB 1 ═══════ -->
@@ -296,14 +304,7 @@ tbody tr:hover { background: #fafbfc; }
       <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
         <input type="checkbox" id="dip-alltime" onchange="toggleDipDate(this)" style="cursor:pointer;"> All time
       </label>
-      <span class="pb-label">Số lượng:</span>
-      <div class="custom-select">
-        <select id="dip-count">
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-        </select>
-      </div>
+      <input type="hidden" id="dip-count" value="500">
       <button class="btn-primary" onclick="loadDip()">Lọc</button>
       <span class="pb-count" id="dip-count-label"></span>
     </div>
@@ -340,14 +341,7 @@ tbody tr:hover { background: #fafbfc; }
       <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
         <input type="checkbox" id="pb-alltime" onchange="togglePbDate(this)" style="cursor:pointer;"> All time
       </label>
-      <span class="pb-label">Số lượng:</span>
-      <div class="custom-select">
-        <select id="pb-count">
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-        </select>
-      </div>
+      <input type="hidden" id="pb-count" value="500">
       <button class="btn-primary" onclick="loadPullback()">Lọc</button>
       <span class="pb-count" id="pb-count-label"></span>
     </div>
@@ -372,6 +366,82 @@ tbody tr:hover { background: #fafbfc; }
     </div>
     <div class="card-list" id="pb-card-list"></div>
   </div>
+  <!-- ═══════ TAB 5: BUY ═══════ -->
+  <div class="tab-panel" id="panel-buy">
+    <div class="pb-toolbar">
+      <span class="pb-label">Vốn hóa tối thiểu (tỷ):</span>
+      <input type="number" class="pb-input" id="buy-vonhoa" value="3000" min="0" step="500">
+      <span class="pb-label">KLGD TB tối thiểu (tỷ):</span>
+      <input type="number" class="pb-input" id="buy-tbgtdd" value="5" min="0" step="1">
+      <span class="pb-label">Ngày:</span>
+      <input type="date" class="pb-date" id="buy-date">
+      <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
+        <input type="checkbox" id="buy-alltime" onchange="toggleBuyDate(this)" style="cursor:pointer;"> All time
+      </label>
+      <input type="hidden" id="buy-count" value="500">
+      <button class="btn-primary" onclick="loadBuy()">Lọc</button>
+      <span class="pb-count" id="buy-count-label"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:90px;">Ngày</th>
+          <th style="width:80px;">Mã</th>
+          <th style="width:60px;">Rating</th>
+          <th style="width:90px;text-align:right;">Giá TH</th>
+          <th style="width:90px;text-align:right;">Giá hiện tại</th>
+          <th style="width:80px;text-align:right;">% ngày</th>
+          <th style="width:110px;">Tín hiệu</th>
+          <th style="width:105px;text-align:right;">Đề xuất 1</th>
+          <th style="width:105px;text-align:right;">Đề xuất 2</th>
+          <th style="width:110px;text-align:right;">Khối lượng</th>
+          <th style="width:80px;text-align:right;">% KL</th>
+        </tr></thead>
+        <tbody id="buy-tbody"><tr class="state-row"><td colspan="11">Nhấn "Lọc" để tải tín hiệu BUY</td></tr></tbody>
+      </table>
+    </div>
+    <div class="card-list" id="buy-card-list"></div>
+  </div>
+
+  <!-- ═══════ TAB 6: SELL ═══════ -->
+  <div class="tab-panel" id="panel-sell">
+    <div class="pb-toolbar">
+      <span class="pb-label">Vốn hóa tối thiểu (tỷ):</span>
+      <input type="number" class="pb-input" id="sell-vonhoa" value="4000" min="0" step="500">
+      <span class="pb-label">KLGD TB tối thiểu (tỷ):</span>
+      <input type="number" class="pb-input" id="sell-tbgtdd" value="6" min="0" step="1">
+      <span class="pb-label">ROE tối thiểu:</span>
+      <input type="number" class="pb-input" id="sell-roe" value="0.1" min="0" step="0.05" style="width:70px;">
+      <span class="pb-label">Ngày:</span>
+      <input type="date" class="pb-date" id="sell-date">
+      <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#555;cursor:pointer;">
+        <input type="checkbox" id="sell-alltime" onchange="toggleSellDate(this)" style="cursor:pointer;"> All time
+      </label>
+      <input type="hidden" id="sell-count" value="500">
+      <button class="btn-primary" onclick="loadSell()">Lọc</button>
+      <span class="pb-count" id="sell-count-label"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:90px;">Ngày</th>
+          <th style="width:80px;">Mã</th>
+          <th style="width:60px;">Rating</th>
+          <th style="width:90px;text-align:right;">Giá TH</th>
+          <th style="width:90px;text-align:right;">Giá hiện tại</th>
+          <th style="width:80px;text-align:right;">% ngày</th>
+          <th style="width:110px;">Tín hiệu</th>
+          <th style="width:105px;text-align:right;">Đề xuất 1</th>
+          <th style="width:105px;text-align:right;">Đề xuất 2</th>
+          <th style="width:110px;text-align:right;">Khối lượng</th>
+          <th style="width:80px;text-align:right;">% KL</th>
+        </tr></thead>
+        <tbody id="sell-tbody"><tr class="state-row"><td colspan="11">Nhấn "Lọc" để tải tín hiệu SELL</td></tr></tbody>
+      </table>
+    </div>
+    <div class="card-list" id="sell-card-list"></div>
+  </div>
+
 </div>
 
 <script>
@@ -395,11 +465,13 @@ const NOW = Date.now(), WEEK_MS = 7*86400000;
   const day = String(d.getDate()).padStart(2,"0");
   document.getElementById("pb-date").value = `${y}-${m}-${day}`;
   document.getElementById("dip-date").value = `${y}-${m}-${day}`;
+  document.getElementById("buy-date").value = `${y}-${m}-${day}`;
+  document.getElementById("sell-date").value = `${y}-${m}-${day}`;
 })();
 
 /* ── Tabs ── */
 function switchTab(name) {
-  ["all","ticker","pullback","dip"].forEach((n,i)=>{
+  ["all","ticker","pullback","dip","buy","sell"].forEach((n,i)=>{
     document.querySelectorAll(".tab-btn")[i].classList.toggle("active",n===name);
     document.getElementById("panel-"+n).classList.toggle("active",n===name);
   });
@@ -808,6 +880,148 @@ function toggleDipDate(cb){
   inp.disabled = cb.checked;
   inp.style.opacity = cb.checked ? "0.35" : "1";
 }
+
+/* ═══════ BUY / SELL helpers ═══════ */
+function buySellSignalCell(s){
+  if(!s||s==="null"||s===null) return '<span class="signal-none">–</span>';
+  const u = String(s).toUpperCase();
+  if(u==="BIG BUY")   return `<span class="signal-big-buy">${s}</span>`;
+  if(u==="SMALL BUY") return `<span class="signal-small-buy">${s}</span>`;
+  if(u==="BIG SELL")  return `<span class="signal-big-sell">${s}</span>`;
+  if(u==="SMALL SELL")return `<span class="signal-small-sell">${s}</span>`;
+  return `<span class="signal-wait">${s}</span>`;
+}
+
+function renderBuySellTable(rows, tbodyId, cardListId){
+  const tbody = document.getElementById(tbodyId);
+  if(!rows.length){
+    tbody.innerHTML=`<tr class="state-row"><td colspan="11">Không có dữ liệu</td></tr>`;
+    document.getElementById(cardListId).innerHTML="";
+    return;
+  }
+  tbody.innerHTML = rows.map(r=>`<tr>
+    <td class="date-cell">${fmtRowDate(r.date)}</td>
+    <td><strong style="font-size:14px;color:#1677ff;">${r.ticker||""}</strong></td>
+    <td><span class="rating-badge ${ratingClass(r.rating)}">${r.rating||"–"}</span></td>
+    <td style="text-align:right;">${priceCell(r.gia_thuc_hien)}</td>
+    <td style="text-align:right;">${priceCell(r.priceFlat)}</td>
+    <td style="text-align:right;">${pctCell(r.pricePercent)}</td>
+    <td>${buySellSignalCell(r.signal)}</td>
+    <td style="text-align:right;">${priceCell(r.propose_price_1)}</td>
+    <td style="text-align:right;">${priceCell(r.propose_price_2)}</td>
+    <td style="text-align:right;font-size:12px;color:#666;">${r.volumeFlat?Number(r.volumeFlat).toLocaleString("vi-VN"):"–"}</td>
+    <td style="text-align:right;">${pctCell(r.volumePercent,true)}</td>
+  </tr>`).join("");
+
+  // Mobile cards
+  if(window.innerWidth<=640){
+    document.getElementById(cardListId).innerHTML = rows.map(r=>`<div class="pb-card">
+      <div class="pb-card-top">
+        <span class="pb-card-ticker">${r.ticker||""}</span>
+        <span class="rating-badge ${ratingClass(r.rating)}">${r.rating||"–"}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        ${buySellSignalCell(r.signal)}
+        <span style="font-size:11px;color:#aaa;">${fmtRowDate(r.date)}</span>
+      </div>
+      <div class="pb-card-meta">
+        <div class="pb-meta-item"><div class="pb-meta-label">Giá TH</div><div class="pb-meta-value">${priceCell(r.gia_thuc_hien)}</div></div>
+        <div class="pb-meta-item"><div class="pb-meta-label">Giá HT</div><div class="pb-meta-value">${priceCell(r.priceFlat)}</div></div>
+        <div class="pb-meta-item"><div class="pb-meta-label">% ngày</div><div class="pb-meta-value">${pctCell(r.pricePercent)}</div></div>
+        <div class="pb-meta-item"><div class="pb-meta-label">% KL</div><div class="pb-meta-value">${pctCell(r.volumePercent,true)}</div></div>
+        <div class="pb-meta-item"><div class="pb-meta-label">Đề xuất 1</div><div class="pb-meta-value">${priceCell(r.propose_price_1)}</div></div>
+        <div class="pb-meta-item"><div class="pb-meta-label">Đề xuất 2</div><div class="pb-meta-value">${priceCell(r.propose_price_2)}</div></div>
+      </div>
+    </div>`).join("");
+  }
+}
+
+async function loadBuy(){
+  const vonhoa  = document.getElementById("buy-vonhoa").value||"3000";
+  const tbgtdd  = document.getElementById("buy-tbgtdd").value||"5";
+  const dateRaw = document.getElementById("buy-date").value;
+  const alltime = document.getElementById("buy-alltime").checked;
+  const dateStr = alltime?"":dateRaw.replace(/-/g,"");
+  const count   = document.getElementById("buy-count").value||"10";
+
+  document.getElementById("buy-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Đang tải...</td></tr>`;
+  document.getElementById("buy-count-label").textContent="";
+  document.getElementById("buy-card-list").innerHTML="";
+
+  const body = {
+    "date": dateStr,
+    "values":[
+      {"header":"signal","values":["SMALL BUY","BIG BUY"],"isValuesAll":false,"valuesString":""},
+      {"header":"rating","values":["A+","A","A-","B+","B","B-","C+","C","C-"],"isValuesAll":false,"valuesString":""}
+    ],
+    "conditions":[
+      {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
+      {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}}
+    ],
+    "sort":[{"point":"desc"}],
+    "offset":0, "count":Number(count),
+    "returns":["ticker","date","rating","volumeFlat","volumePercent","signal","gia_thuc_hien","priceFlat","pricePercent","pc","pf","propose_price_1","propose_price_2"]
+  };
+  try{
+    const res = await fetch(API_PB,{method:"POST",headers:{"accept":"*/*","content-type":"application/json","origin":"https://www.finbox.vn","referer":"https://www.finbox.vn/","user-id":USER_ID,"user-agent":"Mozilla/5.0"},body:JSON.stringify(body)});
+    const json = await res.json();
+    let rows=[];
+    if(Array.isArray(json))rows=json;
+    else if(json.symbols&&Array.isArray(json.symbols))rows=json.symbols;
+    else if(json.data&&Array.isArray(json.data))rows=json.data;
+    rows.sort((a,b)=>String(b.date||0).localeCompare(String(a.date||0)));
+    document.getElementById("buy-count-label").textContent=`${rows.length} / ${json.total||rows.length} cổ phiếu`;
+    renderBuySellTable(rows,"buy-tbody","buy-card-list");
+  }catch(err){
+    document.getElementById("buy-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Lỗi: ${err.message}</td></tr>`;
+  }
+}
+
+async function loadSell(){
+  const vonhoa  = document.getElementById("sell-vonhoa").value||"4000";
+  const tbgtdd  = document.getElementById("sell-tbgtdd").value||"6";
+  const roe     = document.getElementById("sell-roe").value||"0.1";
+  const dateRaw = document.getElementById("sell-date").value;
+  const alltime = document.getElementById("sell-alltime").checked;
+  const dateStr = alltime?"":dateRaw.replace(/-/g,"");
+  const count   = document.getElementById("sell-count").value||"10";
+
+  document.getElementById("sell-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Đang tải...</td></tr>`;
+  document.getElementById("sell-count-label").textContent="";
+  document.getElementById("sell-card-list").innerHTML="";
+
+  const body = {
+    "date": dateStr,
+    "values":[
+      {"header":"signal","values":["SMALL SELL","BIG SELL"],"isValuesAll":false,"valuesString":""},
+      {"header":"rating","values":["A+","A","A-","B+","B","B-"],"isValuesAll":false,"valuesString":""}
+    ],
+    "conditions":[
+      {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
+      {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}},
+      {"header":"roe","id":7,"value":{"singleValue":roe}}
+    ],
+    "sort":[{"point":"asc"}],
+    "offset":0, "count":Number(count),
+    "returns":["ticker","date","rating","volumeFlat","volumePercent","signal","gia_thuc_hien","priceFlat","pricePercent","pc","pf","propose_price_1","propose_price_2"]
+  };
+  try{
+    const res = await fetch(API_PB,{method:"POST",headers:{"accept":"*/*","content-type":"application/json","origin":"https://www.finbox.vn","referer":"https://www.finbox.vn/","user-id":USER_ID,"user-agent":"Mozilla/5.0"},body:JSON.stringify(body)});
+    const json = await res.json();
+    let rows=[];
+    if(Array.isArray(json))rows=json;
+    else if(json.symbols&&Array.isArray(json.symbols))rows=json.symbols;
+    else if(json.data&&Array.isArray(json.data))rows=json.data;
+    rows.sort((a,b)=>String(b.date||0).localeCompare(String(a.date||0)));
+    document.getElementById("sell-count-label").textContent=`${rows.length} / ${json.total||rows.length} cổ phiếu`;
+    renderBuySellTable(rows,"sell-tbody","sell-card-list");
+  }catch(err){
+    document.getElementById("sell-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Lỗi: ${err.message}</td></tr>`;
+  }
+}
+
+function toggleBuyDate(cb){ const i=document.getElementById("buy-date"); i.disabled=cb.checked; i.style.opacity=cb.checked?"0.35":"1"; }
+function toggleSellDate(cb){ const i=document.getElementById("sell-date"); i.disabled=cb.checked; i.style.opacity=cb.checked?"0.35":"1"; }
 
 </script>
 </body>
