@@ -6,271 +6,171 @@
 <title>Báo Cáo Phân Tích – Simplize</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  background: #f5f6f8;
-  color: #1a1a1a;
-  font-size: 14px;
-}
-
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; background: #f5f6f8; color: #1a1a1a; font-size: 14px; }
 .page { max-width: 1300px; margin: 0 auto; padding: 20px 16px; }
 
-/* ── Header ── */
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.page-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1a1a1a;
-}
+/* ── Page header ── */
+.page-header { margin-bottom: 16px; }
+.page-title { font-size: 18px; font-weight: 600; color: #1a1a1a; }
 .page-subtitle { font-size: 12px; color: #888; margin-top: 2px; }
+
+/* ── Tabs ── */
+.tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid #e8e8e8; }
+.tab-btn {
+  padding: 10px 20px; font-size: 14px; font-weight: 500;
+  color: #888; background: none; border: none; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  transition: color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: #1677ff; }
+.tab-btn.active { color: #1677ff; border-bottom-color: #1677ff; }
+
+/* ── Tab panels ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
 /* ── Toolbar ── */
 .toolbar {
-  background: #fff;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
+  background: #fff; border: 1px solid #e8e8e8; border-radius: 10px;
+  padding: 14px 16px; display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px; flex-wrap: wrap;
 }
-
-.filter-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.filter-group label {
-  font-size: 12px;
-  color: #888;
-  white-space: nowrap;
-}
-
+.filter-group { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.filter-group label { font-size: 12px; color: #888; white-space: nowrap; }
 .custom-select { position: relative; }
-
 .custom-select select {
-  appearance: none;
-  -webkit-appearance: none;
-  background: #f5f6f8;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
-  padding: 6px 28px 6px 10px;
-  font-size: 13px;
-  color: #1a1a1a;
-  cursor: pointer;
-  outline: none;
-  min-width: 110px;
+  appearance: none; -webkit-appearance: none;
+  background: #f5f6f8; border: 1px solid #e8e8e8; border-radius: 6px;
+  padding: 6px 28px 6px 10px; font-size: 13px; color: #1a1a1a;
+  cursor: pointer; outline: none; min-width: 110px;
 }
 .custom-select select:focus { border-color: #1677ff; }
 .custom-select::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  right: 9px; top: 50%;
-  transform: translateY(-50%);
-  width: 0; height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid #aaa;
+  content: ""; pointer-events: none; position: absolute;
+  right: 9px; top: 50%; transform: translateY(-50%);
+  width: 0; height: 0; border-left: 4px solid transparent;
+  border-right: 4px solid transparent; border-top: 5px solid #aaa;
 }
-
 .btn-apply {
-  background: #1677ff;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 7px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
+  background: #1677ff; color: #fff; border: none; border-radius: 6px;
+  padding: 7px 16px; font-size: 13px; font-weight: 500;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
 }
 .btn-apply:active { background: #0958d9; }
-
 .toolbar-spacer { flex: 1; min-width: 0; }
-
 .search-wrap { position: relative; width: 100%; }
 .search-wrap input {
-  width: 100%;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
-  padding: 6px 10px 6px 30px;
-  font-size: 13px;
-  background: #f5f6f8;
-  color: #1a1a1a;
-  outline: none;
+  width: 100%; border: 1px solid #e8e8e8; border-radius: 6px;
+  padding: 6px 10px 6px 30px; font-size: 13px;
+  background: #f5f6f8; color: #1a1a1a; outline: none;
 }
 .search-wrap input:focus { border-color: #1677ff; background: #fff; }
-.search-wrap svg {
-  position: absolute;
-  left: 8px; top: 50%;
-  transform: translateY(-50%);
-  color: #bbb;
-  pointer-events: none;
+.search-wrap svg { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: #bbb; pointer-events: none; }
+
+/* ── Ticker search (Tab 2) ── */
+.ticker-search-box {
+  background: #fff; border: 1px solid #e8e8e8; border-radius: 10px;
+  padding: 16px; display: flex; gap: 10px; align-items: center;
+  margin-bottom: 14px; flex-wrap: wrap;
 }
+.ticker-input-wrap { position: relative; flex: 1; min-width: 160px; max-width: 300px; }
+.ticker-input-wrap input {
+  width: 100%; border: 1px solid #e8e8e8; border-radius: 6px;
+  padding: 8px 10px 8px 36px; font-size: 14px; font-weight: 600;
+  text-transform: uppercase; background: #f5f6f8; color: #1a1a1a; outline: none;
+}
+.ticker-input-wrap input:focus { border-color: #1677ff; background: #fff; }
+.ticker-input-wrap input::placeholder { text-transform: none; font-weight: 400; color: #bbb; }
+.ticker-input-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #bbb; pointer-events: none; }
+.btn-search-ticker {
+  background: #1677ff; color: #fff; border: none; border-radius: 6px;
+  padding: 8px 20px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;
+}
+.btn-search-ticker:active { background: #0958d9; }
+.ticker-search-hint { font-size: 12px; color: #aaa; }
 
 /* ── Result count ── */
-.result-count {
-  font-size: 12px;
-  color: #8c8c8c;
-  margin-bottom: 8px;
-  padding: 0 2px;
-}
+.result-count { font-size: 12px; color: #8c8c8c; margin-bottom: 8px; padding: 0 2px; }
 
-/* ── DESKTOP TABLE ── */
-.table-wrap {
-  background: #fff;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
+/* ── Shared table styles ── */
+.table-wrap { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; overflow: hidden; }
 table { width: 100%; border-collapse: collapse; }
-
 thead th {
-  background: #fafafa;
-  font-size: 11px;
-  font-weight: 500;
-  color: #999;
-  padding: 10px 14px;
-  text-align: left;
-  border-bottom: 1px solid #f0f0f0;
-  white-space: nowrap;
-  cursor: pointer;
-  user-select: none;
-  text-transform: uppercase;
-  letter-spacing: .03em;
+  background: #fafafa; font-size: 11px; font-weight: 500; color: #999;
+  padding: 10px 14px; text-align: left; border-bottom: 1px solid #f0f0f0;
+  white-space: nowrap; cursor: pointer; user-select: none;
+  text-transform: uppercase; letter-spacing: .03em;
 }
 thead th:hover { color: #1677ff; }
 thead th.sort-asc::after  { content: " ↑"; color: #1677ff; }
 thead th.sort-desc::after { content: " ↓"; color: #1677ff; }
-
-tbody td {
-  padding: 13px 14px;
-  border-bottom: 1px solid #f5f5f5;
-  vertical-align: middle;
-}
+tbody td { padding: 13px 14px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover { background: #fafbfc; }
-
 .date-cell { font-size: 12px; color: #888; white-space: nowrap; width: 95px; }
 .title-cell { font-size: 13px; color: #1a1a1a; line-height: 1.5; }
-.ticker-col { width: 145px; }
+.ticker-col { width: 120px; }
 .source-col { width: 90px; font-size: 12px; color: #666; }
 .rec-col    { width: 100px; }
 .price-col  { width: 105px; text-align: right; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .dl-col     { width: 52px; text-align: center; }
-
 .ticker-cell { display: flex; align-items: center; gap: 7px; }
-.ticker-logo {
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: #f0f0f0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 700; color: #666;
-}
-.ticker-logo img { width: 100%; height: 100%; object-fit: contain; }
 .ticker-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
-
 .tag-macro    { font-size: 11px; color: #92400e; background: #fef3c7; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
 .tag-strategy { font-size: 11px; color: #5b21b6; background: #ede9fe; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
-
 .rec { font-size: 12px; font-weight: 600; letter-spacing: .02em; }
 .rec-buy      { color: #16a34a; }
 .rec-positive { color: #0369a1; }
 .rec-neutral  { color: #9ca3af; }
 .rec-other    { color: #92400e; }
-
 .price-empty { color: #d1d5db !important; }
-
 .btn-dl {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px;
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  color: #9ca3af;
-  text-decoration: none;
-  transition: border-color .15s, color .15s, background .15s;
+  width: 30px; height: 30px; border-radius: 6px;
+  border: 1px solid #e5e7eb; background: #fff; color: #9ca3af;
+  text-decoration: none; transition: border-color .15s, color .15s, background .15s;
 }
 .btn-dl:hover { border-color: #1677ff; color: #1677ff; background: #e6f1ff; }
-
 .state-row td { text-align: center; padding: 48px 0; color: #bbb; font-size: 14px; }
 
-/* ── MOBILE CARDS (≤ 640px) ── */
-.card-list { display: none; }
+/* ── Ticker info bar ── */
+.ticker-info-bar {
+  background: #fff; border: 1px solid #e8e8e8; border-radius: 10px;
+  padding: 14px 18px; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.ticker-info-name { font-size: 18px; font-weight: 700; color: #1677ff; }
+.ticker-info-full { font-size: 13px; color: #666; }
+.ticker-info-rec-wrap { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.ticker-info-price { font-size: 13px; color: #555; }
 
-.report-card {
-  background: #fff;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  padding: 14px 14px 12px;
-  margin-bottom: 10px;
-}
-.card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 8px;
-}
+/* ── Mobile cards ── */
+.card-list { display: none; }
+.report-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 14px 14px 12px; margin-bottom: 10px; }
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 .card-ticker-wrap { display: flex; align-items: center; gap: 7px; }
-.card-logo {
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: #f0f0f0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 700; color: #666;
-}
-.card-logo img { width: 100%; height: 100%; object-fit: contain; }
 .card-ticker { font-size: 14px; font-weight: 700; color: #1a1a1a; }
 .card-source { font-size: 11px; color: #999; }
 .card-right  { display: flex; align-items: center; gap: 8px; }
 .card-title  { font-size: 13px; color: #333; line-height: 1.5; margin-bottom: 10px; }
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-.card-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.card-date  { font-size: 11px; color: #aaa; }
-.card-price { font-size: 12px; font-weight: 600; color: #1a1a1a; font-variant-numeric: tabular-nums; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card-meta   { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.card-date   { font-size: 11px; color: #aaa; }
+.card-price  { font-size: 12px; font-weight: 600; color: #1a1a1a; font-variant-numeric: tabular-nums; }
 .card-dl {
   display: inline-flex; align-items: center; gap: 5px;
-  font-size: 12px; font-weight: 500;
-  color: #1677ff;
-  text-decoration: none;
-  padding: 5px 10px;
-  border: 1px solid #c7deff;
-  border-radius: 6px;
-  background: #f0f7ff;
-  white-space: nowrap;
-  flex-shrink: 0;
+  font-size: 12px; font-weight: 500; color: #1677ff;
+  text-decoration: none; padding: 5px 10px;
+  border: 1px solid #c7deff; border-radius: 6px;
+  background: #f0f7ff; white-space: nowrap; flex-shrink: 0;
 }
 
-/* ── Responsive breakpoints ── */
+/* ── Responsive ── */
 @media (max-width: 640px) {
   .page { padding: 14px 12px; }
   .page-title { font-size: 16px; }
-
+  .tab-btn { padding: 8px 14px; font-size: 13px; }
   .toolbar { padding: 12px; gap: 8px; }
   .filter-group { width: calc(50% - 4px); }
   .filter-group label { display: none; }
@@ -278,14 +178,12 @@ tbody tr:hover { background: #fafbfc; }
   .btn-apply { width: 100%; text-align: center; }
   .toolbar-spacer { display: none; }
   .search-wrap-outer { width: 100%; }
-
   .table-wrap { display: none; }
   .card-list { display: block; }
+  .ticker-input-wrap { max-width: 100%; }
 }
-
 @media (min-width: 641px) and (max-width: 900px) {
-  .source-col, thead th:nth-child(4),
-  tbody td:nth-child(4) { display: none; }
+  .source-col, thead th:nth-child(4), tbody td:nth-child(4) { display: none; }
 }
 </style>
 </head>
@@ -293,95 +191,142 @@ tbody tr:hover { background: #fafbfc; }
 <div class="page">
 
   <div class="page-header">
-    <div>
-      <div class="page-title">📊 Báo Cáo Phân Tích</div>
-      <div class="page-subtitle">Tổng hợp báo cáo từ các công ty chứng khoán</div>
+    <div class="page-title">📊 Báo Cáo Phân Tích</div>
+    <div class="page-subtitle">Tổng hợp báo cáo từ các công ty chứng khoán</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('all')">🗂 Tất cả báo cáo</button>
+    <button class="tab-btn" onclick="switchTab('ticker')">🔍 Tìm theo mã cổ phiếu</button>
+  </div>
+
+  <!-- ══════════ TAB 1: Tất cả báo cáo ══════════ -->
+  <div class="tab-panel active" id="panel-all">
+    <div class="toolbar">
+      <div class="filter-group">
+        <label>Loại báo cáo</label>
+        <div class="custom-select">
+          <select id="type-filter">
+            <option value="">Tất cả</option>
+            <option value="stock">Cổ phiếu</option>
+            <option value="macro">Vĩ mô</option>
+            <option value="strategy">Chiến lược</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Khuyến nghị</label>
+        <div class="custom-select">
+          <select id="rec-filter">
+            <option value="">Tất cả KN</option>
+            <option value="MUA">Mua</option>
+            <option value="KHẢ QUAN">Khả quan</option>
+            <option value="TRUNG LẬP">Trung lập</option>
+            <option value="KHÁC">Khác</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Nguồn</label>
+        <div class="custom-select">
+          <select id="source-filter">
+            <option value="">Tất cả nguồn</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-apply" onclick="applyFilters()">Áp dụng</button>
+      <div class="toolbar-spacer"></div>
+      <div class="search-wrap-outer" style="min-width:180px;max-width:240px;flex:1;">
+        <div class="search-wrap">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="search" placeholder="Tìm mã, tiêu đề...">
+        </div>
+      </div>
+    </div>
+
+    <div class="result-count" id="result-count"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="date-cell sort-desc" onclick="toggleSort()">Ngày</th>
+            <th>Tiêu đề</th>
+            <th class="ticker-col">Mã</th>
+            <th class="source-col">Nguồn</th>
+            <th class="rec-col">Khuyến nghị</th>
+            <th class="price-col" style="text-align:right">Giá mục tiêu</th>
+            <th class="dl-col">Tải về</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr class="state-row"><td colspan="7">Đang tải dữ liệu...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-list" id="card-list">
+      <div style="text-align:center;padding:40px 0;color:#bbb;font-size:14px;">Đang tải...</div>
     </div>
   </div>
 
-  <!-- Toolbar -->
-  <div class="toolbar">
-    <div class="filter-group">
-      <label>Loại báo cáo</label>
-      <div class="custom-select">
-        <select id="type-filter">
-          <option value="">Tất cả</option>
-          <option value="stock">Cổ phiếu</option>
-          <option value="macro">Vĩ mô</option>
-          <option value="strategy">Chiến lược</option>
-        </select>
+  <!-- ══════════ TAB 2: Tìm theo mã ══════════ -->
+  <div class="tab-panel" id="panel-ticker">
+    <div class="ticker-search-box">
+      <div class="ticker-input-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <input type="text" id="ticker-input" placeholder="Nhập mã cổ phiếu (VD: ACB)" maxlength="10"
+          onkeydown="if(event.key==='Enter') searchTicker()">
+      </div>
+      <button class="btn-search-ticker" onclick="searchTicker()">Tìm báo cáo</button>
+      <span class="ticker-search-hint" id="ticker-hint">Nhập mã và nhấn Tìm</span>
+    </div>
+
+    <div id="ticker-info-bar" style="display:none;" class="ticker-info-bar">
+      <div>
+        <div class="ticker-info-name" id="ti-ticker"></div>
+        <div class="ticker-info-full" id="ti-count"></div>
       </div>
     </div>
 
-    <div class="filter-group">
-      <label>Khuyến nghị</label>
-      <div class="custom-select">
-        <select id="rec-filter">
-          <option value="">Tất cả KN</option>
-          <option value="MUA">Mua</option>
-          <option value="KHẢ QUAN">Khả quan</option>
-          <option value="TRUNG LẬP">Trung lập</option>
-          <option value="KHÁC">Khác</option>
-        </select>
-      </div>
+    <div class="result-count" id="ticker-result-count"></div>
+
+    <div class="table-wrap" id="ticker-table-wrap" style="display:none;">
+      <table>
+        <thead>
+          <tr>
+            <th class="date-cell sort-desc" onclick="toggleTickerSort()">Ngày</th>
+            <th>Tiêu đề</th>
+            <th class="source-col">Nguồn</th>
+            <th class="rec-col">Khuyến nghị</th>
+            <th class="price-col" style="text-align:right">Giá mục tiêu</th>
+            <th class="dl-col">Tải về</th>
+          </tr>
+        </thead>
+        <tbody id="ticker-tbody"></tbody>
+      </table>
     </div>
-
-    <div class="filter-group">
-      <label>Nguồn</label>
-      <div class="custom-select">
-        <select id="source-filter">
-          <option value="">Tất cả nguồn</option>
-        </select>
-      </div>
-    </div>
-
-    <button class="btn-apply" onclick="applyFilters()">Áp dụng</button>
-
-    <div class="toolbar-spacer"></div>
-
-    <div class="search-wrap-outer" style="min-width:180px;max-width:240px;flex:1;">
-      <div class="search-wrap">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" id="search" placeholder="Tìm mã, tiêu đề...">
-      </div>
-    </div>
-  </div>
-
-  <div class="result-count" id="result-count"></div>
-
-  <!-- Desktop table -->
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th class="date-cell sort-desc" onclick="toggleSort()">Ngày</th>
-          <th>Tiêu đề</th>
-          <th class="ticker-col">Mã cổ phiếu</th>
-          <th class="source-col">Nguồn</th>
-          <th class="rec-col">Khuyến nghị</th>
-          <th class="price-col" style="text-align:right">Giá mục tiêu</th>
-          <th class="dl-col">Tải về</th>
-        </tr>
-      </thead>
-      <tbody id="tbody">
-        <tr class="state-row"><td colspan="7">Đang tải dữ liệu...</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Mobile card list -->
-  <div class="card-list" id="card-list">
-    <div style="text-align:center;padding:40px 0;color:#bbb;font-size:14px;">Đang tải...</div>
+    <div class="card-list" id="ticker-card-list"></div>
   </div>
 
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbzfF-Nj2i8zKA4kkP1GHijfv1ZQp1KhBxE6OVCL1tWX3KaEbQhrnEdJnOFsjyGdAreE8w/exec";
-const LOGO = "https://static.simplize.vn/web-data/logo/";
+const API_ALL    = "https://script.google.com/macros/s/AKfycbzfF-Nj2i8zKA4kkP1GHijfv1ZQp1KhBxE6OVCL1tWX3KaEbQhrnEdJnOFsjyGdAreE8w/exec";
+const API_TICKER = "https://api2.simplize.vn/api/company/analysis-report/list";
+const BEARER     = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob2FpYWsyMDA0QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJ1aWQiOjE5MTcyMCwic2lkIjoiZWQ3MDEzNDItMDgyNC00ZjA0LWFjOTMtZGM4MDFhYTVhZTMyIiwicGUiOmZhbHNlLCJleHAiOjE3Nzk1ODY2NTd9.c4h5NAX82cPupz5YJ3sVbvYu-ety6lwZzbLZX6iTO5ybk41N-C-Se5_BoZethWdmXytBG1YpBzq_3SXSv1kkRA";
 
 let all = [], filtered = [], sortDir = "desc";
+let tickerData = [], tickerSortDir = "desc";
 
+/* ── Tab switching ── */
+function switchTab(name) {
+  document.querySelectorAll(".tab-btn").forEach((b,i) => b.classList.toggle("active", (i===0&&name==="all")||(i===1&&name==="ticker")));
+  document.getElementById("panel-all").classList.toggle("active", name==="all");
+  document.getElementById("panel-ticker").classList.toggle("active", name==="ticker");
+}
+
+/* ── Shared helpers ── */
 function tickerType(t) {
   const s = String(t || "");
   if (s === "BAO_CAO_VI_MO") return "macro";
@@ -391,7 +336,7 @@ function tickerType(t) {
 }
 
 function parseDate(r) {
-  const raw = r.issueDate || r.issueDateTimeA || "";
+  const raw = r.issueDate || r.issueDateTimeA || r.reportDate || "";
   const m = String(raw).match(/(\d{4})-(\d{2})-(\d{2})/);
   if (m) return new Date(+m[1], +m[2]-1, +m[3]);
   const m2 = String(raw).match(/(\d{2})\/(\d{2})\/(\d{4})/);
@@ -402,28 +347,25 @@ function parseDate(r) {
 function formatDate(r) {
   const d = parseDate(r);
   if (!d || d.getTime() === 0) return "—";
-  return String(d.getDate()).padStart(2,"0") + "/" +
-         String(d.getMonth()+1).padStart(2,"0") + "/" + d.getFullYear();
+  return String(d.getDate()).padStart(2,"0") + "/" + String(d.getMonth()+1).padStart(2,"0") + "/" + d.getFullYear();
 }
 
 function recClass(v) {
   if (!v) return "rec rec-other";
   const u = v.toUpperCase();
-  if (u === "MUA") return "rec rec-buy";
-  if (u === "KHẢ QUAN") return "rec rec-positive";
-  if (u === "TRUNG LẬP") return "rec rec-neutral";
+  if (u === "MUA" || u === "BUY") return "rec rec-buy";
+  if (u === "KHẢ QUAN" || u === "OUTPERFORM" || u === "OVERWEIGHT") return "rec rec-positive";
+  if (u === "TRUNG LẬP" || u === "NEUTRAL" || u === "HOLD") return "rec rec-neutral";
   return "rec rec-other";
 }
 
-function logoHtml(ticker, size) {
-  const s = size || 26;
-  const cls = size === 30 ? "card-logo" : "ticker-logo";
-  const initials = String(ticker || "").slice(0,3);
-  return `<div class="${cls}" style="width:${s}px;height:${s}px;">
-    <img src="${LOGO}${ticker}.png" alt="${ticker}"
-         onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-    <span style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#666;">${initials}</span>
-  </div>`;
+function recLabel(v) {
+  if (!v) return "–";
+  const u = v.toUpperCase();
+  if (u === "BUY") return "MUA";
+  if (u === "OUTPERFORM" || u === "OVERWEIGHT") return "KHẢ QUAN";
+  if (u === "NEUTRAL" || u === "HOLD") return "TRUNG LẬP";
+  return v;
 }
 
 function tickerCellHtml(r) {
@@ -431,86 +373,52 @@ function tickerCellHtml(r) {
   if (type === "macro")    return `<span class="tag-macro">Vĩ mô</span>`;
   if (type === "strategy") return `<span class="tag-strategy">Chiến lược</span>`;
   if (type === "other")    return `<span class="tag-macro">${r.ticker}</span>`;
-  return `<div class="ticker-cell">${logoHtml(r.ticker,26)}<span class="ticker-label">${r.ticker}</span></div>`;
+  return `<div class="ticker-cell"><span class="ticker-label">${r.ticker}</span></div>`;
 }
 
-function priceHtml(p, cls) {
-  if (!p) return `<span class="${cls} price-empty">–</span>`;
-  return `<span class="${cls}">${Number(p).toLocaleString("vi-VN")}</span>`;
+function dlBtn(link) {
+  return `<a class="btn-dl" href="${link||"#"}" target="_blank" title="Tải về">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+  </a>`;
 }
 
-/* ── Desktop render ── */
+/* ═══════════════ TAB 1 ═══════════════ */
 function renderTable(data) {
   const tbody = document.getElementById("tbody");
-  if (!data.length) {
-    tbody.innerHTML = `<tr class="state-row"><td colspan="7">Không tìm thấy báo cáo phù hợp</td></tr>`;
-    return;
-  }
+  if (!data.length) { tbody.innerHTML = `<tr class="state-row"><td colspan="7">Không tìm thấy báo cáo phù hợp</td></tr>`; return; }
   tbody.innerHTML = data.map(r => `<tr>
     <td class="date-cell">${formatDate(r)}</td>
-    <td class="title-cell">${r.title || ""}</td>
+    <td class="title-cell">${r.title||""}</td>
     <td>${tickerCellHtml(r)}</td>
-    <td class="source-col">${r.source || ""}</td>
-    <td><span class="${recClass(r.recommend)}">${r.recommend || "–"}</span></td>
-    <td class="price-col">${priceHtml(r.targetPrice,"")}</td>
-    <td class="dl-col">
-      <a class="btn-dl" href="${r.attachedLink||"#"}" target="_blank" title="Tải về">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-      </a>
-    </td>
+    <td class="source-col">${r.source||""}</td>
+    <td><span class="${recClass(r.recommend)}">${r.recommend||"–"}</span></td>
+    <td class="price-col">${r.targetPrice ? Number(r.targetPrice).toLocaleString("vi-VN") : '<span class="price-empty">–</span>'}</td>
+    <td class="dl-col">${dlBtn(r.attachedLink)}</td>
   </tr>`).join("");
 }
 
-/* ── Mobile render ── */
 function renderCards(data) {
   const list = document.getElementById("card-list");
-  if (!data.length) {
-    list.innerHTML = `<div style="text-align:center;padding:40px 0;color:#bbb;font-size:14px;">Không tìm thấy báo cáo phù hợp</div>`;
-    return;
-  }
-  const type = tickerType;
+  if (!data.length) { list.innerHTML = `<div style="text-align:center;padding:40px 0;color:#bbb;">Không tìm thấy báo cáo phù hợp</div>`; return; }
   list.innerHTML = data.map(r => {
-    const t = type(r.ticker);
-    let tickerBlock = "";
-    if (t === "stock") {
-      tickerBlock = `<div class="card-ticker-wrap">
-        ${logoHtml(r.ticker,30)}
-        <div><div class="card-ticker">${r.ticker}</div><div class="card-source">${r.source||""}</div></div>
-      </div>`;
-    } else {
-      const label = t === "macro" ? "Vĩ mô" : t === "strategy" ? "Chiến lược" : r.ticker;
-      const tagCls = t === "strategy" ? "tag-strategy" : "tag-macro";
-      tickerBlock = `<div class="card-ticker-wrap">
-        <span class="${tagCls}">${label}</span>
-        <div class="card-source" style="margin-left:4px;">${r.source||""}</div>
-      </div>`;
-    }
-    const recSpan = r.recommend
-      ? `<span class="${recClass(r.recommend)}">${r.recommend}</span>` : "";
-    const priceSpan = r.targetPrice
-      ? `<span class="card-price">${Number(r.targetPrice).toLocaleString("vi-VN")} ₫</span>` : "";
-
+    const t = tickerType(r.ticker);
+    let tickerBlock = t === "stock"
+      ? `<div class="card-ticker-wrap"><div><div class="card-ticker">${r.ticker}</div><div class="card-source">${r.source||""}</div></div></div>`
+      : `<div class="card-ticker-wrap"><span class="${t==="strategy"?"tag-strategy":"tag-macro"}">${t==="macro"?"Vĩ mô":t==="strategy"?"Chiến lược":r.ticker}</span><div class="card-source" style="margin-left:4px;">${r.source||""}</div></div>`;
     return `<div class="report-card">
-      <div class="card-top">
-        ${tickerBlock}
-        <div class="card-right">${recSpan}</div>
-      </div>
+      <div class="card-top">${tickerBlock}<div class="card-right">${r.recommend?`<span class="${recClass(r.recommend)}">${r.recommend}</span>`:""}</div></div>
       <div class="card-title">${r.title||""}</div>
       <div class="card-footer">
         <div class="card-meta">
           <span class="card-date">${formatDate(r)}</span>
-          ${priceSpan}
+          ${r.targetPrice?`<span class="card-price">${Number(r.targetPrice).toLocaleString("vi-VN")} ₫</span>`:""}
         </div>
         <a class="card-dl" href="${r.attachedLink||"#"}" target="_blank">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Tải về
         </a>
       </div>
@@ -524,16 +432,13 @@ function render(data) {
   renderCards(data);
 }
 
-function sortByDate(data) {
-  return [...data].sort((a,b) => sortDir === "desc"
-    ? parseDate(b) - parseDate(a)
-    : parseDate(a) - parseDate(b));
+function sortByDate(data, dir) {
+  return [...data].sort((a,b) => dir==="desc" ? parseDate(b)-parseDate(a) : parseDate(a)-parseDate(b));
 }
 
 function toggleSort() {
-  sortDir = sortDir === "desc" ? "asc" : "desc";
-  const th = document.querySelector("thead th.date-cell");
-  th.className = "date-cell sort-" + sortDir;
+  sortDir = sortDir==="desc"?"asc":"desc";
+  document.querySelector("#panel-all thead th.date-cell").className = "date-cell sort-"+sortDir;
   applyFilters();
 }
 
@@ -542,39 +447,151 @@ function applyFilters() {
   const typ = document.getElementById("type-filter").value;
   const rec = document.getElementById("rec-filter").value;
   const src = document.getElementById("source-filter").value;
-
   filtered = all.filter(r => {
     const mk = !kw  || String(r.ticker||"").toLowerCase().includes(kw) || String(r.title||"").toLowerCase().includes(kw);
-    const mt = !typ || tickerType(r.ticker) === typ;
-    const mr = !rec || (rec === "KHÁC" ? !["MUA","KHẢ QUAN","TRUNG LẬP"].includes(r.recommend) : r.recommend === rec);
-    const ms = !src || r.source === src;
+    const mt = !typ || tickerType(r.ticker)===typ;
+    const mr = !rec || (rec==="KHÁC" ? !["MUA","KHẢ QUAN","TRUNG LẬP"].includes(r.recommend) : r.recommend===rec);
+    const ms = !src || r.source===src;
     return mk && mt && mr && ms;
   });
-  render(sortByDate(filtered));
+  render(sortByDate(filtered, sortDir));
 }
 
 document.getElementById("search").addEventListener("input", applyFilters);
 
 function populateSources(data) {
-  const sources = [...new Set(data.map(r=>r.source).filter(Boolean))].sort();
   const sel = document.getElementById("source-filter");
-  sources.forEach(s => { const o = document.createElement("option"); o.value=s; o.textContent=s; sel.appendChild(o); });
+  [...new Set(data.map(r=>r.source).filter(Boolean))].sort()
+    .forEach(s => { const o=document.createElement("option"); o.value=s; o.textContent=s; sel.appendChild(o); });
 }
 
-fetch(API)
-  .then(r => r.json())
+fetch(API_ALL)
+  .then(r=>r.json())
   .then(data => {
     all = data;
     populateSources(all);
     filtered = all;
-    render(sortByDate(filtered));
+    render(sortByDate(filtered, sortDir));
   })
   .catch(() => {
-    document.getElementById("tbody").innerHTML =
-      `<tr class="state-row"><td colspan="7">Không thể tải dữ liệu.</td></tr>`;
-    document.getElementById("card-list").innerHTML =
-      `<div style="text-align:center;padding:40px 0;color:#bbb;">Không thể tải dữ liệu.</div>`;
+    document.getElementById("tbody").innerHTML = `<tr class="state-row"><td colspan="7">Không thể tải dữ liệu.</td></tr>`;
+    document.getElementById("card-list").innerHTML = `<div style="text-align:center;padding:40px 0;color:#bbb;">Không thể tải dữ liệu.</div>`;
   });
+
+/* ═══════════════ TAB 2 ═══════════════ */
+function searchTicker() {
+  const raw = document.getElementById("ticker-input").value.trim().toUpperCase();
+  if (!raw) { document.getElementById("ticker-hint").textContent = "Vui lòng nhập mã cổ phiếu"; return; }
+  document.getElementById("ticker-hint").textContent = "Đang tìm...";
+  document.getElementById("ticker-info-bar").style.display = "none";
+  document.getElementById("ticker-table-wrap").style.display = "none";
+  document.getElementById("ticker-card-list").innerHTML = "";
+  document.getElementById("ticker-result-count").textContent = "";
+  document.getElementById("ticker-tbody").innerHTML = `<tr class="state-row"><td colspan="6">Đang tải dữ liệu cho ${raw}...</td></tr>`;
+  document.getElementById("ticker-table-wrap").style.display = "block";
+
+  const url = `${API_TICKER}?ticker=${encodeURIComponent(raw)}&isWl=false&page=0&size=99`;
+  fetch(url, {
+    headers: {
+      "accept": "application/json, text/plain, */*",
+      "accept-language": "vi-VN,vi;q=0.9",
+      "authorization": "Bearer " + BEARER,
+      "origin": "https://simplize.vn",
+      "referer": "https://simplize.vn/"
+    }
+  })
+  .then(r => r.json())
+  .then(json => {
+    // API trả về { data: { content: [...] } } hoặc tương tự
+    let rows = [];
+    if (Array.isArray(json)) rows = json;
+    else if (json.data?.content) rows = json.data.content;
+    else if (json.data?.reports) rows = json.data.reports;
+    else if (json.content) rows = json.content;
+    else if (json.data && Array.isArray(json.data)) rows = json.data;
+
+    tickerData = rows;
+    renderTickerResults(raw, sortByDate(rows, tickerSortDir));
+    document.getElementById("ticker-hint").textContent = rows.length ? `Tìm thấy ${rows.length} báo cáo` : "Không tìm thấy báo cáo";
+  })
+  .catch(err => {
+    document.getElementById("ticker-tbody").innerHTML = `<tr class="state-row"><td colspan="6">Lỗi khi tải dữ liệu: ${err.message}</td></tr>`;
+    document.getElementById("ticker-hint").textContent = "Có lỗi xảy ra";
+  });
+}
+
+function renderTickerResults(ticker, data) {
+  const infoBar = document.getElementById("ticker-info-bar");
+  infoBar.style.display = "flex";
+  document.getElementById("ti-ticker").textContent = ticker;
+  document.getElementById("ti-count").textContent = `${data.length} báo cáo phân tích`;
+  document.getElementById("ticker-result-count").textContent = `Hiển thị ${data.length} báo cáo`;
+
+  const isMobile = window.innerWidth <= 640;
+
+  // Desktop table
+  const tbody = document.getElementById("ticker-tbody");
+  if (!data.length) {
+    tbody.innerHTML = `<tr class="state-row"><td colspan="6">Không có báo cáo nào cho mã ${ticker}</td></tr>`;
+  } else {
+    tbody.innerHTML = data.map(r => {
+      const rec = r.recommend || r.recommendation || r.rating || "";
+      const price = r.targetPrice || r.target_price || r.priceTarget || "";
+      const link = r.attachedLink || r.reportUrl || r.url || r.pdfUrl || "#";
+      const src = r.source || r.firm || r.analyst || "";
+      const title = r.title || r.reportTitle || r.name || "";
+      return `<tr>
+        <td class="date-cell">${formatDate(r)}</td>
+        <td class="title-cell">${title}</td>
+        <td class="source-col">${src}</td>
+        <td><span class="${recClass(rec)}">${recLabel(rec)||"–"}</span></td>
+        <td class="price-col">${price ? Number(price).toLocaleString("vi-VN") : '<span class="price-empty">–</span>'}</td>
+        <td class="dl-col">${dlBtn(link)}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  // Mobile cards
+  const cl = document.getElementById("ticker-card-list");
+  if (isMobile && data.length) {
+    cl.innerHTML = data.map(r => {
+      const rec = r.recommend || r.recommendation || r.rating || "";
+      const price = r.targetPrice || r.target_price || r.priceTarget || "";
+      const link = r.attachedLink || r.reportUrl || r.url || r.pdfUrl || "#";
+      const src = r.source || r.firm || r.analyst || "";
+      const title = r.title || r.reportTitle || r.name || "";
+      return `<div class="report-card">
+        <div class="card-top">
+          <div class="card-ticker-wrap"><div><div class="card-ticker">${ticker}</div><div class="card-source">${src}</div></div></div>
+          <div class="card-right">${rec?`<span class="${recClass(rec)}">${recLabel(rec)}</span>`:""}</div>
+        </div>
+        <div class="card-title">${title}</div>
+        <div class="card-footer">
+          <div class="card-meta">
+            <span class="card-date">${formatDate(r)}</span>
+            ${price?`<span class="card-price">${Number(price).toLocaleString("vi-VN")} ₫</span>`:""}
+          </div>
+          <a class="card-dl" href="${link}" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Tải về
+          </a>
+        </div>
+      </div>`;
+    }).join("");
+  } else {
+    cl.innerHTML = "";
+  }
+}
+
+function toggleTickerSort() {
+  tickerSortDir = tickerSortDir==="desc"?"asc":"desc";
+  const th = document.querySelector("#panel-ticker thead th.date-cell");
+  if (th) th.className = "date-cell sort-"+tickerSortDir;
+  if (tickerData.length) {
+    const t = document.getElementById("ticker-input").value.trim().toUpperCase();
+    renderTickerResults(t, sortByDate(tickerData, tickerSortDir));
+  }
+}
 </script>
 </body>
 </html>
