@@ -3,145 +3,384 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard Báo Cáo Simplize</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<title>Báo Cáo Phân Tích – Simplize</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 1.5rem; }
-.wrap { max-width: 1400px; margin: auto; }
-.header { margin-bottom: 1.5rem; }
-.header h1 { font-size: 20px; font-weight: 600; color: #111; }
-.header p { font-size: 13px; color: #666; margin-top: 4px; }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
-.stat { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 14px 16px; }
-.stat-label { font-size: 12px; color: #888; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-.stat-value { font-size: 28px; font-weight: 600; color: #111; }
-.stat-sub { font-size: 11px; color: #aaa; margin-top: 3px; }
-.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-.dot-all { background: #378ADD; }
-.dot-stock { background: #1D9E75; }
-.dot-macro { background: #EF9F27; }
-.dot-strategy { background: #D4537E; }
-.toolbar { display: flex; gap: 10px; margin-bottom: 1rem; align-items: center; flex-wrap: wrap; }
-.search-wrap { position: relative; flex: 1; min-width: 180px; }
-.search-wrap i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #aaa; pointer-events: none; }
-.search-wrap input { width: 100%; padding: 8px 10px 8px 34px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #111; outline: none; }
-.search-wrap input:focus { border-color: #378ADD; }
-select { padding: 8px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #111; cursor: pointer; outline: none; }
-select:focus { border-color: #378ADD; }
-.count-badge { font-size: 12px; color: #888; margin-left: auto; white-space: nowrap; }
-.table-wrap { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; overflow: hidden; }
-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-col:nth-child(1) { width: 100px; }
-col:nth-child(2) { width: 80px; }
-col:nth-child(3) { width: 100px; }
-col:nth-child(4) { width: 120px; }
-col:nth-child(5) { width: 110px; }
-col:nth-child(6) { width: auto; }
-col:nth-child(7) { width: 70px; }
-thead th { font-size: 11px; font-weight: 600; color: #888; padding: 10px 14px; text-align: left; border-bottom: 1px solid #eee; background: #fafafa; letter-spacing: 0.04em; text-transform: uppercase; }
-tbody td { font-size: 13px; color: #222; padding: 11px 14px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: #f5f6f8;
+  color: #1a1a1a;
+  font-size: 14px;
+}
+
+.page { max-width: 1300px; margin: 0 auto; padding: 20px 16px; }
+
+/* ── Header ── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.page-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.page-subtitle { font-size: 12px; color: #888; margin-top: 2px; }
+
+/* ── Toolbar ── */
+.toolbar {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.filter-group label {
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+}
+
+.custom-select { position: relative; }
+
+.custom-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #f5f6f8;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  padding: 6px 28px 6px 10px;
+  font-size: 13px;
+  color: #1a1a1a;
+  cursor: pointer;
+  outline: none;
+  min-width: 110px;
+}
+.custom-select select:focus { border-color: #1677ff; }
+.custom-select::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  right: 9px; top: 50%;
+  transform: translateY(-50%);
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #aaa;
+}
+
+.btn-apply {
+  background: #1677ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-apply:active { background: #0958d9; }
+
+.toolbar-spacer { flex: 1; min-width: 0; }
+
+.search-wrap { position: relative; width: 100%; }
+.search-wrap input {
+  width: 100%;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  padding: 6px 10px 6px 30px;
+  font-size: 13px;
+  background: #f5f6f8;
+  color: #1a1a1a;
+  outline: none;
+}
+.search-wrap input:focus { border-color: #1677ff; background: #fff; }
+.search-wrap svg {
+  position: absolute;
+  left: 8px; top: 50%;
+  transform: translateY(-50%);
+  color: #bbb;
+  pointer-events: none;
+}
+
+/* ── Result count ── */
+.result-count {
+  font-size: 12px;
+  color: #8c8c8c;
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+
+/* ── DESKTOP TABLE ── */
+.table-wrap {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+  background: #fafafa;
+  font-size: 11px;
+  font-weight: 500;
+  color: #999;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+thead th:hover { color: #1677ff; }
+thead th.sort-asc::after  { content: " ↑"; color: #1677ff; }
+thead th.sort-desc::after { content: " ↓"; color: #1677ff; }
+
+tbody td {
+  padding: 13px 14px;
+  border-bottom: 1px solid #f5f5f5;
+  vertical-align: middle;
+}
 tbody tr:last-child td { border-bottom: none; }
-tbody tr:hover { background: #fafafa; }
-.ticker-chip { display: inline-block; font-weight: 600; font-size: 12px; padding: 2px 8px; background: #E6F1FB; color: #0C447C; border-radius: 4px; }
-.chip-macro { background: #FAEEDA; color: #633806; }
-.chip-strategy { background: #FBEAF0; color: #72243E; }
-.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; }
-.badge-buy { background: #EAF3DE; color: #3B6D11; }
-.badge-positive { background: #E6F1FB; color: #185FA5; }
-.badge-neutral { background: #f0f0f0; color: #666; }
-.badge-other { background: #FAEEDA; color: #633806; }
-.price { font-variant-numeric: tabular-nums; }
-.pdf-link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: #185FA5; text-decoration: none; padding: 4px 8px; border-radius: 4px; border: 1px solid #B5D4F4; }
-.pdf-link:hover { background: #E6F1FB; }
-.date-text { font-size: 12px; color: #888; font-variant-numeric: tabular-nums; }
-.source-text { font-size: 12px; color: #aaa; }
-.empty { text-align: center; padding: 3rem; color: #999; font-size: 14px; }
-.loading-row td { text-align: center; padding: 3rem; color: #999; font-size: 14px; }
+tbody tr:hover { background: #fafbfc; }
+
+.date-cell { font-size: 12px; color: #888; white-space: nowrap; width: 95px; }
+.title-cell { font-size: 13px; color: #1a1a1a; line-height: 1.5; }
+.ticker-col { width: 145px; }
+.source-col { width: 90px; font-size: 12px; color: #666; }
+.rec-col    { width: 100px; }
+.price-col  { width: 105px; text-align: right; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.dl-col     { width: 52px; text-align: center; }
+
+.ticker-cell { display: flex; align-items: center; gap: 7px; }
+.ticker-logo {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #f0f0f0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: #666;
+}
+.ticker-logo img { width: 100%; height: 100%; object-fit: contain; }
+.ticker-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+
+.tag-macro    { font-size: 11px; color: #92400e; background: #fef3c7; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
+.tag-strategy { font-size: 11px; color: #5b21b6; background: #ede9fe; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
+
+.rec { font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+.rec-buy      { color: #16a34a; }
+.rec-positive { color: #0369a1; }
+.rec-neutral  { color: #9ca3af; }
+.rec-other    { color: #92400e; }
+
+.price-empty { color: #d1d5db !important; }
+
+.btn-dl {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #9ca3af;
+  text-decoration: none;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.btn-dl:hover { border-color: #1677ff; color: #1677ff; background: #e6f1ff; }
+
+.state-row td { text-align: center; padding: 48px 0; color: #bbb; font-size: 14px; }
+
+/* ── MOBILE CARDS (≤ 640px) ── */
+.card-list { display: none; }
+
+.report-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 14px 14px 12px;
+  margin-bottom: 10px;
+}
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.card-ticker-wrap { display: flex; align-items: center; gap: 7px; }
+.card-logo {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #f0f0f0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: #666;
+}
+.card-logo img { width: 100%; height: 100%; object-fit: contain; }
+.card-ticker { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+.card-source { font-size: 11px; color: #999; }
+.card-right  { display: flex; align-items: center; gap: 8px; }
+.card-title  { font-size: 13px; color: #333; line-height: 1.5; margin-bottom: 10px; }
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.card-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.card-date  { font-size: 11px; color: #aaa; }
+.card-price { font-size: 12px; font-weight: 600; color: #1a1a1a; font-variant-numeric: tabular-nums; }
+.card-dl {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 500;
+  color: #1677ff;
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid #c7deff;
+  border-radius: 6px;
+  background: #f0f7ff;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Responsive breakpoints ── */
+@media (max-width: 640px) {
+  .page { padding: 14px 12px; }
+  .page-title { font-size: 16px; }
+
+  .toolbar { padding: 12px; gap: 8px; }
+  .filter-group { width: calc(50% - 4px); }
+  .filter-group label { display: none; }
+  .custom-select select { width: 100%; min-width: 0; font-size: 13px; }
+  .btn-apply { width: 100%; text-align: center; }
+  .toolbar-spacer { display: none; }
+  .search-wrap-outer { width: 100%; }
+
+  .table-wrap { display: none; }
+  .card-list { display: block; }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .source-col, thead th:nth-child(4),
+  tbody td:nth-child(4) { display: none; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="header">
-    <h1>📊 Dashboard Báo Cáo Simplize</h1>
-    <p>Tổng hợp báo cáo phân tích chứng khoán từ các công ty chứng khoán</p>
-  </div>
+<div class="page">
 
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-label"><span class="dot dot-all"></span>Tổng báo cáo</div>
-      <div class="stat-value" id="s-total">—</div>
-      <div class="stat-sub">Tất cả loại</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label"><span class="dot dot-stock"></span>Cổ phiếu</div>
-      <div class="stat-value" id="s-stock">—</div>
-      <div class="stat-sub">Báo cáo doanh nghiệp</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label"><span class="dot dot-macro"></span>Vĩ mô</div>
-      <div class="stat-value" id="s-macro">—</div>
-      <div class="stat-sub">Báo cáo kinh tế</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label"><span class="dot dot-strategy"></span>Chiến lược</div>
-      <div class="stat-value" id="s-strategy">—</div>
-      <div class="stat-sub">Báo cáo thị trường</div>
+  <div class="page-header">
+    <div>
+      <div class="page-title">📊 Báo Cáo Phân Tích</div>
+      <div class="page-subtitle">Tổng hợp báo cáo từ các công ty chứng khoán</div>
     </div>
   </div>
 
+  <!-- Toolbar -->
   <div class="toolbar">
-    <div class="search-wrap">
-      <i class="ti ti-search"></i>
-      <input type="text" id="search" placeholder="Tìm mã cổ phiếu hoặc tiêu đề...">
+    <div class="filter-group">
+      <label>Loại báo cáo</label>
+      <div class="custom-select">
+        <select id="type-filter">
+          <option value="">Tất cả</option>
+          <option value="stock">Cổ phiếu</option>
+          <option value="macro">Vĩ mô</option>
+          <option value="strategy">Chiến lược</option>
+        </select>
+      </div>
     </div>
-    <select id="recommend-filter">
-      <option value="">Tất cả khuyến nghị</option>
-      <option value="MUA">Mua</option>
-      <option value="KHẢ QUAN">Khả quan</option>
-      <option value="TRUNG LẬP">Trung lập</option>
-      <option value="KHÁC">Khác</option>
-    </select>
-    <select id="type-filter">
-      <option value="">Tất cả loại</option>
-      <option value="stock">Cổ phiếu</option>
-      <option value="macro">Vĩ mô</option>
-      <option value="strategy">Chiến lược</option>
-    </select>
-    <span class="count-badge" id="count-badge"></span>
+
+    <div class="filter-group">
+      <label>Khuyến nghị</label>
+      <div class="custom-select">
+        <select id="rec-filter">
+          <option value="">Tất cả KN</option>
+          <option value="MUA">Mua</option>
+          <option value="KHẢ QUAN">Khả quan</option>
+          <option value="TRUNG LẬP">Trung lập</option>
+          <option value="KHÁC">Khác</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>Nguồn</label>
+      <div class="custom-select">
+        <select id="source-filter">
+          <option value="">Tất cả nguồn</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-apply" onclick="applyFilters()">Áp dụng</button>
+
+    <div class="toolbar-spacer"></div>
+
+    <div class="search-wrap-outer" style="min-width:180px;max-width:240px;flex:1;">
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="search" placeholder="Tìm mã, tiêu đề...">
+      </div>
+    </div>
   </div>
 
+  <div class="result-count" id="result-count"></div>
+
+  <!-- Desktop table -->
   <div class="table-wrap">
     <table>
-      <colgroup><col><col><col><col><col><col><col></colgroup>
       <thead>
         <tr>
-          <th>Ngày</th>
-          <th>Mã</th>
-          <th>CTCK</th>
-          <th>Khuyến nghị</th>
-          <th>Giá mục tiêu</th>
+          <th class="date-cell sort-desc" onclick="toggleSort()">Ngày</th>
           <th>Tiêu đề</th>
-          <th>PDF</th>
+          <th class="ticker-col">Mã cổ phiếu</th>
+          <th class="source-col">Nguồn</th>
+          <th class="rec-col">Khuyến nghị</th>
+          <th class="price-col" style="text-align:right">Giá mục tiêu</th>
+          <th class="dl-col">Tải về</th>
         </tr>
       </thead>
       <tbody id="tbody">
-        <tr class="loading-row"><td colspan="7">Đang tải dữ liệu...</td></tr>
+        <tr class="state-row"><td colspan="7">Đang tải dữ liệu...</td></tr>
       </tbody>
     </table>
   </div>
+
+  <!-- Mobile card list -->
+  <div class="card-list" id="card-list">
+    <div style="text-align:center;padding:40px 0;color:#bbb;font-size:14px;">Đang tải...</div>
+  </div>
+
 </div>
 
 <script>
 const API = "https://script.google.com/macros/s/AKfycbzfF-Nj2i8zKA4kkP1GHijfv1ZQp1KhBxE6OVCL1tWX3KaEbQhrnEdJnOFsjyGdAreE8w/exec";
-let all = [];
+const LOGO = "https://static.simplize.vn/web-data/logo/";
 
-function formatDate(d) {
-  if (!d) return "";
-  const m = String(d).match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (m) return m[3] + "/" + m[2] + "/" + m[1];
-  return d;
-}
+let all = [], filtered = [], sortDir = "desc";
 
 function tickerType(t) {
   const s = String(t || "");
@@ -151,83 +390,191 @@ function tickerType(t) {
   return "stock";
 }
 
-function tickerChip(t) {
-  const type = tickerType(t);
-  if (type === "macro") return `<span class="ticker-chip chip-macro">Vĩ mô</span>`;
-  if (type === "strategy") return `<span class="ticker-chip chip-strategy">Chiến lược</span>`;
-  if (type === "other") return `<span class="ticker-chip chip-macro">${t}</span>`;
-  return `<span class="ticker-chip">${t || ""}</span>`;
+function parseDate(r) {
+  const raw = r.issueDate || r.issueDateTimeA || "";
+  const m = String(raw).match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return new Date(+m[1], +m[2]-1, +m[3]);
+  const m2 = String(raw).match(/(\d{2})\/(\d{2})\/(\d{4})/);
+  if (m2) return new Date(+m2[3], +m2[2]-1, +m2[1]);
+  return new Date(0);
 }
 
-function recommendBadge(r) {
-  if (!r) return "";
-  const v = String(r).toUpperCase();
-  if (v === "MUA") return `<span class="badge badge-buy">▲ ${r}</span>`;
-  if (v === "KHẢ QUAN") return `<span class="badge badge-positive">↑ ${r}</span>`;
-  if (v === "TRUNG LẬP") return `<span class="badge badge-neutral">— ${r}</span>`;
-  return `<span class="badge badge-other">${r}</span>`;
+function formatDate(r) {
+  const d = parseDate(r);
+  if (!d || d.getTime() === 0) return "—";
+  return String(d.getDate()).padStart(2,"0") + "/" +
+         String(d.getMonth()+1).padStart(2,"0") + "/" + d.getFullYear();
 }
 
-function formatPrice(p) {
-  if (!p) return "<span style='color:#ccc'>—</span>";
-  return `<span class="price">${Number(p).toLocaleString("vi-VN")} ₫</span>`;
+function recClass(v) {
+  if (!v) return "rec rec-other";
+  const u = v.toUpperCase();
+  if (u === "MUA") return "rec rec-buy";
+  if (u === "KHẢ QUAN") return "rec rec-positive";
+  if (u === "TRUNG LẬP") return "rec rec-neutral";
+  return "rec rec-other";
+}
+
+function logoHtml(ticker, size) {
+  const s = size || 26;
+  const cls = size === 30 ? "card-logo" : "ticker-logo";
+  const initials = String(ticker || "").slice(0,3);
+  return `<div class="${cls}" style="width:${s}px;height:${s}px;">
+    <img src="${LOGO}${ticker}.png" alt="${ticker}"
+         onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+    <span style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#666;">${initials}</span>
+  </div>`;
+}
+
+function tickerCellHtml(r) {
+  const type = tickerType(r.ticker);
+  if (type === "macro")    return `<span class="tag-macro">Vĩ mô</span>`;
+  if (type === "strategy") return `<span class="tag-strategy">Chiến lược</span>`;
+  if (type === "other")    return `<span class="tag-macro">${r.ticker}</span>`;
+  return `<div class="ticker-cell">${logoHtml(r.ticker,26)}<span class="ticker-label">${r.ticker}</span></div>`;
+}
+
+function priceHtml(p, cls) {
+  if (!p) return `<span class="${cls} price-empty">–</span>`;
+  return `<span class="${cls}">${Number(p).toLocaleString("vi-VN")}</span>`;
+}
+
+/* ── Desktop render ── */
+function renderTable(data) {
+  const tbody = document.getElementById("tbody");
+  if (!data.length) {
+    tbody.innerHTML = `<tr class="state-row"><td colspan="7">Không tìm thấy báo cáo phù hợp</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(r => `<tr>
+    <td class="date-cell">${formatDate(r)}</td>
+    <td class="title-cell">${r.title || ""}</td>
+    <td>${tickerCellHtml(r)}</td>
+    <td class="source-col">${r.source || ""}</td>
+    <td><span class="${recClass(r.recommend)}">${r.recommend || "–"}</span></td>
+    <td class="price-col">${priceHtml(r.targetPrice,"")}</td>
+    <td class="dl-col">
+      <a class="btn-dl" href="${r.attachedLink||"#"}" target="_blank" title="Tải về">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </a>
+    </td>
+  </tr>`).join("");
+}
+
+/* ── Mobile render ── */
+function renderCards(data) {
+  const list = document.getElementById("card-list");
+  if (!data.length) {
+    list.innerHTML = `<div style="text-align:center;padding:40px 0;color:#bbb;font-size:14px;">Không tìm thấy báo cáo phù hợp</div>`;
+    return;
+  }
+  const type = tickerType;
+  list.innerHTML = data.map(r => {
+    const t = type(r.ticker);
+    let tickerBlock = "";
+    if (t === "stock") {
+      tickerBlock = `<div class="card-ticker-wrap">
+        ${logoHtml(r.ticker,30)}
+        <div><div class="card-ticker">${r.ticker}</div><div class="card-source">${r.source||""}</div></div>
+      </div>`;
+    } else {
+      const label = t === "macro" ? "Vĩ mô" : t === "strategy" ? "Chiến lược" : r.ticker;
+      const tagCls = t === "strategy" ? "tag-strategy" : "tag-macro";
+      tickerBlock = `<div class="card-ticker-wrap">
+        <span class="${tagCls}">${label}</span>
+        <div class="card-source" style="margin-left:4px;">${r.source||""}</div>
+      </div>`;
+    }
+    const recSpan = r.recommend
+      ? `<span class="${recClass(r.recommend)}">${r.recommend}</span>` : "";
+    const priceSpan = r.targetPrice
+      ? `<span class="card-price">${Number(r.targetPrice).toLocaleString("vi-VN")} ₫</span>` : "";
+
+    return `<div class="report-card">
+      <div class="card-top">
+        ${tickerBlock}
+        <div class="card-right">${recSpan}</div>
+      </div>
+      <div class="card-title">${r.title||""}</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="card-date">${formatDate(r)}</span>
+          ${priceSpan}
+        </div>
+        <a class="card-dl" href="${r.attachedLink||"#"}" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Tải về
+        </a>
+      </div>
+    </div>`;
+  }).join("");
 }
 
 function render(data) {
-  const tbody = document.getElementById("tbody");
-  if (!data.length) {
-    tbody.innerHTML = `<tr><td colspan="7" class="empty">Không tìm thấy báo cáo phù hợp</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = data.map(r => `
-    <tr>
-      <td class="date-text">${formatDate(r.issueDate || r.issueDateTimeA)}</td>
-      <td>${tickerChip(r.ticker)}</td>
-      <td class="source-text">${r.source || ""}</td>
-      <td>${recommendBadge(r.recommend)}</td>
-      <td>${formatPrice(r.targetPrice)}</td>
-      <td style="white-space:normal;line-height:1.4;">${r.title || ""}</td>
-      <td><a class="pdf-link" href="${r.attachedLink || "#"}" target="_blank">📄 Xem</a></td>
-    </tr>
-  `).join("");
+  document.getElementById("result-count").textContent = `Hiển thị ${data.length} báo cáo`;
+  renderTable(data);
+  renderCards(data);
 }
 
-function updateStats(data) {
-  document.getElementById("s-total").textContent = data.length;
-  document.getElementById("s-stock").textContent = data.filter(r => tickerType(r.ticker) === "stock").length;
-  document.getElementById("s-macro").textContent = data.filter(r => r.ticker === "BAO_CAO_VI_MO").length;
-  document.getElementById("s-strategy").textContent = data.filter(r => r.ticker === "BAO_CAO_CHIEN_LUOC").length;
+function sortByDate(data) {
+  return [...data].sort((a,b) => sortDir === "desc"
+    ? parseDate(b) - parseDate(a)
+    : parseDate(a) - parseDate(b));
 }
 
-function filter() {
-  const kw = document.getElementById("search").value.toLowerCase();
-  const rec = document.getElementById("recommend-filter").value;
-  const type = document.getElementById("type-filter").value;
-  const out = all.filter(r => {
-    const matchKw = !kw || String(r.ticker).toLowerCase().includes(kw) || String(r.title || "").toLowerCase().includes(kw);
-    const matchRec = !rec || (rec === "KHÁC" ? !["MUA","KHẢ QUAN","TRUNG LẬP"].includes(r.recommend) : r.recommend === rec);
-    const matchType = !type || tickerType(r.ticker) === type;
-    return matchKw && matchRec && matchType;
+function toggleSort() {
+  sortDir = sortDir === "desc" ? "asc" : "desc";
+  const th = document.querySelector("thead th.date-cell");
+  th.className = "date-cell sort-" + sortDir;
+  applyFilters();
+}
+
+function applyFilters() {
+  const kw  = document.getElementById("search").value.toLowerCase().trim();
+  const typ = document.getElementById("type-filter").value;
+  const rec = document.getElementById("rec-filter").value;
+  const src = document.getElementById("source-filter").value;
+
+  filtered = all.filter(r => {
+    const mk = !kw  || String(r.ticker||"").toLowerCase().includes(kw) || String(r.title||"").toLowerCase().includes(kw);
+    const mt = !typ || tickerType(r.ticker) === typ;
+    const mr = !rec || (rec === "KHÁC" ? !["MUA","KHẢ QUAN","TRUNG LẬP"].includes(r.recommend) : r.recommend === rec);
+    const ms = !src || r.source === src;
+    return mk && mt && mr && ms;
   });
-  document.getElementById("count-badge").textContent = out.length + " báo cáo";
-  render(out);
+  render(sortByDate(filtered));
+}
+
+document.getElementById("search").addEventListener("input", applyFilters);
+
+function populateSources(data) {
+  const sources = [...new Set(data.map(r=>r.source).filter(Boolean))].sort();
+  const sel = document.getElementById("source-filter");
+  sources.forEach(s => { const o = document.createElement("option"); o.value=s; o.textContent=s; sel.appendChild(o); });
 }
 
 fetch(API)
   .then(r => r.json())
   .then(data => {
-    all = data.reverse();
-    updateStats(all);
-    document.getElementById("count-badge").textContent = all.length + " báo cáo";
-    render(all);
+    all = data;
+    populateSources(all);
+    filtered = all;
+    render(sortByDate(filtered));
   })
   .catch(() => {
-    document.getElementById("tbody").innerHTML = `<tr><td colspan="7" class="empty">Không thể tải dữ liệu. Vui lòng thử lại.</td></tr>`;
+    document.getElementById("tbody").innerHTML =
+      `<tr class="state-row"><td colspan="7">Không thể tải dữ liệu.</td></tr>`;
+    document.getElementById("card-list").innerHTML =
+      `<div style="text-align:center;padding:40px 0;color:#bbb;">Không thể tải dữ liệu.</div>`;
   });
-
-document.getElementById("search").addEventListener("input", filter);
-document.getElementById("recommend-filter").addEventListener("change", filter);
-document.getElementById("type-filter").addEventListener("change", filter);
 </script>
 </body>
 </html>
