@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Báo Cáo & Cổ Phiếu </title>
+<title>Báo Cáo & Cổ Phiếu</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; background: #f5f6f8; color: #1a1a1a; font-size: 14px; }
@@ -602,7 +602,7 @@ async function loadPullback(){
       {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
       {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}}
     ],
-    "sort":[{"pricePercent":"desc"}],
+    "sort":[{"date":"desc"},{"pricePercent":"desc"}],
     "offset":0,
     "count":Number(count),
     "returns":["ticker","date","rating","volumeFlat","volumePercent","signal","gia_thuc_hien","wait_signal","wait_price","priceFlat","pricePercent","pullback_10","pc","pf","propose_price_1","propose_price_2"]
@@ -714,7 +714,7 @@ async function loadDip(){
       {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
       {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}}
     ],
-    "sort":[{"discount_20":"asc"}],
+    "sort":[{"date":"desc"},{"discount_20":"asc"}],
     "offset":0,
     "count":Number(count),
     "returns":["ticker","date","rating","volumeFlat","volumePercent","dip_signal","dip_price","priceFlat","pricePercent","pc","pf"]
