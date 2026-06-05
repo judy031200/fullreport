@@ -1,14 +1,311 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard Báo cáo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Dashboard Báo Cáo Simplize</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 1px 5px rgba(0,0,0,.1);
+}
+
+.card-title{
+    color:#666;
+    font-size:13px;
+}
+
+.card-value{
+    font-size:24px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+.filters{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input, select{
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+
+th{
+    background:#1976d2;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+    border-bottom:1px solid #eee;
+}
+
+tr:hover{
+    background:#fafafa;
+}
+
+.buy{
+    color:green;
+    font-weight:bold;
+}
+
+.positive{
+    color:#1976d2;
+    font-weight:bold;
+}
+
+.neutral{
+    color:#999;
+}
+
+a{
+    text-decoration:none;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h1>📊 Dashboard Báo cáo Simplize</h1>
+<div class="container">
 
-<p>Website đã hoạt động thành công!</p>
+<h1>📊 Dashboard Báo Cáo Simplize</h1>
+
+<div class="summary">
+
+<div class="card">
+<div class="card-title">Tổng báo cáo</div>
+<div class="card-value" id="totalReports">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Cổ phiếu</div>
+<div class="card-value" id="stockReports">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Vĩ mô</div>
+<div class="card-value" id="macroReports">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Chiến lược</div>
+<div class="card-value" id="strategyReports">0</div>
+</div>
+
+</div>
+
+<div class="filters">
+
+<input
+type="text"
+id="search"
+placeholder="Tìm mã cổ phiếu..."
+>
+
+<select id="recommendFilter">
+<option value="">Tất cả KN</option>
+<option value="MUA">MUA</option>
+<option value="KHẢ QUAN">KHẢ QUAN</option>
+<option value="TRUNG LẬP">TRUNG LẬP</option>
+</select>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Ngày</th>
+<th>Mã</th>
+<th>CTCK</th>
+<th>Khuyến nghị</th>
+<th>Giá mục tiêu</th>
+<th>Tiêu đề</th>
+<th>PDF</th>
+</tr>
+</thead>
+
+<tbody id="reportBody"></tbody>
+
+</table>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzfF-Nj2i8zKA4kkP1GHijfv1ZQp1KhBxE6OVCL1tWX3KaEbQhrnEdJnOFsjyGdAreE8w/exec";
+
+let allReports = [];
+
+fetch(API_URL)
+.then(r => r.json())
+.then(data => {
+
+    allReports = data.reverse();
+
+    updateSummary(data);
+
+    renderReports(allReports);
+
+});
+
+function updateSummary(data){
+
+    document.getElementById("totalReports").innerText =
+        data.length;
+
+    document.getElementById("stockReports").innerText =
+        data.filter(r =>
+            !String(r.ticker).includes("BAO_CAO")
+        ).length;
+
+    document.getElementById("macroReports").innerText =
+        data.filter(r =>
+            r.ticker === "BAO_CAO_VI_MO"
+        ).length;
+
+    document.getElementById("strategyReports").innerText =
+        data.filter(r =>
+            r.ticker === "BAO_CAO_CHIEN_LUOC"
+        ).length;
+}
+
+function renderReports(data){
+
+    const tbody =
+        document.getElementById("reportBody");
+
+    tbody.innerHTML = "";
+
+    data.forEach(r => {
+
+        let recommendClass = "";
+
+        if(r.recommend === "MUA")
+            recommendClass = "buy";
+
+        if(r.recommend === "KHẢ QUAN")
+            recommendClass = "positive";
+
+        if(r.recommend === "TRUNG LẬP")
+            recommendClass = "neutral";
+
+        tbody.innerHTML += `
+        <tr>
+
+        <td>${r.issueDate || ""}</td>
+
+        <td>${r.ticker || ""}</td>
+
+        <td>${r.source || ""}</td>
+
+        <td class="${recommendClass}">
+            ${r.recommend || ""}
+        </td>
+
+        <td>
+            ${r.targetPrice || ""}
+        </td>
+
+        <td>
+            ${r.title || ""}
+        </td>
+
+        <td>
+            <a href="${r.attachedLink}"
+               target="_blank">
+               📄 Xem
+            </a>
+        </td>
+
+        </tr>
+        `;
+    });
+}
+
+document
+.getElementById("search")
+.addEventListener("input", filterData);
+
+document
+.getElementById("recommendFilter")
+.addEventListener("change", filterData);
+
+function filterData(){
+
+    const keyword =
+        document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+    const recommend =
+        document
+        .getElementById("recommendFilter")
+        .value;
+
+    const filtered =
+        allReports.filter(r => {
+
+            const matchTicker =
+                String(r.ticker)
+                .toLowerCase()
+                .includes(keyword);
+
+            const matchRecommend =
+                recommend === "" ||
+                r.recommend === recommend;
+
+            return matchTicker &&
+                   matchRecommend;
+
+        });
+
+    renderReports(filtered);
+}
+
+</script>
 
 </body>
 </html>
