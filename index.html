@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Báo Cáo & Cổ Phiếu</title>
+<title>Báo Cáo & Cổ Phiếu </title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; background: #f5f6f8; color: #1a1a1a; font-size: 14px; }
@@ -602,7 +602,7 @@ async function loadPullback(){
       {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
       {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}}
     ],
-    "sort":[{"date":"desc"},{"pricePercent":"desc"}],
+    "sort":[{"pricePercent":"desc"}],
     "offset":0,
     "count":Number(count),
     "returns":["ticker","date","rating","volumeFlat","volumePercent","signal","gia_thuc_hien","wait_signal","wait_price","priceFlat","pricePercent","pullback_10","pc","pf","propose_price_1","propose_price_2"]
@@ -629,6 +629,7 @@ async function loadPullback(){
     else if(json.data&&Array.isArray(json.data)) rows=json.data;
     else if(json.result&&Array.isArray(json.result)) rows=json.result;
     else if(json.items&&Array.isArray(json.items)) rows=json.items;
+    rows.sort((a,b)=>String(b.date||0).localeCompare(String(a.date||0)));
     renderPullback(rows, json.total);
   } catch(err) {
     document.getElementById("pb-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Lỗi khi tải: ${err.message}</td></tr>`;
@@ -714,7 +715,7 @@ async function loadDip(){
       {"header":"vonhoa","id":7,"value":{"singleValue":vonhoa}},
       {"header":"tbgtdd","id":7,"value":{"singleValue":tbgtdd}}
     ],
-    "sort":[{"date":"desc"},{"discount_20":"asc"}],
+    "sort":[{"discount_20":"asc"}],
     "offset":0,
     "count":Number(count),
     "returns":["ticker","date","rating","volumeFlat","volumePercent","dip_signal","dip_price","priceFlat","pricePercent","pc","pf"]
@@ -738,6 +739,7 @@ async function loadDip(){
     if(Array.isArray(json)) rows=json;
     else if(json.symbols&&Array.isArray(json.symbols)) rows=json.symbols;
     else if(json.data&&Array.isArray(json.data)) rows=json.data;
+    rows.sort((a,b)=>String(b.date||0).localeCompare(String(a.date||0)));
     renderDip(rows, json.total);
   } catch(err) {
     document.getElementById("dip-tbody").innerHTML=`<tr class="state-row"><td colspan="11">Lỗi: ${err.message}</td></tr>`;
