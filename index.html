@@ -191,20 +191,14 @@ tbody tr:hover{background:#fafbfc}
   .ticker-input-wrap{max-width:220px}
   .cal-day{min-height:70px}
 }
-
 /* ══ MOBILE ≤640px ══ */
 @media(max-width:640px){
-  /* Layout */
   .page{padding:10px}
   .page-title{font-size:15px}
   .page-subtitle{font-size:11px}
-
-  /* Tabs — scroll ngang */
   .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-bottom-width:1.5px}
   .tabs::-webkit-scrollbar{display:none}
   .tab-btn{padding:8px 14px;font-size:13px;flex-shrink:0}
-
-  /* Toolbar */
   .toolbar{padding:10px;gap:8px}
   .toolbar .filter-group{width:calc(50% - 4px)}
   .toolbar .filter-group label{display:none}
@@ -212,62 +206,42 @@ tbody tr:hover{background:#fafbfc}
   .btn-primary,.btn-outline{width:100%;text-align:center;justify-content:center}
   .toolbar-spacer{display:none}
   .search-wrap-outer{width:100%}
-
-  /* Tín hiệu toolbar */
   .pb-toolbar{padding:10px;gap:8px;flex-wrap:wrap}
   .pb-label{font-size:11px}
   .pb-input{width:70px;font-size:12px;padding:5px 7px}
   .pb-date{font-size:12px;padding:5px 7px;flex:1;min-width:0}
   .pb-count{width:100%;text-align:right}
   #sig-roe{width:60px}
-
-  /* Sub-tabs tín hiệu */
   #panel-signal > div:first-child{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
   #panel-signal > div:first-child::-webkit-scrollbar{display:none}
   .sig-btn{flex-shrink:0;font-size:12px;padding:5px 12px}
-
-  /* Events toolbar */
   .ev-toolbar{padding:10px;gap:8px;flex-wrap:wrap}
-
   .ev-toolbar .pb-date{flex:1;min-width:120px;font-size:12px}
   .ev-toolbar .search-wrap{width:100%;max-width:100%!important}
   .ev-toolbar .btn-primary,.ev-toolbar .btn-outline{width:auto;flex:1}
-
-  /* Table → Card */
   .table-wrap{display:none!important}
   .card-list{display:block!important}
-
-  /* Ticker search */
   .ticker-search-box{flex-wrap:wrap;gap:8px;padding:12px}
   .ticker-input-wrap{max-width:100%;width:100%}
   .history-wrap{flex-wrap:wrap}
-
-  /* Stats */
   .stat-row{grid-template-columns:repeat(2,1fr);gap:8px}
   .stat-num{font-size:18px}
   .stats-bar{grid-template-columns:repeat(2,1fr);gap:8px}
   .consensus-bar{flex-wrap:wrap;padding:12px}
   .consensus-pills{margin-left:0;width:100%}
-
-  /* Cards */
   .report-card{padding:12px}
   .pb-card{padding:12px}
   .pb-card-ticker{font-size:16px}
   .pb-card-meta{gap:6px}
-
-  /* Calendar */
   .cal-grid{gap:2px}
   .cal-day{min-height:48px;padding:3px}
   .cal-day-num{font-size:10px;margin-bottom:2px}
   .cal-event{font-size:9px;padding:1px 3px}
   .cal-nav-title{font-size:14px}
   .cal-popup{min-width:90vw;max-width:95vw;margin:0 auto}
-
-  /* Misc */
   .ticker-filter-row{flex-wrap:wrap}
   .ticker-filter-row select{flex:1;min-width:120px}
 }
-
 /* ══ SMALL PHONE ≤380px ══ */
 @media(max-width:380px){
   .page{padding:8px}
@@ -456,7 +430,6 @@ const API_ALL    = "https://script.google.com/macros/s/AKfycbzfF-Nj2i8zKA4kkP1GH
 const API_TICKER = "https://api2.simplize.vn/api/company/analysis-report/list";
 const API_PB     = "https://dcs.finbox.vn/data/filter";
 const EVENTS_API = "https://script.google.com/macros/s/AKfycbwBYNgqQg26-xO5d-kt_rJ4IeNbgyXIuV6BhI_D90dS5kh_Vq5U4AsQJ7G_tnTrS4hHWQ/exec?sheet=Sheet2";
-const BEARER     = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJob2FpYWsyMDA0QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJ1aWQiOjE5MTcyMCwic2lkIjoiZWQ3MDEzNDItMDgyNC00ZjA0LWFjOTMtZGM4MDFhYTVhZTMyIiwicGUiOmZhbHNlLCJleHAiOjE3Nzk1ODY2NTd9.c4h5NAX82cPupz5YJ3sVbvYu-ety6lwZzbLZX6iTO5ybk41N-C-Se5_BoZethWdmXytBG1YpBzq_3SXSv1kkRA";
 const USER_ID    = "68f76bc6b6950c601846148c";
 const NOW = Date.now(), WEEK_MS = 7*86400000;
 
@@ -533,7 +506,8 @@ document.getElementById("search").addEventListener("input",applyFilters);
 function populateSources(data){var sel=document.getElementById("source-filter");[...new Set(data.map(function(r){return r.source;}).filter(Boolean))].sort().forEach(function(s){var o=document.createElement("option");o.value=s;o.textContent=s;sel.appendChild(o);});}
 fetch(API_ALL).then(function(r){return r.json();}).then(function(data){all=data;populateSources(all);filtered=all;render1(sortByDate(filtered,sortDir));}).catch(function(){document.getElementById("tbody").innerHTML="<tr class='state-row'><td colspan='7'>Không thể tải dữ liệu.</td></tr>";});
 
-/* ══════════ TAB 2 ══════════ */
+/* ══════════ TAB 2: Tra cứu mã ══════════ */
+// FIX: bỏ Authorization header - API Simplize không cần token
 var tickerRaw=[],tickerFiltered=[],tickerSortDir="desc";
 var searchHistory=[];try{searchHistory=JSON.parse(localStorage.getItem("spl_history")||"[]");}catch(e){}
 function saveHistory(t){searchHistory=[t,...searchHistory.filter(function(h){return h!==t;})].slice(0,6);try{localStorage.setItem("spl_history",JSON.stringify(searchHistory));}catch(e){}renderHistory();}
@@ -541,7 +515,26 @@ function renderHistory(){var w=document.getElementById("history-wrap"),c=documen
 function removeHistory(e,t){e.stopPropagation();searchHistory=searchHistory.filter(function(h){return h!==t;});try{localStorage.setItem("spl_history",JSON.stringify(searchHistory));}catch(e){}renderHistory();}
 function jumpTicker(t){document.getElementById("ticker-input").value=t;searchTicker();}
 renderHistory();
-async function fetchTickerData(ticker){var url=API_TICKER+"?ticker="+encodeURIComponent(ticker)+"&isWl=false&page=0&size=99";var r=await fetch(url,{headers:{"accept":"application/json","authorization":"Bearer "+BEARER,"origin":"https://simplize.vn","referer":"https://simplize.vn/"}});var json=await r.json();if(Array.isArray(json))return json;if(json.data&&json.data.content)return json.data.content;if(json.content)return json.content;return[];}
+
+async function fetchTickerData(ticker){
+  var url=API_TICKER+"?ticker="+encodeURIComponent(ticker)+"&isWl=false&page=0&size=99";
+  // FIX: không gửi Authorization header (token đã hết hạn & không cần thiết)
+  var r=await fetch(url,{
+    headers:{
+      "accept":"application/json, text/plain, */*",
+      "origin":"https://simplize.vn",
+      "referer":"https://simplize.vn/"
+    }
+  });
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  var json=await r.json();
+  if(Array.isArray(json))return json;
+  if(json.data&&json.data.content)return json.data.content;
+  if(json.data&&Array.isArray(json.data))return json.data;
+  if(json.content)return json.content;
+  return[];
+}
+
 async function searchTicker(){
   var ticker=document.getElementById("ticker-input").value.trim().toUpperCase();
   if(!ticker){document.getElementById("ticker-hint").textContent="Vui lòng nhập mã";return;}
@@ -557,8 +550,12 @@ async function searchTicker(){
     document.getElementById("ticker-hint").textContent=rows.length?rows.length+" báo cáo":"Không tìm thấy";
     var sel=document.getElementById("ticker-src-filter");sel.innerHTML="<option value=''>Tất cả CTCK</option>";
     [...new Set(rows.map(function(r){return sourceOf(r);}).filter(Boolean))].sort().forEach(function(s){var o=document.createElement("option");o.value=s;o.textContent=s;sel.appendChild(o);});
-  }catch(err){document.getElementById("ticker-tbody").innerHTML="<tr class='state-row'><td colspan='6'>Lỗi: "+err.message+"</td></tr>";document.getElementById("ticker-hint").textContent="Có lỗi";}
+  }catch(err){
+    document.getElementById("ticker-tbody").innerHTML="<tr class='state-row'><td colspan='6'>Lỗi: "+err.message+"</td></tr>";
+    document.getElementById("ticker-hint").textContent="Có lỗi — "+err.message;
+  }
 }
+
 function buildTickerUI(ticker,rows){
   var buyCount=rows.filter(function(r){return recNorm(r.recommend||"")==="MUA";}).length;
   var posCount=rows.filter(function(r){return recNorm(r.recommend||"")==="KHẢ QUAN";}).length;
