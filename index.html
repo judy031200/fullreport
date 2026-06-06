@@ -495,7 +495,7 @@ function renderTable(data){
 function renderCards1(data){
   var list=document.getElementById("card-list");
   if(!data.length){list.innerHTML="<div style='text-align:center;padding:40px 0;color:#bbb;'>Không tìm thấy</div>";return;}
-  list.innerHTML=data.map(function(r){var t=tickerType(r.ticker);var tb=t==="stock"?"<div><div class='card-ticker'>"+r.ticker+"</div><div class='card-source-sm'>"+r.source+"</div></div>":"<span class='"+(t==="strategy"?"tag-strategy":"tag-macro")+"'>"+(t==="macro"?"Vĩ mô":"Chiến lược")+"</span>";return"<div class='report-card'><div class='card-top'><div class='ticker-cell'>"+tb+"</div><div>"+(r.recommend?"<span class='"+recClass(r.recommend)+"'>"+recNorm(r.recommend)+"</span>":"")+"</div></div><div class='card-title'>"+r.title+(isNew(r)?"<span class='badge-new'>MỚI</span>":"")+"</div><div class='card-footer'><div class='card-meta'><span class='card-date'>"+formatDate(r)+"</span>"+(r.targetPrice?"<span class='card-price'>"+fmtPrice(r.targetPrice)+" ₫</span>":"")+"</div><a class='card-dl' href='"+(r.attachedLink||"#")+"' target='_blank'>⬇ Tải</a></div></div>";}).join("");
+  list.innerHTML=data.map(function(r){var t=tickerType(r);var td=tickerDisplay(r);var tb=t==="stock"?"<div><div class='card-ticker'>"+td+"</div><div class='card-source-sm'>"+r.source+"</div></div>":"<span class='"+(t==="strategy"?"tag-strategy":"tag-macro")+"'>"+(t==="macro"?"Vĩ mô":"Chiến lược")+"</span>";return"<div class='report-card'><div class='card-top'><div class='ticker-cell'>"+tb+"</div><div>"+(r.recommend?"<span class='"+recClass(r.recommend)+"'>"+recNorm(r.recommend)+"</span>":"")+"</div></div><div class='card-title'>"+r.title+(isNew(r)?"<span class='badge-new'>MỚI</span>":"")+"</div><div class='card-footer'><div class='card-meta'><span class='card-date'>"+formatDate(r)+"</span>"+(r.targetPrice?"<span class='card-price'>"+fmtPrice(r.targetPrice)+" ₫</span>":"")+"</div><a class='card-dl' href='"+(r.attachedLink||"#")+"' target='_blank'>⬇ Tải</a></div></div>";}).join("");
 }
 function render1(data){document.getElementById("result-count").textContent="Hiển thị "+data.length+" báo cáo";renderTable(data);renderCards1(data);}
 function toggleSort(){sortDir=sortDir==="desc"?"asc":"desc";document.querySelector("#panel-all thead th.date-cell").className="date-cell sort-"+sortDir;applyFilters();}
@@ -505,8 +505,8 @@ function applyFilters(){
   var rec=document.getElementById("rec-filter").value;
   var src=document.getElementById("source-filter").value;
   filtered=all.filter(function(r){
-    return(!kw||String(r.ticker||"").toLowerCase().includes(kw)||String(r.title||"").toLowerCase().includes(kw))&&
-           (!typ||tickerType(r.ticker)===typ)&&
+    return(!kw||String(r.tickerName||r.ticker||"").toLowerCase().includes(kw)||...
+       (!typ||tickerType(r)===typ)&&
            (!rec||(rec==="KHÁC"?!["MUA","KHẢ QUAN","TRUNG LẬP"].includes(r.recommend):r.recommend===rec))&&
            (!src||r.source===src);
   });
