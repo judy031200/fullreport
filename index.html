@@ -451,19 +451,41 @@ function switchTab(n){
     document.getElementById("panel-"+t).classList.toggle("active",t===n);
   });
 }
-function tickerType(t){var s=String(t||"");if(s==="BAO_CAO_VI_MO")return"macro";if(s==="BAO_CAO_CHIEN_LUOC")return"strategy";if(s.startsWith("BAO_CAO"))return"other";return"stock";}
+function tickerType(r){
+  var rt=Number(r.reportType||0);
+  if(rt===3)return"macro";
+  if(rt===4)return"strategy";
+  if(rt===1)return"stock";
+  // fallback: check ticker string
+  var s=String(r.ticker||"");
+  if(s.includes("VI_MO")||s==="BAO_CAO_VI_MO")return"macro";
+  if(s.includes("CHIEN_LUOC")||s==="BAO_CAO_CHIEN_LUOC")return"strategy";
+  if(s.startsWith("BAO_CAO"))return"other";
+  return"stock";
+}
+function tickerDisplay(r){
+  var t=tickerType(r);
+  if(t==="stock")return r.tickerName||r.ticker||"";
+  return"";
+}
 function parseDate(r){
-  var raw=r.issueDate||r.issueDateTimeA||r.reportDate||"";
-  var s=String(raw);
-  // Format dd/mm/yyyy (Simplize trả về)
-  var m1=s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-  if(m1)return new Date(+m1[3],+m1[2]-1,+m1[1]);
-  // Format yyyy-mm-dd
-  var m2=s.match(/(\d{4})-(\d{2})-(\d{2})/);
-  if(m2)return new Date(+m2[1],+m2[2]-1,+m2[3]);
+  var raw="";
+  if(typeof r==="object"&&r!==null) raw=r.issueDate||r.reportDate||"";
+  else raw=String(r||"");
+  var s=String(raw).trim();
+  // yyyy-mm-dd
+  var m1=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m1)return new Date(Date.UTC(+m1[1],+m1[2]-1,+m1[3]));
+  // dd/mm/yyyy
+  var m2=s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if(m2)return new Date(Date.UTC(+m2[3],+m2[2]-1,+m2[1]));
   return new Date(0);
 }
-function formatDate(r){var d=parseDate(r);if(!d||d.getTime()===0)return"—";return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear();}
+function formatDate(r){
+  var d=parseDate(r);
+  if(!d||d.getTime()===0)return"—";
+  return String(d.getUTCDate()).padStart(2,"0")+"/"+String(d.getUTCMonth()+1).padStart(2,"0")+"/"+d.getUTCFullYear();
+}
 function isNew(r){return(NOW-parseDate(r).getTime())<=WEEK_MS;}
 function recNorm(v){if(!v)return"";var u=v.toUpperCase();if(u==="BUY"||u==="MUA")return"MUA";if(["KHẢ QUAN","OUTPERFORM","OVERWEIGHT"].includes(u))return"KHẢ QUAN";if(["TRUNG LẬP","NEUTRAL","HOLD"].includes(u))return"TRUNG LẬP";return v;}
 function recClass(v){var n=recNorm(v);if(n==="MUA")return"rec rec-buy";if(n==="KHẢ QUAN")return"rec rec-positive";if(n==="TRUNG LẬP")return"rec rec-neutral";return"rec rec-other";}
@@ -474,7 +496,7 @@ function titleOf(r){return r.title||r.reportTitle||r.name||"";}
 function fmtPrice(p){return p?Number(p).toLocaleString("vi-VN"):"";}
 function sortByDate(data,dir){return[...data].sort(function(a,b){return dir==="desc"?parseDate(b)-parseDate(a):parseDate(a)-parseDate(b);});}
 function dlBtn(link){return"<a class='btn-dl' href='"+link+"' target='_blank'><svg width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/><polyline points='7 10 12 15 17 10'/><line x1='12' y1='15' x2='12' y2='3'/></svg></a>";}
-function tickerCellHtml(r){var t=tickerType(r.ticker);if(t==="macro")return"<span class='tag-macro'>Vĩ mô</span>";if(t==="strategy")return"<span class='tag-strategy'>Chiến lược</span>";if(t==="other")return"<span class='tag-macro'>"+r.ticker+"</span>";return"<div class='ticker-cell'><span class='ticker-label'>"+r.ticker+"</span></div>";}
+function tickerCellHtml(r){var t=tickerType(r);if(t==="macro")return"<span class='tag-macro'>Vĩ mô</span>";if(t==="strategy")return"<span class='tag-strategy'>Chiến lược</span>";if(t==="other")return"<span class='tag-macro'>"+tickerDisplay(r)+"</span>";return"<div class='ticker-cell'><span class='ticker-label'>"+tickerDisplay(r)+"</span></div>";}
 
 /* ── Finbox helpers ── */
 function ratingClass(r){var m={"A+":"r-aplus","A":"r-a","A-":"r-aminus","B+":"r-bplus","B":"r-b","B-":"r-bminus","C+":"r-cplus","C":"r-c","C-":"r-cminus"};return m[r]||"r-c";}
