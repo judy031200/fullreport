@@ -6,12 +6,12 @@
 <title>Báo Cáo & Cổ Phiếu</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f5f6f8;color:#1a1a1a;font-size:14px}
-.page{max-width:1300px;margin:0 auto;padding:20px 16px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f5f6f8;color:#1a1a1a;font-size:14px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.page{max-width:1300px;margin:0 auto;padding:20px 16px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
 .page-title{font-size:18px;font-weight:600;color:#1a1a1a;margin-bottom:4px}
 .page-subtitle{font-size:12px;color:#888;margin-bottom:16px}
 /* Tabs */
-.tabs{display:flex;border-bottom:2px solid #e8e8e8;margin-bottom:16px;overflow-x:auto}
+.tabs{display:flex;border-bottom:2px solid #e8e8e8;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .tab-btn{padding:10px 20px;font-size:14px;font-weight:500;color:#888;background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .15s,border-color .15s}
 .tab-btn:hover{color:#1677ff}
 .tab-btn.active{color:#1677ff;border-bottom-color:#1677ff}
@@ -36,7 +36,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;ba
 .search-wrap svg{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#bbb;pointer-events:none}
 .result-count{font-size:12px;color:#8c8c8c;margin-bottom:8px;padding:0 2px}
 /* Table */
-.table-wrap{background:#fff;border:1px solid #e8e8e8;border-radius:10px;overflow:hidden}
+.table-wrap{background:#fff;border:1px solid #e8e8e8;border-radius:10px;overflow:hidden;overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse}
 thead th{background:#fafafa;font-size:11px;font-weight:500;color:#999;padding:10px 14px;text-align:left;border-bottom:1px solid #f0f0f0;white-space:nowrap;cursor:pointer;user-select:none;text-transform:uppercase;letter-spacing:.03em}
 thead th:hover{color:#1677ff}
@@ -62,7 +62,7 @@ tbody tr:hover{background:#fafbfc}
 .rec-neutral{color:#9ca3af}
 .rec-other{color:#92400e}
 .price-empty{color:#d1d5db!important}
-.btn-dl{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;color:#9ca3af;text-decoration:none;transition:border-color .15s,color .15s,background .15s}
+.btn-dl{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;color:#9ca3af;text-decoration:none;transition:border-color .15s,color .15s,background .15s}
 .btn-dl:hover{border-color:#1677ff;color:#1677ff;background:#e6f1ff}
 .state-row td{text-align:center;padding:48px 0;color:#bbb;font-size:14px}
 .badge-new{display:inline-block;font-size:10px;font-weight:600;background:#fee2e2;color:#dc2626;padding:1px 5px;border-radius:3px;margin-left:6px;vertical-align:middle}
@@ -129,8 +129,8 @@ tbody tr:hover{background:#fafbfc}
 .signal-dip-big{font-size:11px;font-weight:600;background:#f3e8ff;color:#7c3aed;padding:2px 7px;border-radius:4px}
 /* Events */
 .ev-toolbar{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.badge-iss{font-size:11px;font-weight:600;background:#dbeafe;color:#1d4ed8;padding:3px 9px;border-radius:20px;white-space:nowrap}
-.badge-div-cash{font-size:11px;font-weight:600;background:#d1fae5;color:#065f46;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.badge-iss{font-size:11px;font-weight:600;background:#ede9fe;color:#5b21b6;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.badge-div-cash{font-size:11px;font-weight:600;background:#dcfce7;color:#15803d;padding:3px 9px;border-radius:20px;white-space:nowrap}
 .ev-date{font-size:12px;color:#888;white-space:nowrap}
 .ev-ticker{font-size:13px;font-weight:700;color:#1677ff}
 .ev-value{font-size:13px;font-weight:600;color:#16a34a;font-variant-numeric:tabular-nums}
@@ -180,27 +180,102 @@ tbody tr:hover{background:#fafbfc}
 .pb-meta-item{font-size:12px}
 .pb-meta-label{color:#aaa;font-size:11px}
 .pb-meta-value{font-weight:600;margin-top:1px}
+/* ══ TABLET 641–1024px ══ */
+@media(min-width:641px) and (max-width:1024px){
+  .page{padding:16px}
+  .source-col,thead th:nth-child(4),tbody td:nth-child(4){display:none}
+  .pb-toolbar{flex-wrap:wrap;gap:8px}
+  .ev-toolbar{flex-wrap:wrap;gap:8px}
+  .stat-row{grid-template-columns:repeat(3,1fr)}
+  .stats-bar{grid-template-columns:repeat(3,1fr)}
+  .ticker-input-wrap{max-width:220px}
+  .cal-day{min-height:70px}
+}
+
+/* ══ MOBILE ≤640px ══ */
 @media(max-width:640px){
-  .page{padding:12px}
-  .page-title{font-size:16px}
-  .tab-btn{padding:8px 12px;font-size:13px}
-  .toolbar,.pb-toolbar,.ev-toolbar{padding:10px;gap:8px}
-  .filter-group{width:calc(50% - 4px)}
-  .filter-group label{display:none}
-  .custom-select select{width:100%;min-width:0}
-  .btn-primary,.btn-outline{width:100%;text-align:center}
+  /* Layout */
+  .page{padding:10px}
+  .page-title{font-size:15px}
+  .page-subtitle{font-size:11px}
+
+  /* Tabs — scroll ngang */
+  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-bottom-width:1.5px}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab-btn{padding:8px 14px;font-size:13px;flex-shrink:0}
+
+  /* Toolbar */
+  .toolbar{padding:10px;gap:8px}
+  .toolbar .filter-group{width:calc(50% - 4px)}
+  .toolbar .filter-group label{display:none}
+  .custom-select select{width:100%;min-width:0;font-size:13px}
+  .btn-primary,.btn-outline{width:100%;text-align:center;justify-content:center}
   .toolbar-spacer{display:none}
   .search-wrap-outer{width:100%}
-  .table-wrap{display:none}
-  .card-list{display:block}
-  .ticker-input-wrap{max-width:100%}
-  .consensus-pills{margin-left:0}
-  .stats-bar{grid-template-columns:repeat(2,1fr)}
-  .cal-grid{gap:3px}
-  .cal-day{min-height:55px;padding:4px}
+
+  /* Tín hiệu toolbar */
+  .pb-toolbar{padding:10px;gap:8px;flex-wrap:wrap}
+  .pb-label{font-size:11px}
+  .pb-input{width:70px;font-size:12px;padding:5px 7px}
+  .pb-date{font-size:12px;padding:5px 7px;flex:1;min-width:0}
+  .pb-count{width:100%;text-align:right}
+  #sig-roe{width:60px}
+
+  /* Sub-tabs tín hiệu */
+  #panel-signal > div:first-child{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+  #panel-signal > div:first-child::-webkit-scrollbar{display:none}
+  .sig-btn{flex-shrink:0;font-size:12px;padding:5px 12px}
+
+  /* Events toolbar */
+  .ev-toolbar{padding:10px;gap:8px;flex-wrap:wrap}
+
+  .ev-toolbar .pb-date{flex:1;min-width:120px;font-size:12px}
+  .ev-toolbar .search-wrap{width:100%;max-width:100%!important}
+  .ev-toolbar .btn-primary,.ev-toolbar .btn-outline{width:auto;flex:1}
+
+  /* Table → Card */
+  .table-wrap{display:none!important}
+  .card-list{display:block!important}
+
+  /* Ticker search */
+  .ticker-search-box{flex-wrap:wrap;gap:8px;padding:12px}
+  .ticker-input-wrap{max-width:100%;width:100%}
+  .history-wrap{flex-wrap:wrap}
+
+  /* Stats */
+  .stat-row{grid-template-columns:repeat(2,1fr);gap:8px}
+  .stat-num{font-size:18px}
+  .stats-bar{grid-template-columns:repeat(2,1fr);gap:8px}
+  .consensus-bar{flex-wrap:wrap;padding:12px}
+  .consensus-pills{margin-left:0;width:100%}
+
+  /* Cards */
+  .report-card{padding:12px}
+  .pb-card{padding:12px}
+  .pb-card-ticker{font-size:16px}
+  .pb-card-meta{gap:6px}
+
+  /* Calendar */
+  .cal-grid{gap:2px}
+  .cal-day{min-height:48px;padding:3px}
+  .cal-day-num{font-size:10px;margin-bottom:2px}
+  .cal-event{font-size:9px;padding:1px 3px}
+  .cal-nav-title{font-size:14px}
+  .cal-popup{min-width:90vw;max-width:95vw;margin:0 auto}
+
+  /* Misc */
+  .ticker-filter-row{flex-wrap:wrap}
+  .ticker-filter-row select{flex:1;min-width:120px}
 }
-@media(min-width:641px) and (max-width:900px){
-  .source-col,thead th:nth-child(4),tbody td:nth-child(4){display:none}
+
+/* ══ SMALL PHONE ≤380px ══ */
+@media(max-width:380px){
+  .page{padding:8px}
+  .tab-btn{padding:7px 10px;font-size:12px}
+  .stat-row{grid-template-columns:repeat(2,1fr)}
+  .stat-num{font-size:16px}
+  .cal-day{min-height:40px}
+  .sig-btn{font-size:11px;padding:4px 9px}
 }
 </style>
 </head>
@@ -345,7 +420,8 @@ tbody tr:hover{background:#fafbfc}
     <div class="ev-toolbar">
       <span class="pb-label">Từ ngày:</span><input type="date" class="pb-date" id="ev-from">
       <span class="pb-label">Đến ngày:</span><input type="date" class="pb-date" id="ev-to">
-      <div class="custom-select"><select id="ev-type"><option value="ISS,DIV">Tất cả</option><option value="DIV">Cổ tức</option><option value="ISS">Phát hành thêm</option></select></div>
+      <button class="btn-outline" onclick="setEvToday()" style="padding:6px 12px;font-size:12px;white-space:nowrap;">Hôm nay</button>
+      <div class="custom-select"><select id="ev-type" onchange="setEvType(this.value)"><option value="ISS,DIV">Tất cả</option><option value="DIV">Cổ tức</option><option value="ISS">Phát hành thêm</option></select></div>
       <div class="search-wrap" style="max-width:180px;flex:1;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="text" id="ev-search" placeholder="Tìm mã..." oninput="filterEvents()">
@@ -372,6 +448,7 @@ tbody tr:hover{background:#fafbfc}
     <div class="card-list" id="ev-card-list"></div>
     <div id="ev-calendar" style="display:none;"></div>
   </div>
+
 </div>
 
 <script>
@@ -388,10 +465,10 @@ const NOW = Date.now(), WEEK_MS = 7*86400000;
   var d=new Date(), y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0");
   var today = y+"-"+m+"-"+day;
   document.getElementById("sig-date").value = today;
-  var evTo=new Date(), evFrom=new Date(); evFrom.setDate(evFrom.getDate()-30);
+  var evNow=new Date();
   function fi(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
-  document.getElementById("ev-from").value=fi(evFrom);
-  document.getElementById("ev-to").value=fi(evTo);
+  document.getElementById("ev-from").value=fi(evNow);
+  document.getElementById("ev-to").value=fi(evNow);
 })();
 
 /* ── Shared helpers ── */
@@ -601,12 +678,26 @@ function evTypeBadge(code){
 }
 function setEvView(v){
   evView=v;
-  document.getElementById("ev-view-table").className=v==="table"?"btn-primary":"btn-outline";
+  document.getElementById("ev-view-table").className="btn-primary";
   document.getElementById("ev-view-cal").className=v==="cal"?"btn-primary":"btn-outline";
   document.getElementById("ev-table-wrap").style.display=v==="table"?"block":"none";
   document.getElementById("ev-card-list").style.display=v==="table"?"":"none";
   document.getElementById("ev-calendar").style.display=v==="cal"?"block":"none";
   if(v==="cal"&&evAllRows.length)renderCalendar();
+}
+function setEvToday(){
+  var d=new Date();
+  var fi=function(dt){return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");};
+  document.getElementById("ev-from").value=fi(d);
+  document.getElementById("ev-to").value=fi(d);
+  loadEvents();
+}
+function setEvType(val){
+  document.getElementById("ev-type").value=val;
+  if(evAllRows.length){
+    var rows=val==="ISS,DIV"?evAllRows:evAllRows.filter(function(r){return String(r.eventCode||"").toUpperCase()===val;});
+    renderEvents(rows);
+  }
 }
 async function loadEvents(){
   document.getElementById("ev-tbody").innerHTML="<tr class='state-row'><td colspan='7'>Đang tải...</td></tr>";
