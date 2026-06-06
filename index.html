@@ -505,8 +505,8 @@ function applyFilters(){
   var rec=document.getElementById("rec-filter").value;
   var src=document.getElementById("source-filter").value;
   filtered=all.filter(function(r){
-    return(!kw||String(r.tickerName||r.ticker||"").toLowerCase().includes(kw)||...
-       (!typ||tickerType(r)===typ)&&
+    return(!kw||String(r.tickerName||r.ticker||"").toLowerCase().includes(kw)||String(r.title||"").toLowerCase().includes(kw))&&
+           (!typ||tickerType(r)===typ)&&
            (!rec||(rec==="KHÁC"?!["MUA","KHẢ QUAN","TRUNG LẬP"].includes(r.recommend):r.recommend===rec))&&
            (!src||r.source===src);
   });
