@@ -180,6 +180,64 @@ tbody tr:hover{background:#fafbfc}
 .pb-meta-item{font-size:12px}
 .pb-meta-label{color:#aaa;font-size:11px}
 .pb-meta-value{font-weight:600;margin-top:1px}
+/* ══ Nhật ký đầu tư ══ */
+.journal-toolbar{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+/* Card */
+.journal-card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;margin-bottom:10px;overflow:hidden;transition:box-shadow .15s,border-color .15s}
+.journal-card:hover{box-shadow:0 2px 14px rgba(22,119,255,.09);border-color:#c7deff}
+/* Top row: date + author + badges */
+.jnl-top{display:flex;align-items:center;gap:8px;padding:12px 16px 0;flex-wrap:wrap}
+.jnl-date{font-size:11px;color:#bbb;white-space:nowrap}
+.jnl-author{font-size:12px;font-weight:600;color:#888}
+.jnl-spacer{flex:1}
+/* Sentiment & market view pill */
+.jnl-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.jnl-pill-bullish{background:#dcfce7;color:#15803d}
+.jnl-pill-bearish{background:#fee2e2;color:#dc2626}
+.jnl-pill-neutral{background:#f3f4f6;color:#6b7280}
+.jnl-pill-positive{background:#dbeafe;color:#1d4ed8}
+/* Tickers row */
+.jnl-tickers{display:flex;gap:5px;flex-wrap:wrap;padding:10px 16px 0}
+.jnl-ticker{font-size:13px;font-weight:800;color:#1677ff;background:#e6f1ff;border:1px solid #c7deff;border-radius:5px;padding:3px 10px;cursor:pointer;letter-spacing:.03em}
+.jnl-ticker:hover{background:#1677ff;color:#fff}
+/* Summary */
+.jnl-summary{font-size:13px;color:#1a1a1a;line-height:1.7;padding:10px 16px}
+/* Info grid: sector | action | importance — 1 clean row */
+.jnl-info{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:0 16px 10px}
+.jnl-sector{font-size:11px;color:#92400e;background:#fef3c7;border-radius:4px;padding:2px 8px;font-weight:500}
+.jnl-action{font-size:11px;font-weight:700;border-radius:4px;padding:2px 10px}
+.jnl-action-hold{color:#0369a1;background:#dbeafe}
+.jnl-action-buy{color:#15803d;background:#dcfce7}
+.jnl-action-sell{color:#dc2626;background:#fee2e2}
+.jnl-action-observe{color:#7c3aed;background:#f3e8ff}
+.jnl-stars{font-size:12px;color:#f59e0b;letter-spacing:1px}
+.jnl-sep{width:1px;height:14px;background:#e8e8e8;flex-shrink:0}
+/* Tags row */
+.jnl-tags{display:flex;gap:5px;flex-wrap:wrap;padding:0 16px 12px}
+.jnl-tag{font-size:11px;color:#6b7280;background:#f5f6f8;border:1px solid #e8e8e8;border-radius:20px;padding:2px 9px}
+/* Expand detail */
+.jnl-expand-btn{width:100%;text-align:left;padding:8px 16px;font-size:12px;color:#1677ff;background:#f8faff;border:none;border-top:1px solid #f0f0f0;cursor:pointer;display:flex;align-items:center;gap:4px}
+.jnl-expand-btn:hover{background:#eef4ff}
+.jnl-detail{display:none;border-top:1px solid #f0f0f0}
+.jnl-detail.open{display:block}
+.jnl-detail-inner{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.jnl-block{border-radius:6px;padding:10px 12px;font-size:12px;line-height:1.65}
+.jnl-block-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.jnl-block-cat{background:#f0fdf4;border-left:3px solid #4ade80;color:#15803d}
+.jnl-block-cat .jnl-block-title{color:#15803d}
+.jnl-block-risk{background:#fef2f2;border-left:3px solid #fca5a5;color:#dc2626}
+.jnl-block-risk .jnl-block-title{color:#dc2626}
+.jnl-block-note{background:#fafafa;border-left:3px solid #e8e8e8;color:#444}
+.jnl-block-note .jnl-block-title{color:#888}
+/* Empty & misc */
+.jnl-empty{text-align:center;padding:60px 0;color:#bbb;font-size:14px}
+.jnl-filter-chip{font-size:12px;font-weight:600;background:#f5f6f8;border:1px solid #e8e8e8;border-radius:20px;padding:4px 14px;cursor:pointer;color:#555;white-space:nowrap}
+.jnl-filter-chip:hover,.jnl-filter-chip.active{background:#1677ff;color:#fff;border-color:#1677ff}
+.jnl-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.jnl-stat{background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:10px 14px;min-width:90px;flex:1}
+.jnl-stat-label{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px}
+.jnl-stat-value{font-size:18px;font-weight:700;color:#1a1a1a}
+
 /* ══ TABLET 641–1024px ══ */
 @media(min-width:641px) and (max-width:1024px){
   .page{padding:16px}
@@ -263,6 +321,7 @@ tbody tr:hover{background:#fafbfc}
     <button class="tab-btn" onclick="switchTab('ticker')">🔍 Tra cứu mã</button>
     <button class="tab-btn" onclick="switchTab('signal')">⚡ Tín hiệu</button>
     <button class="tab-btn" onclick="switchTab('events')">📅 Sự kiện</button>
+    <button class="tab-btn" onclick="switchTab('journal')">📓 Nhật ký đầu tư</button>
   </div>
 
   <!-- TAB 1: All reports -->
@@ -423,8 +482,37 @@ tbody tr:hover{background:#fafbfc}
     <div id="ev-calendar" style="display:none;"></div>
   </div>
 
-</div>
+  <!-- TAB 5: Nhật ký đầu tư -->
+  <div class="tab-panel" id="panel-journal">
+    <!-- Thanh công cụ -->
+    <div class="journal-toolbar">
+      <div class="search-wrap" style="min-width:180px;max-width:260px;flex:1;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="jnl-search" placeholder="Tìm mã, nội dung..." oninput="filterJournal()">
+      </div>
+      <div class="custom-select"><select id="jnl-action-filter" onchange="filterJournal()"><option value="">Tất cả hành động</option><option value="Buy">Mua</option><option value="Hold">Giữ</option><option value="Sell">Bán</option></select></div>
+      <div class="custom-select"><select id="jnl-sentiment-filter" onchange="filterJournal()"><option value="">Tất cả sentiment</option><option value="Bullish">Bullish</option><option value="Neutral">Neutral</option><option value="Bearish">Bearish</option></select></div>
+      <div class="custom-select"><select id="jnl-sector-filter" onchange="filterJournal()"><option value="">Tất cả ngành</option></select></div>
+      <button class="btn-primary" onclick="loadJournal()">🔄 Tải</button>
+      <span id="jnl-count-label" style="font-size:12px;color:#aaa;margin-left:auto;"></span>
+    </div>
 
+    <!-- Chip lọc nhanh theo ticker -->
+    <div id="jnl-ticker-chips" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;"></div>
+
+    <!-- Stats bar -->
+    <div class="jnl-stats" id="jnl-stats" style="display:none;">
+      <div class="jnl-stat"><div class="jnl-stat-label">Tổng ghi chú</div><div class="jnl-stat-value" id="jnl-s-total">0</div></div>
+      <div class="jnl-stat"><div class="jnl-stat-label">Bullish</div><div class="jnl-stat-value" style="color:#15803d" id="jnl-s-bull">0</div></div>
+      <div class="jnl-stat"><div class="jnl-stat-label">Hold</div><div class="jnl-stat-value" style="color:#0369a1" id="jnl-s-hold">0</div></div>
+      <div class="jnl-stat"><div class="jnl-stat-label">Mã theo dõi</div><div class="jnl-stat-value" style="color:#7c3aed" id="jnl-s-tickers">0</div></div>
+    </div>
+
+    <!-- Danh sách nhật ký -->
+    <div id="jnl-list"><div class="jnl-empty">Nhấn "Tải" để xem nhật ký đầu tư</div></div>
+  </div>
+
+</div>
 <script>
 const API_ALL    = "https://script.google.com/macros/s/AKfycbzfF-Nj2i8zKA4kkP1GHijfv1ZQp1KhBxE6OVCL1tWX3KaEbQhrnEdJnOFsjyGdAreE8w/exec";
 const API_TICKER = "https://api2.simplize.vn/api/company/analysis-report/list";
@@ -446,10 +534,11 @@ const NOW = Date.now(), WEEK_MS = 7*86400000;
 
 /* ── Shared helpers ── */
 function switchTab(n){
-  ["all","ticker","signal","events"].forEach(function(t,i){
+  ["all","ticker","signal","events","journal"].forEach(function(t,i){
     document.querySelectorAll(".tab-btn")[i].classList.toggle("active",t===n);
     document.getElementById("panel-"+t).classList.toggle("active",t===n);
   });
+  if(n==="journal"&&jnlAllRows.length===0)loadJournal();
 }
 function tickerType(r){
   var rt=Number(r.reportType||0);
@@ -832,6 +921,201 @@ function showCalPopup(dateKey){
   overlay.appendChild(popup);document.body.appendChild(overlay);
 }
 function closeCalPopup(){var el=document.getElementById("cal-popup-overlay");if(el)el.remove();}
+/* ══════════ TAB 5: Nhật ký đầu tư ══════════ */
+var JOURNAL_API = "https://script.google.com/macros/s/AKfycbwBYNgqQg26-xO5d-kt_rJ4IeNbgyXIuV6BhI_D90dS5kh_Vq5U4AsQJ7G_tnTrS4hHWQ/exec?sheet=note";
+var jnlAllRows=[], jnlFiltered=[], jnlActiveTicker="";
+
+function loadJournal(){
+  document.getElementById("jnl-list").innerHTML="<div class='jnl-empty'>⏳ Đang tải nhật ký...</div>";
+  document.getElementById("jnl-stats").style.display="none";
+  fetch(JOURNAL_API)
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var rows=Array.isArray(data)?data:(data.data||data.rows||[]);
+      rows.sort(function(a,b){
+        var da=String(a.created_at||""), db=String(b.created_at||"");
+        return db.localeCompare(da);
+      });
+      jnlAllRows=rows;
+      populateJnlSectors(rows);
+      buildJnlTickerChips(rows);
+      updateJnlStats(rows);
+      filterJournal();
+    })
+    .catch(function(err){
+      document.getElementById("jnl-list").innerHTML="<div class='jnl-empty'>❌ Không thể tải dữ liệu: "+err.message+"</div>";
+    });
+}
+
+function populateJnlSectors(rows){
+  var sel=document.getElementById("jnl-sector-filter");
+  var cur=sel.value;
+  while(sel.options.length>1)sel.remove(1);
+  var sectors=[...new Set(
+    rows.flatMap(function(r){
+      return String(r.sector||"").split(/[,|;]+/).map(function(s){return s.trim();}).filter(Boolean);
+    })
+  )].sort();
+  sectors.forEach(function(s){var o=document.createElement("option");o.value=s;o.textContent=s;sel.appendChild(o);});
+  sel.value=cur;
+}
+
+function buildJnlTickerChips(rows){
+  var wrap=document.getElementById("jnl-ticker-chips");
+  var tickers=[...new Set(
+    rows.flatMap(function(r){
+      return String(r.tickers||"").split(/[,\s]+/).map(function(t){return t.trim().toUpperCase();}).filter(function(t){return t.length>=2&&t.length<=10;});
+    })
+  )].sort();
+  if(!tickers.length){wrap.style.display="none";return;}
+  wrap.style.display="flex";
+  wrap.innerHTML="<span class='jnl-filter-chip active' onclick='setJnlTicker(\"\")'>Tất cả</span>"+
+    tickers.map(function(t){return"<span class='jnl-filter-chip' onclick='setJnlTicker(\""+t+"\")'>"+t+"</span>";}).join("");
+}
+
+function setJnlTicker(t){
+  jnlActiveTicker=t;
+  document.querySelectorAll("#jnl-ticker-chips .jnl-filter-chip").forEach(function(el){
+    var isAll=el.textContent==="Tất cả";
+    el.classList.toggle("active",t===""?isAll:el.textContent===t);
+  });
+  filterJournal();
+}
+
+function updateJnlStats(rows){
+  var bull=rows.filter(function(r){return String(r.sentiment||"").toLowerCase()==="bullish";}).length;
+  var hold=rows.filter(function(r){return String(r.action||"").toLowerCase()==="hold";}).length;
+  var tickers=new Set(
+    rows.flatMap(function(r){return String(r.tickers||"").split(/[,\s]+/).map(function(t){return t.trim().toUpperCase();}).filter(function(t){return t.length>=2;});})
+  ).size;
+  document.getElementById("jnl-s-total").textContent=rows.length;
+  document.getElementById("jnl-s-bull").textContent=bull;
+  document.getElementById("jnl-s-hold").textContent=hold;
+  document.getElementById("jnl-s-tickers").textContent=tickers;
+  document.getElementById("jnl-stats").style.display="flex";
+}
+
+function filterJournal(){
+  var kw=(document.getElementById("jnl-search").value||"").toLowerCase().trim();
+  var action=(document.getElementById("jnl-action-filter").value||"").toLowerCase();
+  var sentiment=(document.getElementById("jnl-sentiment-filter").value||"").toLowerCase();
+  var sector=(document.getElementById("jnl-sector-filter").value||"").toLowerCase();
+  jnlFiltered=jnlAllRows.filter(function(r){
+    if(jnlActiveTicker){
+      var tks=String(r.tickers||"").toUpperCase().split(/[,\s]+/);
+      if(!tks.some(function(t){return t.trim()===jnlActiveTicker;}))return false;
+    }
+    if(kw&&!(
+      String(r.tickers||"").toLowerCase().includes(kw)||
+      String(r.summary||"").toLowerCase().includes(kw)||
+      String(r.raw_note||"").toLowerCase().includes(kw)||
+      String(r.tags||"").toLowerCase().includes(kw)||
+      String(r.sector||"").toLowerCase().includes(kw)
+    ))return false;
+    if(action&&String(r.action||"").toLowerCase()!==action)return false;
+    if(sentiment&&String(r.sentiment||"").toLowerCase()!==sentiment)return false;
+    if(sector&&!String(r.sector||"").toLowerCase().includes(sector))return false;
+    return true;
+  });
+  renderJournal(jnlFiltered);
+}
+
+function jnlFmtDate(s){
+  if(!s)return"–";
+  var m=String(s).match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+  if(m)return m[3]+"/"+m[2]+"/"+m[1]+" "+m[4]+":"+m[5];
+  return String(s).slice(0,16);
+}
+
+function jnlPill(sentiment){
+  if(!sentiment)return"";
+  var l=sentiment.toLowerCase();
+  var cls=l==="bullish"?"jnl-pill-bullish":l==="bearish"?"jnl-pill-bearish":l==="positive"?"jnl-pill-positive":"jnl-pill-neutral";
+  var icon=l==="bullish"?"▲ ":l==="bearish"?"▼ ":l==="positive"?"◉ ":"◆ ";
+  return"<span class='jnl-pill "+cls+"'>"+icon+sentiment+"</span>";
+}
+
+function jnlActionBadge(a){
+  if(!a)return"";
+  var l=a.toLowerCase();
+  if(l==="buy")return"<span class='jnl-action jnl-action-buy'>🟢 Mua</span>";
+  if(l==="hold")return"<span class='jnl-action jnl-action-hold'>🔵 Giữ</span>";
+  if(l==="sell")return"<span class='jnl-action jnl-action-sell'>🔴 Bán</span>";
+  return"<span class='jnl-action jnl-action-observe'>"+a+"</span>";
+}
+
+function jnlStars(n){
+  var num=parseInt(n)||0;
+  if(!num)return"";
+  return"<span class='jnl-stars'>"+("★").repeat(Math.min(num,5))+("☆").repeat(Math.max(0,5-num))+"</span>";
+}
+
+function renderJournal(rows){
+  var count=rows.length;
+  document.getElementById("jnl-count-label").textContent=count+" ghi chú";
+  var list=document.getElementById("jnl-list");
+  if(!count){list.innerHTML="<div class='jnl-empty'>Không tìm thấy ghi chú phù hợp</div>";return;}
+
+  list.innerHTML=rows.map(function(r,idx){
+    var id="jd"+idx;
+    // Tickers
+    var tickers=String(r.tickers||"").split(/[,\s]+/).map(function(t){return t.trim().toUpperCase();}).filter(function(t){return t.length>=2&&t.length<=10;});
+    var tickerHtml=tickers.length?"<div class='jnl-tickers'>"+tickers.map(function(t){return"<span class='jnl-ticker' onclick='setJnlTicker(\""+t+"\")'>"+t+"</span>";}).join("")+"</div>":"";
+
+    // Summary
+    var summary=String(r.summary||"").trim();
+
+    // Info row: sectors + action + stars + separator + market_view
+    var sectors=String(r.sector||"").split(/[,|;]+/).map(function(s){return s.trim();}).filter(Boolean);
+    var secHtml=sectors.map(function(s){return"<span class='jnl-sector'>"+s+"</span>";}).join("");
+    var actionHtml=jnlActionBadge(r.action);
+    var starsHtml=jnlStars(r.importance);
+    var mvHtml=r.market_view?"<span class='jnl-sep'></span>"+jnlPill(r.market_view):"";
+    var infoRow=(secHtml||actionHtml||starsHtml||mvHtml)?
+      "<div class='jnl-info'>"+secHtml+actionHtml+starsHtml+mvHtml+"</div>":"";
+
+    // Tags
+    var tags=String(r.tags||"").split(/[,|;]+/).map(function(t){return t.trim();}).filter(Boolean);
+    var tagHtml=tags.length?"<div class='jnl-tags'>"+tags.map(function(t){return"<span class='jnl-tag'>"+t+"</span>";}).join("")+"</div>":"";
+
+    // Detail: catalyst + risks + raw note
+    var catalysts=String(r.catalysts||"").trim().replace(/\n/g,"<br>");
+    var risks=String(r.risks||"").trim().replace(/\n/g,"<br>");
+    var rawNote=String(r.raw_note||"").trim().replace(/\n/g,"<br>");
+    var hasDetail=catalysts||risks||rawNote;
+    var detailHtml=hasDetail?
+      "<button class='jnl-expand-btn' onclick='toggleJnlDetail(\""+id+"\",this)'>▼ Xem chi tiết (catalyst, rủi ro, ghi chú)</button>"+
+      "<div class='jnl-detail' id='"+id+"'>"+
+        "<div class='jnl-detail-inner'>"+
+          (catalysts?"<div class='jnl-block jnl-block-cat'><div class='jnl-block-title'>📈 Catalyst</div>"+catalysts+"</div>":"")+
+          (risks?"<div class='jnl-block jnl-block-risk'><div class='jnl-block-title'>⚠️ Rủi ro</div>"+risks+"</div>":"")+
+          (rawNote?"<div class='jnl-block jnl-block-note'><div class='jnl-block-title'>📝 Ghi chú gốc</div>"+rawNote+"</div>":"")+
+        "</div>"+
+      "</div>"
+    :"";
+
+    return"<div class='journal-card'>"+
+      "<div class='jnl-top'>"+
+        "<span class='jnl-date'>"+jnlFmtDate(r.created_at)+"</span>"+
+        (r.note_by?"<span class='jnl-author'>· "+r.note_by+"</span>":"")+
+        "<span class='jnl-spacer'></span>"+
+        jnlPill(r.sentiment)+
+      "</div>"+
+      tickerHtml+
+      (summary?"<div class='jnl-summary'>"+summary+"</div>":"")+
+      infoRow+
+      tagHtml+
+      detailHtml+
+    "</div>";
+  }).join("");
+}
+
+function toggleJnlDetail(id,btn){
+  var d=document.getElementById(id);
+  var open=d.classList.toggle("open");
+  btn.textContent=open?"▲ Thu gọn":"▼ Xem chi tiết (catalyst, rủi ro, ghi chú)";
+}
+
 </script>
 </body>
 </html>
